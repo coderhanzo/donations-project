@@ -133,9 +133,7 @@ def signup_view(request):
         "email": request.data.get("email"),
         "password": request.data.get("password"),
         "phone_number": request.data.get("phone_number"),
-        "bsystems_admin": request.data.get("bsystems_admin"),
-        "institution_admin": request.data.get("institution_admin"),
-        "institution_name": request.data.get("institution_name"),
+        "roles": request.data.get("roles", User.Roles.USER),
         # Add other fields as needed
     }
 
@@ -153,24 +151,25 @@ def signup_view(request):
     serializer.is_valid(raise_exception=True)
     user = serializer.save()
 
+    create_personal_calendar(user)
     # Each user gets a private personal calendar
-    calendar_serializer = CalendarSerializer(
-        data={
-            "name": "Personal Calendar",
-            "slug": generate_unique_slug(Calendar, "Personal Calendar"),
-        }
-    )
-    calendar_serializer.is_valid(raise_exception=True)
-    calendar_instance = calendar_serializer.save()
+    # calendar_serializer = CalendarSerializer(
+    #     data={
+    #         "name": "Personal Calendar",
+    #         "slug": generate_unique_slug(Calendar, "Personal Calendar"),
+    #     }
+    # )
+    # calendar_serializer.is_valid(raise_exception=True)
+    # calendar_instance = calendar_serializer.save()
 
-    info_cal_serializer = AdditionalCalendarInfoSerializer(
-        data={"calendar": calendar_instance.id, "private": True}
-    )
-    info_cal_serializer.is_valid(raise_exception=True)
-    info_cal_instance = info_cal_serializer.save()
+    # info_cal_serializer = AdditionalCalendarInfoSerializer(
+    #     data={"calendar": calendar_instance.id, "private": True}
+    # )
+    # info_cal_serializer.is_valid(raise_exception=True)
+    # info_cal_instance = info_cal_serializer.save()
 
-    info_cal_instance.users.add(user)
-    info_cal_instance.save()
+    # info_cal_instance.users.add(user)
+    # info_cal_instance.save()
 
     # Send user data to centralized service for account creation
 
@@ -193,40 +192,40 @@ def signup_view(request):
     )
 
 
-@api_view(["POST"])
-@permission_classes([AllowAny])
-def signup_user_view(request):
-    user_data = {
-        "first_name": request.data.get("first_name"),
-        "last_name": request.data.get("last_name"),
-        "email": request.data.get("email"),
-        "password": request.data.get("password"),
-        "phone_number": request.data.get("phone_number"),
-        "institution_admin": False,
-    }
+# @api_view(["POST"])
+# @permission_classes([AllowAny])
+# def signup_user_view(request):
+#     user_data = {
+#         "first_name": request.data.get("first_name"),
+#         "last_name": request.data.get("last_name"),
+#         "email": request.data.get("email"),
+#         "password": request.data.get("password"),
+#         "phone_number": request.data.get("phone_number"),
+#         "institution_admin": False,
+#     }
 
-    serializer = CreateUserSerializer(data=user_data)
-    serializer.is_valid(raise_exception=True)
-    user = serializer.save()
+#     serializer = CreateUserSerializer(data=user_data)
+#     serializer.is_valid(raise_exception=True)
+#     user = serializer.save()
 
-    create_personal_calendar(user)
+#     create_personal_calendar(user)
 
-    if user:
-        token = RefreshToken().for_user(user)
-        drf_response = Response(
-            {
-                "access": str(token.access_token),
-            }
-        )
-        drf_response.set_cookie(
-            key=settings.SIMPLE_JWT["AUTH_COOKIE"],
-            value=str(token),
-            httponly=True,
-        )
-        return drf_response
-    return Response(
-        {"detail": "Account creation failed"}, status=status.HTTP_400_BAD_REQUEST
-    )
+#     if user:
+#         token = RefreshToken().for_user(user)
+#         drf_response = Response(
+#             {
+#                 "access": str(token.access_token),
+#             }
+#         )
+#         drf_response.set_cookie(
+#             key=settings.SIMPLE_JWT["AUTH_COOKIE"],
+#             value=str(token),
+#             httponly=True,
+#         )
+#         return drf_response
+#     return Response(
+#         {"detail": "Account creation failed"}, status=status.HTTP_400_BAD_REQUEST
+#     )
 
 
 def create_personal_calendar(user):

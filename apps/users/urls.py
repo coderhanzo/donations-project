@@ -9,7 +9,7 @@ urlpatterns = [
     path("jwt/verify/", TokenVerifyView.as_view(), name="jwt-verify"),
     path("jwt/create/", views.login_view, name="login"),
     path("users/institution/", views.signup_view, name="register_institution"),
-    path("users/user/", views.signup_user_view, name="register_user"),
+    # path("users/user/", views.signup_user_view, name="register_user"),
     path("users/me/", views.get_logged_in_user, name="get_logged_in"),
     path("users/logout/", views.logout, name="logout"),
     path("users/set_password/", views.set_password),

@@ -28,7 +28,7 @@ class User(AbstractUser):
     class Roles(models.TextChoices):
         BSYTEMS_ADMIN = "bsystems_admin", _("Bsystems Admin")
         INSTITUTION_ADMIN = "institution_admin", _("Institution Admin")
-        INSTITUTION_USER = "institution_user", _("Institution User")
+        USER = "user", _("User")
     # add type car owner, admin, parking attendant
     username = None
     first_name = models.CharField(verbose_name=_("First Name"), max_length=50)
@@ -41,7 +41,7 @@ class User(AbstractUser):
         verbose_name=_("Roles"),
         max_length=50,
         choices=Roles.choices,
-        default=Roles.INSTITUTION_USER,
+        default=Roles.USER,
         blank=True,
         null=True,
     )
