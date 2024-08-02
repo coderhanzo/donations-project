@@ -25,7 +25,10 @@ class User(AbstractUser):
     Use <user>.tasks.all() to get tasks assigned to this user
     Use <user>.my_created_tasks.all() to get all task assigned by this user
     """
-
+    class Roles(models.TextChoices):
+        BSYTEMS_ADMIN = "bsystems_admin", _("Bsystems Admin")
+        INSTITUTION_ADMIN = "institution_admin", _("Institution Admin")
+        INSTITUTION_USER = "institution_user", _("Institution User")
     # add type car owner, admin, parking attendant
     username = None
     first_name = models.CharField(verbose_name=_("First Name"), max_length=50)
@@ -34,8 +37,13 @@ class User(AbstractUser):
     phone_number = PhoneNumberField(
         verbose_name=_("Phone Number"), max_length=30, blank=True, null=True
     )
-    institution_admin = models.BooleanField(
-        verbose_name=_("Is Institution Admin"), db_default=False, blank=True, null=True
+    roles = models.CharField(
+        verbose_name=_("Roles"),
+        max_length=50,
+        choices=Roles.choices,
+        default=Roles.INSTITUTION_USER,
+        blank=True,
+        null=True,
     )
     reference = models.CharField(
         verbose_name=_("Account Reference"), max_length=250, blank=True, null=True
@@ -56,6 +64,11 @@ class User(AbstractUser):
     ]
 
     objects = CustomUserManager()
+
+    class meta:
+        indexes = [
+            models.Index(fields=["roles"]),
+        ]
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
