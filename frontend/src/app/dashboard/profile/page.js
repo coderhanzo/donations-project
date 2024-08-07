@@ -11,6 +11,7 @@ import { toggleSettingsButton, toggleSelectedTab } from "../../lib/features/prof
 import { useEffect } from "react";
 import EditProfileForm from "./components/EditProfileForm";
 import SettingsComponent from "./components/SettingsComponent";
+import InstitutionSettings from "./components/InstitutionSettings";
 
 
 const ProfilePage = () => {
@@ -50,7 +51,7 @@ const ProfilePage = () => {
                     </div>
                 </section>
                 <section className={`${selectedTab == 1 ? '' : 'hidden'} `}>
-                    Goodbye
+                    <InstitutionSettings/>
                 </section>
                 <section className={`${selectedTab == 2 ? '' : 'hidden'} flex w-full`}>
                     <SettingsComponent />

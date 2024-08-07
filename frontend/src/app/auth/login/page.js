@@ -12,7 +12,7 @@ const LoginPage = () => {
     const [password, setLocalPassword] = useState('')
 
     const dispatch = useDispatch()
-    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
+    const { user, institution_admin, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
 
     // redirect if logged in already, or after login
     useEffect(() => {
@@ -20,7 +20,13 @@ const LoginPage = () => {
             toast.error('Either email or password is incorrect')
         }
         if (isSuccess || user) {
-            setTimeout(() => window.location.href = "/dashboard", 1000)
+            if (institution_admin) {
+                //console.log("Redirecting to /dashboard because user is an institution admin")
+                setTimeout(() => window.location.href = "/dashboard", 1000)
+            } else {
+                //console.log("Redirecting to /user/dashboard because user is a regular user")
+                setTimeout(() => window.location.href = "/user/dashboard", 1000)
+            }
         }
         /*Here so that welcome shows, since welcome is based on isSuccess
          Other option is to have a showWelcome state be set in the isSuccess if statement
@@ -28,7 +34,7 @@ const LoginPage = () => {
          gives django and http time to catch i.e. better overvall UX
         */
         setTimeout(() => dispatch(reset()), 1500)
-    }, [isError, isSuccess, message, user, dispatch])
+    }, [isError, isSuccess, message, user, institution_admin, dispatch])
 
     const handleSubmit = (e) => {
         e.preventDefault()
