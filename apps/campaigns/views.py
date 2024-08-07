@@ -163,7 +163,7 @@ def create_campaign(request):
             subscribers.append(account_instance.id)
     data["subscribers"] = subscribers
     data["is_active"] = (
-        True if request.user.institution_admin or request.user.is_superuser else False
+        True if request.user.roles == "INSTITUTION_ADMIN" or request.user.roles == "USER" else False
     )
     serializer = MonetaryCampaignSerializer(data=data, context={"request": request})
     serializer.is_valid(raise_exception=True)

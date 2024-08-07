@@ -367,7 +367,7 @@ class editContact(APIView):
 
 
 @api_view(["PATCH"])
-@permission_classes([permissions.IsAdminUser])
+# @permission_classes([permissions.IsAdminUser])
 @authentication_classes([JWTAuthentication])
 @transaction.atomic
 def delete_contact(request):

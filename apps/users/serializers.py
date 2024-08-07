@@ -10,10 +10,6 @@ User = get_user_model()
 
 
 class CreateUserSerializer(UserCreateSerializer):
-    institution_admin = serializers.BooleanField(
-        default=False, required=False, allow_null=True
-    )
-
     class Meta(UserCreateSerializer.Meta):
         model = User
         fields = [
@@ -24,16 +20,13 @@ class CreateUserSerializer(UserCreateSerializer):
             "phone_number",
             "reference",
             "password",
-            "institution_admin",
-            "institution",
+            "roles"
         ]
         # extra_kwargs = {"password": {"write_only": True}}
-
 
 class UserSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField(source="get_full_name")
     phone_number = PhoneNumberField()
-    institution_admin = serializers.BooleanField(required=False)
 
     class Meta:
         model = User
@@ -45,7 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
             "full_name",
             "phone_number",
             "reference",
-            "institution_admin",
+            "roles",
         ]
 
     def get_full_name(self, obj):

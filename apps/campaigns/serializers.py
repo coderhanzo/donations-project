@@ -110,8 +110,8 @@ class MonetaryCampaignSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super(MonetaryCampaignSerializer, self).__init__(*args, **kwargs)
         if (
-            self.context["request"].user.institution_admin
-            or self.context["request"].user.is_superuser
+            self.context["request"].user.roles == "INSTITUTION_ADMIN"
+            or self.context["request"].user.roels == "BSYSTEMS_ADMIN"
         ):
             self.fields["is_active"].read_only = False
 
