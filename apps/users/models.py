@@ -42,8 +42,6 @@ class User(AbstractUser):
         max_length=50,
         choices=Roles.choices,
         default=Roles.USER,
-        blank=True,
-        null=True,
     )
     reference = models.CharField(
         verbose_name=_("Account Reference"), max_length=250, blank=True, null=True
