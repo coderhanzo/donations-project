@@ -20,8 +20,9 @@ class UserAdmin(BaseUserAdmin):
         "first_name",
         "last_name",
         "is_active",
+        "roles",
     ]
-    list_display_links = ["id", "email"]
+    list_display_links = ["id", "email", "roles"]
     list_filter = [
         "email",
         "first_name",
@@ -29,6 +30,7 @@ class UserAdmin(BaseUserAdmin):
         "phone_number",
         "is_staff",
         "is_active",
+        "roles",
     ]
     fieldsets = (
         (
@@ -37,6 +39,7 @@ class UserAdmin(BaseUserAdmin):
                 "fields": (
                     "email",
                     "password",
+                    "roles",
                 )
             },
         ),
@@ -78,6 +81,7 @@ class UserAdmin(BaseUserAdmin):
                     "is_active",
                     "groups",
                     "user_permissions",
+                    "roles",
                 ),
             },
         ),

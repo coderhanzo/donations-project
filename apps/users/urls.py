@@ -7,7 +7,7 @@ urlpatterns = [
     path("password-confirm/", views.custom_password_reset_confirm_view),
     path("jwt/refresh/", views.refresh_token_view, name="jwt-refresh"),
     path("jwt/verify/", TokenVerifyView.as_view(), name="jwt-verify"),
-    path("jwt/create/", views.login_view, name="login"),
+    path("jwt/login/", views.login_view, name="login"),
     path("users/create/", views.signup_view, name="Create Account"),
     # path("users/user/", views.signup_user_view, name="register_user"),
     path("users/me/", views.get_logged_in_user, name="get_logged_in"),
