@@ -21,7 +21,13 @@ import requests
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .serializers import UserSerializer, CreateUserSerializer, InstitutionSerializer
+from .models import User, Institution
+from .serializers import (
+    UserSerializer,
+    CreateUserSerializer,
+    InstitutionSerializer,
+    InstitutionAdminSerializer,
+)
 from djoser.serializers import PasswordSerializer, CurrentPasswordSerializer
 from djoser.compat import get_user_email
 from .serializers import TokenRefreshSerializer
@@ -121,77 +127,6 @@ def generate_unique_slug(model_class, title):
     return unique_slug
 
 
-# @api_view(["POST"])
-# @permission_classes([AllowAny])
-# @transaction.atomic
-# # this view will be designated for only institution admins
-# def signup_view(request):
-#     """Register view for local authentication"""
-#     user_data = {
-#         "first_name": request.data.get("first_name"),
-#         "last_name": request.data.get("last_name"),
-#         "email": request.data.get("email"),
-#         "password": request.data.get("password"),
-#         "phone_number": request.data.get("phone_number"),
-#         "roles": request.data.get("roles", User.Roles.USER),
-#         # Add other fields as needed
-#     }
-
-#     if user_data.get("institution_admin"):
-#         institution_serializer = InstitutionSerializer(
-#             data={"name": user_data.get("institution_name")}
-#         )
-#         institution_serializer.is_valid(raise_exception=True)
-#         institution_instance = institution_serializer.save()
-
-#         user_data["institution"] = institution_instance.id
-
-#     # Post to app db
-#     serializer = CreateUserSerializer(data=user_data)
-#     serializer.is_valid(raise_exception=True)
-#     user = serializer.save()
-
-#     create_personal_calendar(user)
-#     # Each user gets a private personal calendar
-#     # calendar_serializer = CalendarSerializer(
-#     #     data={
-#     #         "name": "Personal Calendar",
-#     #         "slug": generate_unique_slug(Calendar, "Personal Calendar"),
-#     #     }
-#     # )
-#     # calendar_serializer.is_valid(raise_exception=True)
-#     # calendar_instance = calendar_serializer.save()
-
-#     # info_cal_serializer = AdditionalCalendarInfoSerializer(
-#     #     data={"calendar": calendar_instance.id, "private": True}
-#     # )
-#     # info_cal_serializer.is_valid(raise_exception=True)
-#     # info_cal_instance = info_cal_serializer.save()
-
-#     # info_cal_instance.users.add(user)
-#     # info_cal_instance.save()
-
-#     # Send user data to centralized service for account creation
-
-#     if user:
-#         # If account creation successful, issue JWT token
-#         token = RefreshToken().for_user(user)
-#         drf_response = Response(
-#             {
-#                 "access": str(token.access_token),
-#             }
-#         )
-#         drf_response.set_cookie(
-#             key=settings.SIMPLE_JWT["AUTH_COOKIE"],
-#             value=str(token),
-#             httponly=True,
-#         )
-#         return drf_response
-#     return Response(
-#         {"detail": "Account creation failed"}, status=status.HTTP_400_BAD_REQUEST
-#     )
-
-
 @api_view(["POST"])
 @permission_classes([AllowAny])
 @transaction.atomic
@@ -203,7 +138,8 @@ def signup_view(request):
         "email": request.data.get("email"),
         "password": request.data.get("password"),
         "phone_number": request.data.get("phone_number"),
-        "roles": request.data.get("roles", User.Roles.USER),
+        # "roles": request.data.get("roles", User.Roles.USER),
+        "institution": request.data.get("institution"),
         # Add other fields as needed
     }
     # Post to app db
@@ -468,3 +404,87 @@ def custom_password_reset_confirm_view(request):
         return Response(
             {"error": "Invalid UID or token."}, status=status.HTTP_400_BAD_REQUEST
         )
+
+
+# when creating an institution admin, it will have to be linked to an institution and then when that institution admin
+# creates a user, the id of the instituion will be passed in and linked to the
+
+
+# when you an institution admin and creating a user, every user will have to be linked to an institution of that institution admin
+#  and the institution will have to be required.
+
+# an institution is the same as an institution admin
+# an institution can create an institution user or user
+# a bsystem admin can create another bsystem admin and an institution admin
+
+
+# first we create an endpoint to create an institution which can will then be an institution admin
+@api_view(["POST"])
+@transaction.atomic
+@permission_classes([AllowAny])
+def create_institution_with_admin(request):
+    institution_data = {
+        "name": request.data.get("name"),
+        "email": request.data.get("admin_email"),
+        "phone": request.data.get("phone_number"),
+        "contact_person": request.data.get("contact_person"),
+        "contact_person_phone": request.data.get("contact_person_phone"),
+        "contact_person_email": request.data.get("contact_person_email"),
+    }
+
+    admin_user_data = {
+        "first_name": request.data.get("first_name"),
+        "last_name": request.data.get("last_name"),
+        "email": request.data.get("admin_email"),
+        "password": request.data.get("password"),
+        "phone_number": request.data.get("phone_number"),
+    }
+
+    # Create institution
+    institution_serializer = InstitutionSerializer(data=institution_data)
+    if institution_serializer.is_valid(raise_exception=True):
+        institution = institution_serializer.save()
+
+        # Create admin user and link to institution
+        admin_user_data["institution"] = institution.id
+        admin_user_serializer = CreateUserSerializer(data=admin_user_data)
+        if admin_user_serializer.is_valid(raise_exception=True):
+            admin_user = admin_user_serializer.save()
+
+            # Generate JWT token for admin
+            token = RefreshToken.for_user(admin_user)
+            response_data = {
+                "access": str(token.access_token),
+                "refresh": str(token.refresh_token),
+                "institution": institution_serializer.data,
+                "admin": UserSerializer(admin_user).data,
+            }
+            return Response(response_data, status=status.HTTP_201_CREATED)
+
+    return Response(
+        {"detail": "Institution creation failed"}, status=status.HTTP_400_BAD_REQUEST
+    )
+
+
+# get all institutions and institution admins
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def get_institutions_and_admins(request):
+    institutions = Institution.objects.all()
+
+    response_data = []
+    for institution in institutions:
+        institution_serializer = InstitutionSerializer(institution)
+        admin_user = User.objects.filter(institution=institution).first()
+        admin_user_serializer = UserSerializer(admin_user)
+
+        institution_data = institution_serializer.data
+        institution_data["admin"] = admin_user_serializer.data
+        response_data.append(institution_data)
+
+    return Response(response_data, status=status.HTTP_200_OK)
+
+
+# disable institution and there admins and edit,update institution and their admins 
+class disable_and_update_institution():
+    pass

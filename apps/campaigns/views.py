@@ -151,7 +151,11 @@ def handle_photo_upload(photo, campaign, institution_id):
 @authentication_classes([JWTAuthentication])
 @transaction.atomic
 def create_campaign(request):
-    """I apologize for the nested json in form_data. In hind sight file upload should be separated, so that we can do simple json. But the application is already in too deep with form data"""
+    """
+    I apologize for the nested json in form_data. In hind sight file upload should be 
+    separated, so that we can do simple json. 
+    But the application is already in too deep with form data
+    """
     data = request.data.dict()
     photos = request.FILES.getlist("photos")
     data["created_by"] = request.user.id
