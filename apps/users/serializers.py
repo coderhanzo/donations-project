@@ -20,9 +20,10 @@ class CreateUserSerializer(UserCreateSerializer):
             "phone_number",
             "reference",
             "password",
-            "roles"
+            "institution",
         ]
         # extra_kwargs = {"password": {"write_only": True}}
+
 
 class UserSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField(source="get_full_name")
@@ -38,7 +39,7 @@ class UserSerializer(serializers.ModelSerializer):
             "full_name",
             "phone_number",
             "reference",
-            "roles",
+            "institution",
         ]
 
     def get_full_name(self, obj):
@@ -85,4 +86,27 @@ class TokenRefreshSerializer(serializers.Serializer):
 class InstitutionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Institution
-        fields = "__all__"
+        fields = [
+            "id",
+            "name",
+            "email",
+            "phone",
+            "contact_person",
+            "contact_person_phone",
+            "contact_person_email",
+            "institution_certificate",
+            "institution_license",
+        ]
+
+
+class InstitutionAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "first_name",
+            "last_name",
+            "email",
+            "phone_number",
+            "institution",
+        ]
