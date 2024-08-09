@@ -1,35 +1,24 @@
+// CustomSidebar.js
+
 'use client'
 import { useState } from "react"
 import CustomSidebarLink from "./CustomSidebarLink"
 import { FaHome } from 'react-icons/fa'
-import { FaCediSign } from 'react-icons/fa6'
 import { CiCalendarDate } from 'react-icons/ci'
-import { GoPerson } from 'react-icons/go'
-import { PiNewspaperClippingThin, PiChartLineUp } from 'react-icons/pi'
-import SidebarAccordian from "./SidebarAccordian"
-import { LuTornado, LuUsers2, LuX, LuScatterChart, LuKanbanSquareDashed, LuUser2, LuHeart, LuThumbsUp, LuHeartHandshake } from "react-icons/lu"
+import { LuUsers2, LuX, LuScatterChart, LuKanbanSquareDashed, LuUser2, LuHeart, LuHeartHandshake, LuClipboardEdit,LuTornado } from "react-icons/lu"
 import { useDispatch, useSelector } from "react-redux"
-
-import { toggleSidebar } from "../lib/features/dropdown/dropdownSlice"
+import SidebarAccordian from "./SidebarAccordian"
+import { toggleSidebar, toggleTasksDropdown, toggleInstitutionDropdown } from "../lib/features/dropdown/dropdownSlice"
 import { toggleSelectedTab } from "../lib/features/profile/profileSlice"
 
-
-
-
 const CustomSidebar = () => {
-    const [open, setOpen] = useState(false)
-
-    const openHandler = () => {
-        setOpen(false)
-    }
-
     const dispatch = useDispatch()
 
-    const { sidebarOpen } = useSelector((state) => state.dropdowns)
-
+    const { sidebarOpen, tasksOpen, institutionOpen } = useSelector((state) => state.dropdowns)
+   
     const handleProfileClick = () => {
         dispatch(toggleSelectedTab(3))
-        localStorage.setItem('selectedTab', 3);
+        localStorage.setItem('selectedTab', 3)
     }
 
 
@@ -52,15 +41,26 @@ const CustomSidebar = () => {
                         <CustomSidebarLink title="Beneficiaries" icon={<LuHeart className="scale-[1.5] stroke-1" />} href="/dashboard/patients/transactions" />
                         <CustomSidebarLink title="Analytics" icon={<LuScatterChart className="scale-[1.5] stroke-1" />} href="/dashboard/analytics" />
                         <CustomSidebarLink title="Campaigns" icon={<LuHeartHandshake className="scale-[1.55] stroke-1" />} href={`/dashboard/campaigns`} />
-                        <SidebarAccordian title="Tasks" subtitles={["Kanban", "Appointments"]} icons={[<LuKanbanSquareDashed className="scale-[1.5]" />, <LuTornado className="scale-[1.5]" />]} />
+                        <SidebarAccordian
+                            title="Tasks"
+                            subtitles={["Kanban", "Appointments"]}
+                            icons={[<LuKanbanSquareDashed className="scale-[1.5]" />, <LuTornado className="scale-[1.5]" />]}
+                            toggleAction={toggleTasksDropdown}
+                            isOpen={tasksOpen}
+                        />
+                        <SidebarAccordian
+                            title="Institutions"
+                            subtitles={["Add Institution", "Manage Institutions"]}
+                            icons={[<LuClipboardEdit className="scale-[1.5]" />, <LuTornado className="scale-[1.5]" />]}
+                            toggleAction={toggleInstitutionDropdown}
+                            isOpen={institutionOpen}    
+                        />
                         <CustomSidebarLink title="Profile" icon={<LuUser2 className="scale-[1.5] stroke-1" />} href="/dashboard/profile" click={handleProfileClick} />
                     </div>
-
-
                 </div>
             </aside>
         </>
     )
 }
 
-export default CustomSidebar
+export default CustomSidebar;

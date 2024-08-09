@@ -46,9 +46,7 @@ const RegisterPage = () => {
         }
     }
     return (
-
-
-
+        
         <section className="w-screen h-screen flex  bg-slate-100 ">
             <div className="flex flex-row justify-center rounded-2xl shadow-2xl m-auto md:w-2/3 bg-white w-full">
                 <div className="hidden bg-cover lg:block lg:w-2/5 m-8">

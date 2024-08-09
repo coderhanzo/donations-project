@@ -65,7 +65,7 @@ class User(AbstractUser):
 
     objects = CustomUserManager()
 
-    class meta:
+    class Meta:
         indexes = [
             models.Index(fields=["roles"]),
         ]
