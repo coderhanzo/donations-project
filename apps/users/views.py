@@ -21,7 +21,7 @@ import requests
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .models import AdminUser, Institution
+from .models import User, Institution
 from .serializers import (
     UserSerializer,
     CreateUserSerializer,
@@ -452,11 +452,14 @@ def create_institution_with_admin(request):
         institution = institution_serializer.save()
 
         # Prepare admin user data
+        admin_user_data = {
+            "admin_role": request.data.get("admin_role"),
+            "institution_id": institution.id,  # Link to the newly created institution
+        }
 
-        # Create admin user and link to institution\
-        admin_user_data["Institution"] = institution.id
-        admin_user_serializer = InstitutionAdminSerializer(data=admin_user_data)
-
+        # Create admin user and link to institution
+        admin_user_data["institution"] = institution.id
+        admin_user_serializer = CreateUserSerializer(data=admin_user_data)
         if admin_user_serializer.is_valid(raise_exception=True):
             admin_user = admin_user_serializer.save()
             # Generate JWT token for admin
@@ -482,10 +485,8 @@ def get_institutions_and_admins(request):
     response_data = []
     for institution in institutions:
         institution_serializer = InstitutionSerializer(institution)
-
-        # Filter InstitutionAdmin model by institution_id
-        admin_user = AdminUser.objects.filter(institution_id=institution).first()
-        admin_user_serializer = InstitutionAdminSerializer(admin_user)
+        admin_user = User.objects.filter(institution=institution).first()
+        admin_user_serializer = UserSerializer(admin_user)
 
         institution_data = institution_serializer.data
         institution_data["admin"] = admin_user_serializer.data

@@ -1,7 +1,11 @@
 from django.db import models
 from schedule.models import Event, Calendar
 from django.contrib.auth import get_user_model
+<<<<<<< HEAD
 from apps.users.models import AdminUser
+=======
+from apps.users.models import InstitutionAdmin
+>>>>>>> 1365681 (new migration files)
 import uuid
 
 # Create your models here.
@@ -29,7 +33,13 @@ class AdditionalCalendarInfo(models.Model):
         Calendar, on_delete=models.CASCADE, related_name="additional_info"
     )
     private = models.BooleanField(default=False)
+<<<<<<< HEAD
     users = models.ManyToManyField(AdminUser, blank=True, related_name="calendars")
+=======
+    users = models.ManyToManyField(
+        InstitutionAdmin, blank=True, related_name="calendars"
+    )
+>>>>>>> 1365681 (new migration files)
 
 
 class Board(models.Model):
