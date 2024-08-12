@@ -14,7 +14,11 @@ class Institution(models.Model):
         primary_key=True, unique=True, default=uuid.uuid4, editable=False
     )
     name = models.CharField(
-        max_length=255, verbose_name="Institution Name", blank=True, null=True
+        max_length=255,
+        verbose_name="Institution Name",
+        blank=True,
+        null=True,
+        unique=True,
     )
     email = models.EmailField(
         max_length=255,
@@ -23,7 +27,7 @@ class Institution(models.Model):
         null=True,
         unique=True,
     )
-    phone = models.CharField(
+    phone_number = models.CharField(
         max_length=255, verbose_name="Institution Phone", blank=True, null=True
     )
     contact_person = models.CharField(
@@ -33,7 +37,7 @@ class Institution(models.Model):
         max_length=200, verbose_name="Contact Person Phone", blank=True, null=True
     )
     contact_person_email = models.EmailField(
-        max_length=200, verbose_name="Contact Person email", blank=True, null=True
+        max_length=200, verbose_name="Contact Person email", blank=True, null=True, unique=True
     )
     contact_person_position = models.CharField(
         max_length=150, verbose_name="Contact Person Position", blank=True, null=True
@@ -60,6 +64,20 @@ class Institution(models.Model):
         return f"{self.name} {self.id}"
 
 
+class InstitutionAdmin(models.Model):
+    institution_id = models.ForeignKey(
+        Institution,
+        blank=True,
+        null=True,
+        on_delete=models.PROTECT,
+        related_name="Insitution",
+    )
+    institution_admin_role = models.CharField(max_length=50, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.institution_admin_role} {self.institution_id}"
+
+
 class User(AbstractUser):
     """
     Use <user>.tasks.all() to get tasks assigned to this user
@@ -77,13 +95,13 @@ class User(AbstractUser):
     reference = models.CharField(
         verbose_name=_("Account Reference"), max_length=250, blank=True, null=True
     )
-    institution = models.ForeignKey(
-        Institution,
-        blank=True,
-        null=True,
-        on_delete=models.PROTECT,
-        related_name="users",
-    )
+    # institution = models.ForeignKey(
+    #     Institution,
+    #     blank=True,
+    #     null=True,
+    #     on_delete=models.PROTECT,
+    #     related_name="users",
+    # )
     timezone = models.CharField(max_length=50, default="UTC")
 
     USERNAME_FIELD = "email"

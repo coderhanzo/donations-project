@@ -21,7 +21,7 @@ import requests
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .models import User, Institution
+from .models import User, Institution, InstitutionAdmin
 from .serializers import (
     UserSerializer,
     CreateUserSerializer,
@@ -138,7 +138,6 @@ def signup_view(request):
         "email": request.data.get("email"),
         "password": request.data.get("password"),
         "phone_number": request.data.get("phone_number"),
-        # "roles": request.data.get("roles", User.Roles.USER),
         "institution": request.data.get("institution"),
         # Add other fields as needed
     }
@@ -424,20 +423,13 @@ def custom_password_reset_confirm_view(request):
 @permission_classes([AllowAny])
 def create_institution_with_admin(request):
     institution_data = {
-        "name": request.data.get("name"),
-        "email": request.data.get("admin_email"),
+        "name": request.data.get("institution_name"),
+        "email": request.data.get("institution_email"),
         "phone": request.data.get("phone_number"),
         "contact_person": request.data.get("contact_person"),
         "contact_person_phone": request.data.get("contact_person_phone"),
         "contact_person_email": request.data.get("contact_person_email"),
-    }
-
-    admin_user_data = {
-        "first_name": request.data.get("first_name"),
-        "last_name": request.data.get("last_name"),
-        "email": request.data.get("admin_email"),
-        "password": request.data.get("password"),
-        "phone_number": request.data.get("phone_number"),
+        "contact_person_position": request.data.get("contact_person_position"),
     }
 
     # Create institution
@@ -445,9 +437,14 @@ def create_institution_with_admin(request):
     if institution_serializer.is_valid(raise_exception=True):
         institution = institution_serializer.save()
 
+        # Prepare admin user data
+        admin_user_data = {
+            "admin_role": request.data.get("admin_role"),
+            "institution_id": institution.id,  # Link to the newly created institution
+        }
+
         # Create admin user and link to institution
-        admin_user_data["institution"] = institution.id
-        admin_user_serializer = CreateUserSerializer(data=admin_user_data)
+        admin_user_serializer = InstitutionAdminSerializer(data=admin_user_data)
         if admin_user_serializer.is_valid(raise_exception=True):
             admin_user = admin_user_serializer.save()
 
@@ -455,9 +452,8 @@ def create_institution_with_admin(request):
             token = RefreshToken.for_user(admin_user)
             response_data = {
                 "access": str(token.access_token),
-                "refresh": str(token),
                 "institution": institution_serializer.data,
-                "admin": UserSerializer(admin_user).data,
+                "admin": InstitutionAdminSerializer(admin_user).data,
             }
             return Response(response_data, status=status.HTTP_201_CREATED)
 
@@ -475,8 +471,10 @@ def get_institutions_and_admins(request):
     response_data = []
     for institution in institutions:
         institution_serializer = InstitutionSerializer(institution)
-        admin_user = User.objects.filter(institution=institution).first()
-        admin_user_serializer = UserSerializer(admin_user)
+
+        # Filter InstitutionAdmin model by institution_id
+        admin_user = InstitutionAdmin.objects.filter(institution_id=institution).first()
+        admin_user_serializer = InstitutionAdminSerializer(admin_user)
 
         institution_data = institution_serializer.data
         institution_data["admin"] = admin_user_serializer.data

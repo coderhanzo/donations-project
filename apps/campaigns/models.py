@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from utils.hash_photo import calculate_file_hash
-from apps.users.models import Institution
+from apps.users.models import Institution, InstitutionAdmin
 
 
 User = get_user_model()
@@ -35,11 +35,15 @@ class MonetaryCampaign(models.Model):
     causes = models.ManyToManyField(Cause, blank=True, related_name="campaigns")
     # i have this as many to many cause you might have a fund that supports multiple patients or something
     created_by = models.ForeignKey(
-        User, blank=True, null=True, on_delete=models.PROTECT, related_name="campaigns"
+        InstitutionAdmin,
+        blank=True,
+        null=True,
+        on_delete=models.PROTECT,
+        related_name="campaigns",
     )
     last_edited = models.DateTimeField(auto_now=True)
     last_edited_by = models.ForeignKey(
-        User,
+        InstitutionAdmin,
         blank=True,
         null=True,
         on_delete=models.PROTECT,
