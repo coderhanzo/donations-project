@@ -84,7 +84,7 @@ class UserAdmin(BaseUserAdmin):
                     "is_active",
                     "groups",
                     "user_permissions",
-                    # "roles",
+
                 ),
             },
         ),
