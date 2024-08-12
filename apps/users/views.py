@@ -455,7 +455,7 @@ def create_institution_with_admin(request):
             token = RefreshToken.for_user(admin_user)
             response_data = {
                 "access": str(token.access_token),
-                "refresh": str(token.refresh_token),
+                "refresh": str(token),
                 "institution": institution_serializer.data,
                 "admin": UserSerializer(admin_user).data,
             }
@@ -485,6 +485,6 @@ def get_institutions_and_admins(request):
     return Response(response_data, status=status.HTTP_200_OK)
 
 
-# disable institution and there admins and edit,update institution and their admins 
-class disable_and_update_institution():
+# disable institution and there admins and edit,update institution and their admins
+class disable_and_update_institution:
     pass

@@ -35,6 +35,9 @@ class Institution(models.Model):
     contact_person_email = models.EmailField(
         max_length=200, verbose_name="Contact Person email", blank=True, null=True
     )
+    contact_person_position = models.CharField(
+        max_length=150, verbose_name="Contact Person Position", blank=True, null=True
+    )
 
     def user_directory_path(instance, filename):
         # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
