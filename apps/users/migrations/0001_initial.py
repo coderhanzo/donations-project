@@ -49,12 +49,19 @@ class Migration(migrations.Migration):
                 ('timezone', models.CharField(default='UTC', max_length=50)),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
-                ('institution', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='users', to='users.institution')),
             ],
             options={
                 'verbose_name': 'user',
                 'verbose_name_plural': 'users',
                 'abstract': False,
             },
+        ),
+        migrations.CreateModel(
+            name='InstitutionAdmin',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('institution_admin_role', models.CharField(blank=True, max_length=50, null=True)),
+                ('institution_id', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='Insitution', to='users.institution')),
+            ],
         ),
     ]

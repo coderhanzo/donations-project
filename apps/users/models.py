@@ -33,7 +33,7 @@ class Institution(models.Model):
         max_length=200, verbose_name="Contact Person Phone", blank=True, null=True
     )
     contact_person_email = models.EmailField(
-        max_length=200, verbose_name="Contact Person email", blank=True, null=True, unique=True
+        max_length=200, verbose_name="Contact Person email", blank=True, null=True, unique=True, unique=True
     )
     contact_person_position = models.CharField(
         max_length=150, verbose_name="Contact Person Position", blank=True, null=True
@@ -60,21 +60,7 @@ class Institution(models.Model):
         return f"{self.name} {self.id}"
 
 
-# class InstitutionAdmin(models.Model):
-#     institution = models.ForeignKey(
-#         Institution,
-#         blank=True,
-#         null=True,
-#         on_delete=models.PROTECT,
-#         related_name="Insitution",
-#     )
-#     institution_admin_role = models.CharField(max_length=50, blank=True, null=True)
-
-#     def __str__(self):
-#         return self.institution_admin_role
-
-
-class AdminUser(AbstractUser):
+class User(AbstractUser):
     """
     Use <user>.tasks.all() to get tasks assigned to this user
     Use <user>.my_created_tasks.all() to get all task assigned by this user
