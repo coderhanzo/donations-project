@@ -422,25 +422,18 @@ def custom_password_reset_confirm_view(request):
 @transaction.atomic
 @permission_classes([AllowAny])
 def create_institution_with_admin(request):
-    institution_data = {
-        "name": request.data.get("institution_name"),
-        "email": request.data.get("institution_email"),
-        "phone": request.data.get("phone_number"),
-        "contact_person": request.data.get("contact_person"),
-        "contact_person_phone": request.data.get("contact_person_phone"),
-        "contact_person_email": request.data.get("contact_person_email"),
-        "contact_person_position": request.data.get("contact_person_position"),
-    }
+    institution_data = request.data
 
     # Create institution
     institution_serializer = InstitutionSerializer(data=institution_data)
     if institution_serializer.is_valid(raise_exception=True):
+
         institution = institution_serializer.save()
 
         # Prepare admin user data
         admin_user_data = {
-            "admin_role": request.data.get("admin_role"),
-            "institution_id": institution.id,  # Link to the newly created institution
+            "institution_admin_role": institution_data.get("id"),
+            "institution": institution.id,
         }
 
         # Create admin user and link to institution

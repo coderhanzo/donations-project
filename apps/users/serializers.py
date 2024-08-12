@@ -86,21 +86,13 @@ class TokenRefreshSerializer(serializers.Serializer):
 class InstitutionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Institution
-        fields = [
-            "id",
-            "institution_name",
-            "institution_email",
-            "institution_certificate",
-            "institution_license",
-            "phone_number",
-            "contact_person",
-            "contact_person_phone",
-            "contact_person_email",
-            "contact_person_position",
-        ]
+        fields = "__all__"
 
 
 class InstitutionAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = InstitutionAdmin
-        fields = "__all__"
+        fields = [
+            "institution_id",
+            "institution_admin_role",
+        ]
