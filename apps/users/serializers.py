@@ -102,4 +102,7 @@ class InstitutionSerializer(serializers.ModelSerializer):
 class InstitutionAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = InstitutionAdmin
-        fields = "__all__"
+        fields = [
+            "institution_id",
+            "institution_admin_role",
+        ]
