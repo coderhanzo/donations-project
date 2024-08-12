@@ -14,7 +14,11 @@ class Institution(models.Model):
         primary_key=True, unique=True, default=uuid.uuid4, editable=False
     )
     institution_name = models.CharField(
-        max_length=255, verbose_name="Institution Name", blank=True, null=True
+        max_length=255,
+        verbose_name="Institution Name",
+        blank=True,
+        null=True,
+        unique=True,
     )
     institution_email = models.EmailField(
         max_length=255,

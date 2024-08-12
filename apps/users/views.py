@@ -457,8 +457,8 @@ def create_institution_with_admin(request):
 
         # Prepare admin user data
         admin_user_data = {
-            "admin_role": request.data.get("admin_role"),
-            "institution_id": institution.id,  # Link to the newly created institution
+            "institution_admin_role": institution_data.get("id"),
+            "institution": institution.id,
         }
 
         # Create admin user and link to institution
