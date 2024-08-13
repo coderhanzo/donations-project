@@ -454,7 +454,6 @@ def create_institution_with_admin(request):
             token = RefreshToken.for_user(admin_user)
             response_data = {
                 "access": str(token.access_token),
-                "refresh": str(token),
                 "institution": institution_serializer.data,
                 "admin": UserSerializer(admin_user).data,
             }
