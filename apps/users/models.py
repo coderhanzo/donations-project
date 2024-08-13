@@ -71,10 +71,6 @@ class User(AbstractUser):
     phone_number = PhoneNumberField(
         verbose_name=_("Phone Number"), max_length=30, blank=True, null=True
     )
-
-    reference = models.CharField(
-        verbose_name=_("Account Reference"), max_length=250, blank=True, null=True
-    )
     institution = models.ForeignKey(
         Institution,
         blank=True,
@@ -93,11 +89,11 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return self.email
 
-    @property
-    def get_full_name(self):
-        return f"{self.first_name} {self.last_name}"
+    # @property
+    # def get_full_name(self):
+    #     return f"{self.first_name} {self.last_name}"
 
     # class Roles(models.TextChoices):
     #     BSYTEMS_ADMIN = "bsystems_admin", _("Bsystems Admin")

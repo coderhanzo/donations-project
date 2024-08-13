@@ -423,7 +423,7 @@ def custom_password_reset_confirm_view(request):
 @permission_classes([AllowAny])
 def create_institution_with_admin(request):
     institution_data = {
-        "name": request.data.get("name"),
+        "institution_name": request.data.get("institution_name"),
         "email": request.data.get("email"),
         "phone": request.data.get("phone_number"),
         "contact_person": request.data.get("contact_person"),
