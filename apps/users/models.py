@@ -14,11 +14,7 @@ class Institution(models.Model):
         primary_key=True, unique=True, default=uuid.uuid4, editable=False
     )
     institution_name = models.CharField(
-        max_length=255,
-        verbose_name="Institution Name",
-        blank=True,
-        null=True,
-        unique=True,
+        max_length=255, verbose_name="Institution Name", blank=True, null=True
     )
     institution_email = models.EmailField(
         max_length=255,
@@ -37,11 +33,8 @@ class Institution(models.Model):
         max_length=200, verbose_name="Contact Person Phone", blank=True, null=True
     )
     contact_person_email = models.EmailField(
-<<<<<<< HEAD
+
         max_length=200, verbose_name="Contact Person email", blank=True, null=True, unique=True, unique=True
-=======
-        max_length=200, verbose_name="Contact Person email", blank=True, null=True, unique=True
->>>>>>> 1365681 (new migration files)
     )
     contact_person_position = models.CharField(
         max_length=150, verbose_name="Contact Person Position", blank=True, null=True
@@ -67,11 +60,6 @@ class Institution(models.Model):
     def __str__(self):
         return f"{self.name} {self.id}"
 
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-class AdminUser(AbstractUser):
-=======
 class InstitutionAdmin(models.Model):
     institution_id = models.ForeignKey(
         Institution,
@@ -81,7 +69,6 @@ class InstitutionAdmin(models.Model):
         related_name="Insitution",
     )
     institution_admin_role = models.CharField(max_length=50, blank=True, null=True)
-=======
 # class InstitutionAdmin(models.Model):
 #     institution = models.ForeignKey(
 #         Institution,
@@ -91,18 +78,13 @@ class InstitutionAdmin(models.Model):
 #         related_name="Insitution",
 #     )
 #     institution_admin_role = models.CharField(max_length=50, blank=True, null=True)
->>>>>>> 00e536f (on stand by)
+
 
 #     def __str__(self):
 #         return self.institution_admin_role
 
 
-<<<<<<< HEAD
 class User(AbstractUser):
->>>>>>> 1365681 (new migration files)
-=======
-class AdminUser(AbstractUser):
->>>>>>> 00e536f (on stand by)
     """
     Use <user>.tasks.all() to get tasks assigned to this user
     Use <user>.my_created_tasks.all() to get all task assigned by this user
@@ -124,6 +106,7 @@ class AdminUser(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [
+        "phone_number",
         "institution",
         # "phone_number",
     ]

@@ -21,11 +21,9 @@ import requests
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.authentication import JWTAuthentication
-<<<<<<< HEAD
 from .models import User, Institution
-=======
+
 from .models import AdminUser, Institution
->>>>>>> 00e536f (on stand by)
 from .serializers import (
     UserSerializer,
     CreateUserSerializer,
@@ -446,7 +444,11 @@ def create_institution_with_admin(request):
     }
 
     admin_user_data = {
-        "institution_admin_role": request.data.get("institution_admin_role"),
+        "first_name": request.data.get("first_name"),
+        "last_name": request.data.get("last_name"),
+        "email": request.data.get("email"),
+        "password": request.data.get("password"),
+        "phone_number": request.data.get("phone_number"),
     }
 
     # Create institution
@@ -457,16 +459,13 @@ def create_institution_with_admin(request):
 
         # Prepare admin user data
 
-<<<<<<< HEAD
         # Create admin user and link to institution
         admin_user_data["institution"] = institution.id
         admin_user_serializer = CreateUserSerializer(data=admin_user_data)
-=======
         # Create admin user and link to institution\
         admin_user_data["Institution"] = institution.id
         admin_user_serializer = InstitutionAdminSerializer(data=admin_user_data)
 
->>>>>>> 00e536f (on stand by)
         if admin_user_serializer.is_valid(raise_exception=True):
             admin_user = admin_user_serializer.save()
             # Generate JWT token for admin
@@ -492,15 +491,14 @@ def get_institutions_and_admins(request):
     response_data = []
     for institution in institutions:
         institution_serializer = InstitutionSerializer(institution)
-<<<<<<< HEAD
+
         admin_user = User.objects.filter(institution=institution).first()
         admin_user_serializer = UserSerializer(admin_user)
-=======
 
         # Filter InstitutionAdmin model by institution_id
         admin_user = AdminUser.objects.filter(institution_id=institution).first()
         admin_user_serializer = InstitutionAdminSerializer(admin_user)
->>>>>>> 00e536f (on stand by)
+
 
         institution_data = institution_serializer.data
         institution_data["admin"] = admin_user_serializer.data
