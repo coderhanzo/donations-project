@@ -15,8 +15,6 @@ class CreateUserSerializer(UserCreateSerializer):
         fields = [
             "id",
             "email",
-            "first_name",
-            "last_name",
             "phone_number",
             "reference",
             "password",
@@ -26,24 +24,20 @@ class CreateUserSerializer(UserCreateSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField(source="get_full_name")
-    phone_number = PhoneNumberField()
+    # full_name = serializers.SerializerMethodField(source="get_full_name")
+    # phone_number = PhoneNumberField()
 
     class Meta:
         model = AdminUser
         fields = [
             "id",
             "email",
-            "first_name",
-            "last_name",
-            "full_name",
             "phone_number",
-            "reference",
             "institution",
         ]
 
-    def get_full_name(self, obj):
-        return obj.get_full_name
+    # def get_full_name(self, obj):
+    #     return obj.get_full_name
 
     def to_representation(self, instance):
         representation = super(UserSerializer, self).to_representation(instance)

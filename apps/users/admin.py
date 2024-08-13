@@ -20,6 +20,7 @@
 #         "first_name",
 #         "last_name",
 #         "is_active",
+#         # "roles",
 #     ]
 #     list_display_links = [
 #         "id",
@@ -83,7 +84,7 @@
 #                     "is_active",
 #                     "groups",
 #                     "user_permissions",
-
+#                     # "roles",
 #                 ),
 #             },
 #         ),
