@@ -64,7 +64,7 @@ class Institution(models.Model):
         return f"{self.name} {self.id}"
 
 
-class User(AbstractUser):
+class AdminUser(AbstractUser):
     """
     Use <user>.tasks.all() to get tasks assigned to this user
     Use <user>.my_created_tasks.all() to get all task assigned by this user
@@ -72,9 +72,6 @@ class User(AbstractUser):
 
     username = None
     email = models.EmailField(verbose_name=_("Email Address"), unique=True)
-    phone_number = PhoneNumberField(
-        verbose_name=_("Phone Number"), max_length=30, blank=True, null=True
-    )
     institution = models.ForeignKey(
         Institution,
         blank=True,
@@ -86,7 +83,6 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [
-        "phone_number",
         "institution",
         # "phone_number",
     ]

@@ -21,7 +21,7 @@ import requests
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .models import User, Institution, InstitutionAdmin
+from .models import AdminUser, Institution
 from .serializers import (
     UserSerializer,
     CreateUserSerializer,
@@ -432,21 +432,9 @@ def assign_institution_to_admin(institution_id, admin_data):
 @transaction.atomic
 @permission_classes([AllowAny])
 def create_institution_with_admin(request):
-    institution_data = {
-        "institution_name": request.data.get("institution_name"),
-        "email": request.data.get("email"),
-        "phone": request.data.get("phone_number"),
-        "contact_person": request.data.get("contact_person"),
-        "contact_person_phone": request.data.get("contact_person_phone"),
-        "contact_person_email": request.data.get("contact_person_email"),
-    }
-
+    institution_data = request.data
     admin_user_data = {
-        "first_name": request.data.get("first_name"),
-        "last_name": request.data.get("last_name"),
-        "email": request.data.get("email"),
-        "password": request.data.get("password"),
-        "phone_number": request.data.get("phone_number"),
+        "institution_admin_role": request.data.get("institution_admin_role"),
     }
 
     # Create institution
@@ -456,13 +444,11 @@ def create_institution_with_admin(request):
         institution = institution_serializer.save()
 
         # Prepare admin user data
-        admin_user_data = {
-            "institution_admin_role": institution_data.get("id"),
-            "institution": institution.id,
-        }
 
-        # Create admin user and link to institution
+        # Create admin user and link to institution\
+        admin_user_data["Institution"] = institution.id
         admin_user_serializer = InstitutionAdminSerializer(data=admin_user_data)
+
         if admin_user_serializer.is_valid(raise_exception=True):
             admin_user = admin_user_serializer.save()
             # Generate JWT token for admin
@@ -490,7 +476,7 @@ def get_institutions_and_admins(request):
         institution_serializer = InstitutionSerializer(institution)
 
         # Filter InstitutionAdmin model by institution_id
-        admin_user = InstitutionAdmin.objects.filter(institution_id=institution).first()
+        admin_user = AdminUser.objects.filter(institution_id=institution).first()
         admin_user_serializer = InstitutionAdminSerializer(admin_user)
 
         institution_data = institution_serializer.data
