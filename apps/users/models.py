@@ -72,6 +72,9 @@ class AdminUser(AbstractUser):
 
     username = None
     email = models.EmailField(verbose_name=_("Email Address"), unique=True)
+    phone_number = PhoneNumberField(
+        verbose_name=_("Phone Number"), max_length=30, blank=True, null=True
+    )
     institution = models.ForeignKey(
         Institution,
         blank=True,

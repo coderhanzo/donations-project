@@ -432,7 +432,15 @@ def assign_institution_to_admin(institution_id, admin_data):
 @transaction.atomic
 @permission_classes([AllowAny])
 def create_institution_with_admin(request):
-    institution_data = request.data
+    institution_data = {
+        "institution_name": request.data.get("institution_name"),
+        "email": request.data.get("email"),
+        "phone": request.data.get("phone_number"),
+        "contact_person": request.data.get("contact_person"),
+        "contact_person_phone": request.data.get("contact_person_phone"),
+        "contact_person_email": request.data.get("contact_person_email"),
+    }
+
     admin_user_data = {
         "institution_admin_role": request.data.get("institution_admin_role"),
     }
