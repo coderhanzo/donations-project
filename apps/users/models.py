@@ -69,6 +69,7 @@ class Institution(models.Model):
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 class AdminUser(AbstractUser):
 =======
 class InstitutionAdmin(models.Model):
@@ -80,13 +81,28 @@ class InstitutionAdmin(models.Model):
         related_name="Insitution",
     )
     institution_admin_role = models.CharField(max_length=50, blank=True, null=True)
+=======
+# class InstitutionAdmin(models.Model):
+#     institution = models.ForeignKey(
+#         Institution,
+#         blank=True,
+#         null=True,
+#         on_delete=models.PROTECT,
+#         related_name="Insitution",
+#     )
+#     institution_admin_role = models.CharField(max_length=50, blank=True, null=True)
+>>>>>>> 00e536f (on stand by)
 
-    def __str__(self):
-        return f"{self.institution_admin_role} {self.institution_id}"
+#     def __str__(self):
+#         return self.institution_admin_role
 
 
+<<<<<<< HEAD
 class User(AbstractUser):
 >>>>>>> 1365681 (new migration files)
+=======
+class AdminUser(AbstractUser):
+>>>>>>> 00e536f (on stand by)
     """
     Use <user>.tasks.all() to get tasks assigned to this user
     Use <user>.my_created_tasks.all() to get all task assigned by this user

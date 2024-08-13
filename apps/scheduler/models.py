@@ -2,14 +2,18 @@ from django.db import models
 from schedule.models import Event, Calendar
 from django.contrib.auth import get_user_model
 <<<<<<< HEAD
+<<<<<<< HEAD
 from apps.users.models import AdminUser
 =======
 from apps.users.models import InstitutionAdmin
 >>>>>>> 1365681 (new migration files)
+=======
+from apps.users.models import AdminUser
+>>>>>>> 00e536f (on stand by)
 import uuid
 
 # Create your models here.
-User = get_user_model()
+AdminUser = get_user_model()
 
 
 # React Big Calendar has an allDay field but django-scheduler Event does not
@@ -34,12 +38,16 @@ class AdditionalCalendarInfo(models.Model):
     )
     private = models.BooleanField(default=False)
 <<<<<<< HEAD
+<<<<<<< HEAD
     users = models.ManyToManyField(AdminUser, blank=True, related_name="calendars")
 =======
     users = models.ManyToManyField(
         InstitutionAdmin, blank=True, related_name="calendars"
     )
 >>>>>>> 1365681 (new migration files)
+=======
+    users = models.ManyToManyField(AdminUser, blank=True, related_name="calendars")
+>>>>>>> 00e536f (on stand by)
 
 
 class Board(models.Model):

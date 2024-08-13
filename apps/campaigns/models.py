@@ -5,10 +5,14 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from utils.hash_photo import calculate_file_hash
 <<<<<<< HEAD
+<<<<<<< HEAD
 from apps.users.models import Institution, AdminUser
 =======
 from apps.users.models import Institution, InstitutionAdmin
 >>>>>>> 1365681 (new migration files)
+=======
+from apps.users.models import Institution, AdminUser
+>>>>>>> 00e536f (on stand by)
 
 
 AdminUser = get_user_model()
@@ -40,10 +44,14 @@ class MonetaryCampaign(models.Model):
     # i have this as many to many cause you might have a fund that supports multiple patients or something
     created_by = models.ForeignKey(
 <<<<<<< HEAD
+<<<<<<< HEAD
         AdminUser,
 =======
         InstitutionAdmin,
 >>>>>>> 1365681 (new migration files)
+=======
+        AdminUser,
+>>>>>>> 00e536f (on stand by)
         blank=True,
         null=True,
         on_delete=models.PROTECT,
@@ -52,10 +60,14 @@ class MonetaryCampaign(models.Model):
     last_edited = models.DateTimeField(auto_now=True)
     last_edited_by = models.ForeignKey(
 <<<<<<< HEAD
+<<<<<<< HEAD
         AdminUser,
 =======
         InstitutionAdmin,
 >>>>>>> 1365681 (new migration files)
+=======
+        AdminUser,
+>>>>>>> 00e536f (on stand by)
         blank=True,
         null=True,
         on_delete=models.PROTECT,
