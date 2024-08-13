@@ -4,14 +4,14 @@ from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
 from djoser.serializers import UserCreateSerializer
-from .models import Institution, InstitutionAdmin
+from .models import Institution, AdminUser
 
-User = get_user_model()
+AdminUser = get_user_model()
 
 
 class CreateUserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
-        model = User
+        model = AdminUser
         fields = [
             "id",
             "email",
@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
     phone_number = PhoneNumberField()
 
     class Meta:
-        model = User
+        model = AdminUser
         fields = [
             "id",
             "email",
@@ -52,7 +52,7 @@ class UserSerializer(serializers.ModelSerializer):
         return representation
 
     def create(self, validated_data):
-        return User.objects.create_user(**validated_data)
+        return AdminUser.objects.create_user(**validated_data)
 
 
 class TokenRefreshSerializer(serializers.Serializer):
@@ -91,7 +91,7 @@ class InstitutionSerializer(serializers.ModelSerializer):
 
 class InstitutionAdminSerializer(serializers.ModelSerializer):
     class Meta:
-        model = InstitutionAdmin
+        model = AdminUser
         fields = [
             "institution_id",
             "institution_admin_role",
