@@ -138,7 +138,6 @@ def signup_view(request):
         "email": request.data.get("email"),
         "password": request.data.get("password"),
         "phone_number": request.data.get("phone_number"),
-        # "roles": request.data.get("roles", User.Roles.USER),
         "institution": request.data.get("institution"),
         # Add other fields as needed
     }
@@ -190,7 +189,7 @@ def create_personal_calendar(user):
 @permission_classes([IsAuthenticated])
 @authentication_classes([JWTAuthentication])
 def get_logged_in_user(request):
-    serializer = UserSerializer(instance=request.user)
+    serializer = InstitutionSerializer(instance=request.user)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -425,7 +424,7 @@ def custom_password_reset_confirm_view(request):
 def create_institution_with_admin(request):
     institution_data = {
         "name": request.data.get("name"),
-        "email": request.data.get("admin_email"),
+        "email": request.data.get("email"),
         "phone": request.data.get("phone_number"),
         "contact_person": request.data.get("contact_person"),
         "contact_person_phone": request.data.get("contact_person_phone"),
@@ -435,7 +434,7 @@ def create_institution_with_admin(request):
     admin_user_data = {
         "first_name": request.data.get("first_name"),
         "last_name": request.data.get("last_name"),
-        "email": request.data.get("admin_email"),
+        "email": request.data.get("email"),
         "password": request.data.get("password"),
         "phone_number": request.data.get("phone_number"),
     }

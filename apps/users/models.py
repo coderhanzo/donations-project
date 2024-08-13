@@ -13,7 +13,7 @@ class Institution(models.Model):
     id = models.UUIDField(
         primary_key=True, unique=True, default=uuid.uuid4, editable=False
     )
-    name = models.CharField(
+    institution_name = models.CharField(
         max_length=255, verbose_name="Institution Name", blank=True, null=True
     )
     email = models.EmailField(
@@ -67,8 +67,6 @@ class User(AbstractUser):
     """
 
     username = None
-    first_name = models.CharField(verbose_name=_("First Name"), max_length=50)
-    last_name = models.CharField(verbose_name=_("Last Name"), max_length=50)
     email = models.EmailField(verbose_name=_("Email Address"), unique=True)
     phone_number = PhoneNumberField(
         verbose_name=_("Phone Number"), max_length=30, blank=True, null=True
@@ -88,8 +86,6 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [
-        "first_name",
-        "last_name",
         "phone_number",
         "institution",
     ]

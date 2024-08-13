@@ -15,8 +15,6 @@ class CreateUserSerializer(UserCreateSerializer):
         fields = [
             "id",
             "email",
-            "first_name",
-            "last_name",
             "phone_number",
             "reference",
             "password",
@@ -26,24 +24,20 @@ class CreateUserSerializer(UserCreateSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField(source="get_full_name")
-    phone_number = PhoneNumberField()
+    # full_name = serializers.SerializerMethodField(source="get_full_name")
+    # phone_number = PhoneNumberField()
 
     class Meta:
         model = User
         fields = [
             "id",
             "email",
-            "first_name",
-            "last_name",
-            "full_name",
             "phone_number",
-            "reference",
             "institution",
         ]
 
-    def get_full_name(self, obj):
-        return obj.get_full_name
+    # def get_full_name(self, obj):
+    #     return obj.get_full_name
 
     def to_representation(self, instance):
         representation = super(UserSerializer, self).to_representation(instance)
@@ -86,17 +80,7 @@ class TokenRefreshSerializer(serializers.Serializer):
 class InstitutionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Institution
-        fields = [
-            "id",
-            "name",
-            "email",
-            "phone",
-            "contact_person",
-            "contact_person_phone",
-            "contact_person_email",
-            "institution_certificate",
-            "institution_license",
-        ]
+        fields = "__all__"
 
 
 class InstitutionAdminSerializer(serializers.ModelSerializer):
