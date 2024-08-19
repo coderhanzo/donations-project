@@ -425,7 +425,7 @@ def create_institution_with_admin(request):
     institution_data = {
         "institution_name": request.data.get("institution_name"),
         "email": request.data.get("email"),
-        "phone": request.data.get("phone_number"),
+        "phone": request.data.get("phone"),
         "contact_person": request.data.get("contact_person"),
         "contact_person_phone": request.data.get("contact_person_phone"),
         "contact_person_email": request.data.get("contact_person_email"),

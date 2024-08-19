@@ -67,16 +67,22 @@ class User(AbstractUser):
     """
 
     username = None
+    is_superuser = None
+    is_staff = None
     email = models.EmailField(verbose_name=_("Email Address"), unique=True)
     phone_number = PhoneNumberField(
         verbose_name=_("Phone Number"), max_length=30, blank=True, null=True
     )
+    
     institution = models.ForeignKey(
         Institution,
         blank=True,
+        null=True,
         on_delete=models.PROTECT,
         related_name="users",
+        verbose_name=_("user_institution"),
     )
+    user_role = models.CharField(max_length=255, blank=True, null=True)
     timezone = models.CharField(max_length=50, default="UTC")
 
     USERNAME_FIELD = "email"
