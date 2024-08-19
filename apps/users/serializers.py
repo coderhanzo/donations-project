@@ -55,14 +55,16 @@ class UserSerializer(serializers.ModelSerializer):
     # def get_full_name(self, obj):
     #     return obj.get_full_name
 
-    def to_representation(self, instance):
-        representation = super(UserSerializer, self).to_representation(instance)
-        if instance.is_superuser:
-            representation["admin"] = True
-        return representation
 
-    def create(self, validated_data):
-        return User.objects.create_user(**validated_data)
+def to_representation(self, instance):
+    representation = super(UserSerializer, self).to_representation(instance)
+    if instance.is_superuser:
+        representation["admin"] = True
+    return representation
+
+
+def create(self, validated_data):
+    return User.objects.create_user(**validated_data)
 
 
 class TokenRefreshSerializer(serializers.Serializer):

@@ -57,7 +57,7 @@ class Institution(models.Model):
     )
 
     def __str__(self):
-        return f"{self.name} {self.id}"
+        return f"{self.institution_name} {self.id}"
 
 
 class User(AbstractUser):
@@ -74,7 +74,6 @@ class User(AbstractUser):
     institution = models.ForeignKey(
         Institution,
         blank=True,
-        null=True,
         on_delete=models.PROTECT,
         related_name="users",
     )

@@ -1,5 +1,6 @@
 from pathlib import Path
 import environ
+
 # import pymysql
 
 # pymysql.install_as_MySQLdb()
@@ -101,6 +102,12 @@ DATABASES = {
         "PASSWORD": env("MYSQL_PASSWORD"),
         "HOST": env("MYSQL_HOST"),
         "PORT": env("MYSQL_PORT"),
+        # "ENGINE": env("POSTGRES_ENGINE"),
+        # "NAME": env("POSTGRES_NAME"),
+        # "USER": env("POSTGRES_USER"),
+        # "PASSWORD": env("POSTGRES_PASSWORD"),
+        # "HOST": env("POSTGRES_HOST"),
+        # "PORT": env("POSTGRES_PORT"),
     }
 }
 
