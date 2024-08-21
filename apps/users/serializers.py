@@ -10,40 +10,50 @@ User = get_user_model()
 
 
 class CreateUserSerializer(UserCreateSerializer):
+    password = serializers.CharField(write_only=True, required=True)
+    password_confirmation = serializers.CharField(write_only=True, required=True)
+
     class Meta(UserCreateSerializer.Meta):
         model = User
         fields = [
             "id",
             "email",
-            "first_name",
-            "last_name",
             "phone_number",
-            "reference",
             "password",
+            "password_confirmation",
             "institution",
         ]
+
+        def validate_password(self, data):
+            if data["password"] != data["password_confirmation"]:
+                raise serializers.ValidationError(
+                    {"password": "Password fields didn't match."}
+                )
+            return data
+
+        def create(self, validated_data):
+            validated_data.pop("password_confirmation")
+            user = User.objects.create_user(**validated_data)
+            return user
+
         # extra_kwargs = {"password": {"write_only": True}}
 
 
 class UserSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField(source="get_full_name")
-    phone_number = PhoneNumberField()
+    # full_name = serializers.SerializerMethodField(source="get_full_name")
+    # phone_number = PhoneNumberField()
 
     class Meta:
         model = User
         fields = [
             "id",
             "email",
-            "first_name",
-            "last_name",
-            "full_name",
             "phone_number",
-            "reference",
             "institution",
         ]
 
-    def get_full_name(self, obj):
-        return obj.get_full_name
+    # def get_full_name(self, obj):
+    #     return obj.get_full_name
 
     def to_representation(self, instance):
         representation = super(UserSerializer, self).to_representation(instance)
@@ -86,17 +96,7 @@ class TokenRefreshSerializer(serializers.Serializer):
 class InstitutionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Institution
-        fields = [
-            "id",
-            "name",
-            "email",
-            "phone",
-            "contact_person",
-            "contact_person_phone",
-            "contact_person_email",
-            "institution_certificate",
-            "institution_license",
-        ]
+        fields = "__all__"
 
 
 class InstitutionAdminSerializer(serializers.ModelSerializer):

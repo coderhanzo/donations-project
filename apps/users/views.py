@@ -138,7 +138,6 @@ def signup_view(request):
         "email": request.data.get("email"),
         "password": request.data.get("password"),
         "phone_number": request.data.get("phone_number"),
-        # "roles": request.data.get("roles", User.Roles.USER),
         "institution": request.data.get("institution"),
         # Add other fields as needed
     }
@@ -190,7 +189,7 @@ def create_personal_calendar(user):
 @permission_classes([IsAuthenticated])
 @authentication_classes([JWTAuthentication])
 def get_logged_in_user(request):
-    serializer = UserSerializer(instance=request.user)
+    serializer = InstitutionSerializer(instance=request.user)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -424,8 +423,8 @@ def custom_password_reset_confirm_view(request):
 @permission_classes([AllowAny])
 def create_institution_with_admin(request):
     institution_data = {
-        "name": request.data.get("name"),
-        "email": request.data.get("admin_email"),
+        "institution_name": request.data.get("institution_name"),
+        "email": request.data.get("email"),
         "phone": request.data.get("phone_number"),
         "contact_person": request.data.get("contact_person"),
         "contact_person_phone": request.data.get("contact_person_phone"),
@@ -435,7 +434,7 @@ def create_institution_with_admin(request):
     admin_user_data = {
         "first_name": request.data.get("first_name"),
         "last_name": request.data.get("last_name"),
-        "email": request.data.get("admin_email"),
+        "email": request.data.get("email"),
         "password": request.data.get("password"),
         "phone_number": request.data.get("phone_number"),
     }
@@ -455,7 +454,6 @@ def create_institution_with_admin(request):
             token = RefreshToken.for_user(admin_user)
             response_data = {
                 "access": str(token.access_token),
-                "refresh": str(token.refresh_token),
                 "institution": institution_serializer.data,
                 "admin": UserSerializer(admin_user).data,
             }
@@ -485,6 +483,6 @@ def get_institutions_and_admins(request):
     return Response(response_data, status=status.HTTP_200_OK)
 
 
-# disable institution and there admins and edit,update institution and their admins 
-class disable_and_update_institution():
+# disable institution and there admins and edit,update institution and their admins
+class disable_and_update_institution:
     pass

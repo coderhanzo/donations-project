@@ -13,7 +13,7 @@ class Institution(models.Model):
     id = models.UUIDField(
         primary_key=True, unique=True, default=uuid.uuid4, editable=False
     )
-    name = models.CharField(
+    institution_name = models.CharField(
         max_length=255, verbose_name="Institution Name", blank=True, null=True
     )
     email = models.EmailField(
@@ -34,6 +34,9 @@ class Institution(models.Model):
     )
     contact_person_email = models.EmailField(
         max_length=200, verbose_name="Contact Person email", blank=True, null=True
+    )
+    contact_person_position = models.CharField(
+        max_length=150, verbose_name="Contact Person Position", blank=True, null=True
     )
 
     def user_directory_path(instance, filename):
@@ -64,15 +67,9 @@ class User(AbstractUser):
     """
 
     username = None
-    first_name = models.CharField(verbose_name=_("First Name"), max_length=50)
-    last_name = models.CharField(verbose_name=_("Last Name"), max_length=50)
     email = models.EmailField(verbose_name=_("Email Address"), unique=True)
     phone_number = PhoneNumberField(
         verbose_name=_("Phone Number"), max_length=30, blank=True, null=True
-    )
-
-    reference = models.CharField(
-        verbose_name=_("Account Reference"), max_length=250, blank=True, null=True
     )
     institution = models.ForeignKey(
         Institution,
@@ -85,8 +82,6 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [
-        "first_name",
-        "last_name",
         "phone_number",
         "institution",
     ]
@@ -99,11 +94,11 @@ class User(AbstractUser):
         ]
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return self.email
 
-    @property
-    def get_full_name(self):
-        return f"{self.first_name} {self.last_name}"
+    # @property
+    # def get_full_name(self):
+    #     return f"{self.first_name} {self.last_name}"
 
     # class Roles(models.TextChoices):
     #     BSYTEMS_ADMIN = "bsystems_admin", _("Bsystems Admin")
