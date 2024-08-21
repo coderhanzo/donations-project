@@ -41,7 +41,7 @@ class Institution(models.Model):
 
     def user_directory_path(instance, filename):
         # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-        return "{0}/{1}".format("mosque files", filename)
+        return "{0}/{1}".format("institution files", filename)
 
     institution_certificate = models.FileField(
         upload_to=user_directory_path,
@@ -57,7 +57,7 @@ class Institution(models.Model):
     )
 
     def __str__(self):
-        return f"{self.name} {self.id}"
+        return f"{self.institution_name} {self.id}"
 
 
 class User(AbstractUser):
@@ -67,7 +67,11 @@ class User(AbstractUser):
     """
 
     username = None
-    email = models.EmailField(verbose_name=_("Email Address"), unique=True)
+    is_superuser = None
+    is_staff = None
+    user_email = models.EmailField(
+        verbose_name=_("Email Address"), unique=True, blank=True, null=True
+    )
     phone_number = PhoneNumberField(
         verbose_name=_("Phone Number"), max_length=30, blank=True, null=True
     )
@@ -77,10 +81,14 @@ class User(AbstractUser):
         null=True,
         on_delete=models.PROTECT,
         related_name="users",
+        verbose_name=_("user_institution"),
     )
-    timezone = models.CharField(max_length=50, default="UTC")
+    user_role = models.CharField(max_length=255, blank=True, null=True)
+    last_login = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    date_joined = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    timezone = models.CharField(max_length=50, default="UTC", blank=True, null=True)
 
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = "user_email"
     REQUIRED_FIELDS = [
         "phone_number",
         "institution",

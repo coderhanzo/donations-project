@@ -3,7 +3,7 @@ from rest_framework.serializers import ValidationError
 from apps.campaigns.models import (
     EducationalInstitution,
     HealthcareInstitution,
-    Animal,
+    AnimalCare,
     SocialWelfareProgram,
     EmergencyRelief,
     EnvironmentalProtection,
@@ -29,7 +29,7 @@ model_mapping = {
     ),
     "HEALTHCARE_INSTITUTION": (HealthcareInstitution, HealthcareInstitutionSerializer),
     "HEALTHCARE_PATIENT": (HealthcarePatient, PatientSerializer),
-    "ANIMAL": (Animal, AnimalSerializer),
+    "ANIMAL": (AnimalCare, AnimalSerializer),
     "SOCIAL_WELFARE_PROGRAM": (SocialWelfareProgram, SocialWelfareProgramSerializer),
     "EMERGENCY_RELIEF": (EmergencyRelief, EmergencyRelief),
     "ENVIRONMENTAL_PROTECTION": (EnvironmentalProtection, EnvironmentalProtection),
