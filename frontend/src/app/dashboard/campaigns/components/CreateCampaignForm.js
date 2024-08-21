@@ -66,10 +66,14 @@ const CreateCampaignForm = () => {
         <>
             <div id="createEventModal" tabIndex="-1" aria-hidden="true" className={` p-4 h-max lg:m-auto max-lg:w-full`}>
                 {/* Currently contact will not be selected after creation, maybe add a toast to alert user*/}
+                <div className="flex items-start mb-2 text-sm text-blue-500 font-semibold">
+                        <a href="/dashboard">Dashboard/</a>
+                        <a href="/dashboard/campaigns">Campaign</a>
+                </div>
+
                 <ContactModal />
                 <SortOrFilterModal />
                 <div className="relative w-full lg:w-[70vw] ">
-
                     {/* // Modal Content */}
                     <div className="relative bg-white rounded-2xl shadow ">
                         {/* //Modal Header */}
@@ -93,10 +97,10 @@ const CreateCampaignForm = () => {
                                             <label htmlFor="select-date" className="block mb-2 text-sm font-medium text-gray-900 ">Select Start</label>
                                             <DateComponent selected={localStartDate} setDate={handleStartDateChange} />
                                         </div>
-                                        {/* <div className="max-sm:w-1/2">
+                                        <div className="max-sm:w-1/2">
                                             <label htmlFor="select-date" className="block mb-2 text-sm font-medium text-gray-900 ">Select End</label>
                                             <DateComponent selected={localEndDate} setDate={handleEndDateChange} />
-                                        </div> */}
+                                        </div>
                                     </div>
 
 

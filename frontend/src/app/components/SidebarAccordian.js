@@ -22,6 +22,9 @@ const SidebarAccordian = ({ title, subtitles, icons,toggleAction, isOpen }) => {
         } else if (title === "Institutions") {
             return item.toLowerCase() === 'add institution' ? '/dashboard/AddInstitution' : '/dashboard/institutions/manage';
         }
+        else if (title === "Settings") {
+            return item.toLowerCase() === 'auth' ? '/dashboard/SettingsAuth': '/dashboard/InstitutionSettings'; //'/dashboard/GeneralSettings' ;
+        }
         return '#'; 
     }
     return (

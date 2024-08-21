@@ -28,7 +28,7 @@ const ContactModal = () => {
         setLastName(selectedContact?.last_name || '');
         setEmail(selectedContact?.email || '');
         setContactType(selectedContact?.contact_type || '');
-        setPhoneNumber(selectedContact?.phone_number[0] || '');
+        setPhoneNumber(selectedContact?.phone_number || '');
         setCompany(selectedContact?.company || '');
         setHospital(selectedContact?.hospital || '');
         setProfilePhoto(selectedContact?.profile_photo || '');

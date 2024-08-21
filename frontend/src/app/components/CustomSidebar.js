@@ -5,16 +5,16 @@ import { useState } from "react"
 import CustomSidebarLink from "./CustomSidebarLink"
 import { FaHome } from 'react-icons/fa'
 import { CiCalendarDate } from 'react-icons/ci'
-import { LuUsers2, LuX, LuScatterChart, LuKanbanSquareDashed, LuUser2, LuHeart, LuHeartHandshake, LuClipboardEdit,LuTornado } from "react-icons/lu"
+import { LuUsers2, LuX, LuScatterChart, LuKanbanSquareDashed, LuUser2, LuHeart, LuHeartHandshake, LuClipboardEdit,LuTornado, LuSettings, LuSettings2, LuUserCircle, LuUserPlus} from "react-icons/lu"
 import { useDispatch, useSelector } from "react-redux"
 import SidebarAccordian from "./SidebarAccordian"
-import { toggleSidebar, toggleTasksDropdown, toggleInstitutionDropdown } from "../lib/features/dropdown/dropdownSlice"
+import { toggleSidebar, toggleTasksDropdown, toggleInstitutionDropdown, toggleSettingsDropdown } from "../lib/features/dropdown/dropdownSlice"
 import { toggleSelectedTab } from "../lib/features/profile/profileSlice"
 
 const CustomSidebar = () => {
     const dispatch = useDispatch()
 
-    const { sidebarOpen, tasksOpen, institutionOpen } = useSelector((state) => state.dropdowns)
+    const { sidebarOpen, tasksOpen, institutionOpen, settingsOpen } = useSelector((state) => state.dropdowns)
    
     const handleProfileClick = () => {
         dispatch(toggleSelectedTab(3))
@@ -38,7 +38,7 @@ const CustomSidebar = () => {
                         <CustomSidebarLink title="Dashboard" icon={<FaHome className="scale-[1.5]" />} href="/dashboard" />
                         <CustomSidebarLink title="Calendar" icon={<CiCalendarDate className="scale-[1.75]" />} href="/dashboard/calendar" />
                         <CustomSidebarLink title="Donors" icon={<LuUsers2 className="scale-[1.75] stroke-1" />} href="/dashboard/contacts" />
-                        <CustomSidebarLink title="Beneficiaries" icon={<LuHeart className="scale-[1.5] stroke-1" />} href="/dashboard/patients/transactions" />
+                        <CustomSidebarLink title="Beneficiaries" icon={<LuHeart className="scale-[1.5] stroke-1" />} href="/dashboard/beneficiaries/transactions" />
                         <CustomSidebarLink title="Analytics" icon={<LuScatterChart className="scale-[1.5] stroke-1" />} href="/dashboard/analytics" />
                         <CustomSidebarLink title="Campaigns" icon={<LuHeartHandshake className="scale-[1.55] stroke-1" />} href={`/dashboard/campaigns`} />
                         <SidebarAccordian
@@ -51,9 +51,16 @@ const CustomSidebar = () => {
                         <SidebarAccordian
                             title="Institutions"
                             subtitles={["Add Institution", "Manage Institutions"]}
-                            icons={[<LuClipboardEdit className="scale-[1.5]" />, <LuTornado className="scale-[1.5]" />]}
+                            icons={[<LuUserPlus className="scale-[1.5]" />, <LuClipboardEdit className="scale-[1.5]" />]}
                             toggleAction={toggleInstitutionDropdown}
                             isOpen={institutionOpen}    
+                        />
+                        <SidebarAccordian
+                            title="Settings"
+                            subtitles={["Auth", "Institutions", "General Settings"]}
+                            icons={[<LuUserCircle className="scale-[1.5]" />, <LuSettings2 className="scale-[1.5]" />, <LuSettings className="scale-[1.5]"/>]}
+                            toggleAction={toggleSettingsDropdown}
+                            isOpen={settingsOpen}
                         />
                         <CustomSidebarLink title="Profile" icon={<LuUser2 className="scale-[1.5] stroke-1" />} href="/dashboard/profile" click={handleProfileClick} />
                     </div>

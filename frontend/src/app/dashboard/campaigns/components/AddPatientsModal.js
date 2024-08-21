@@ -1,4 +1,4 @@
-'use client'
+/*'use client'
 import { toast } from "react-toastify"
 import { useDispatch, useSelector } from "react-redux"
 import { LuX, LuArrowDown, LuPlus } from "react-icons/lu"
@@ -37,11 +37,11 @@ const AddPatientsModal = () => {
     ];
 
     const [beneficiary_type, setBeneficiaryType] = useState('')
-    const [beneficiary_data, setBeneficiaryData] = useState({})
+    const [beneficiary_data, setBeneficiaryData] = useState({})*/
 
     {/* Beneficiaries */ }
 
-    const types_with_given_name_field = ["HEALTHCARE_PATIENT", "DISABILITY_SUPPORT", "EMERGENCY_RELIEF", "SOCIAL_WELFARE_PROGRAM"];
+    /*const types_with_given_name_field = ["HEALTHCARE_PATIENT", "DISABILITY_SUPPORT", "EMERGENCY_RELIEF", "SOCIAL_WELFARE_PROGRAM"];
 
     const handleBeneficiaryChange = (e) => {
 
@@ -51,12 +51,12 @@ const AddPatientsModal = () => {
 
     const handleBeneficiaryDataChange = (field, value) => {
         setBeneficiaryData({ ...beneficiary_data, [field]: value });
-    };
+    };*/
 
 
     {/* Contacts/Phone Numbers Form */ }
 
-    const handleAddContact = (e) => {
+   /* const handleAddContact = (e) => {
         e.preventDefault()
         setPhoneNumbers([...phone_numbers, { name: '', number: '', primary_contact: false, notes: '' }]);
     };
@@ -87,9 +87,9 @@ const AddPatientsModal = () => {
             return phone_number;
         });
         setPhoneNumbers(updatedContacts);
-    };
+    }; */
 
-    {/* Profile Data Form */ }
+    {/* Profile Data Form 
     useEffect(() => {
         setLocalName('')
 
@@ -98,10 +98,9 @@ const AddPatientsModal = () => {
     const handleFileChange = (event) => {
         setProfilePhoto(event.target.files[0]);  // Update the state with the selected file
     };
+*/ }
 
-
-    {/* Utils */ }
-
+    {/* Utils 
     const scrolltoHash = function (element_id) {
         if (typeof document !== 'undefined') {
             const element = document.getElementById(element_id)
@@ -195,10 +194,11 @@ const AddPatientsModal = () => {
 
         if (profile_photo) {
             formData.append('profile_photo', profile_photo)
-        }
+        } */ }
 
-        if (params['campaign_id']) {
-            {/* add beneficiary to campaign*/ }
+
+       // if (params['campaign_id']) {
+            {/* add beneficiary to campaign
             dispatch(addBeneficiary(formData))
         } else {
             dispatch(addContact(formData))
@@ -206,16 +206,16 @@ const AddPatientsModal = () => {
 
         dispatch(toggleAddPatientModal())
 
-    }
+    } */ }
 
-    return (
-        <>
+    //return (
+       {/* <>
             <div className={`${addPatientModalOpen ? 'fixed inset-0 bg-black bg-opacity-50 z-40' : 'hidden'}`} onClick={() => dispatch(toggleAddPatientModal())}></div>
             <div id="createEventModal" tabIndex="-1" aria-hidden="true" className={`${addPatientModalOpen ? '' : 'hidden'} fixed max-sm:inset-0 z-50 items-center place-items-center justify-center p-4 h-max m-auto max-lg:w-full`}>
                 <div className="relative w-full lg:w-[70vw] ">
-                    {/* // Modal Content */}
-                    <div className="relative bg-white rounded-2xl shadow ">
-                        {/* //Modal Header */}
+                    {/* // Modal Content 
+                    <div className="relative bg-white rounded-2xl shadow ">*/}
+                        {/* //Modal Header 
                         <div className="flex items-start justify-between p-4 border-b rounded-t ">
                             <h3 className="text-xl font-semibold text-gray-900 ">
                                 Add Beneficiary
@@ -223,8 +223,8 @@ const AddPatientsModal = () => {
                             <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " data-modal-hide="editUserModal">
                                 <LuX className="scale-[1.5] stroke-2" onClick={() => dispatch(toggleAddPatientModal())} />
                             </button>
-                        </div>
-                        {/* // Modal Body */}
+                        </div>*/}
+                        {/* // Modal Body 
                         <div className="p-6  max-h-[calc(100vh-20rem)] overflow-x-auto ">
                             <div className="flex flex-col lg:flex-row lg:space-x-6">
                                 <div className="lg:w-1/2 2xl:w-3/4 [&>*]:mb-6">
@@ -249,11 +249,11 @@ const AddPatientsModal = () => {
                                     <div className="col-span-6 sm:col-span-4">
                                         <label htmlFor="select-date" className="block mb-2 text-sm font-medium text-gray-900 ">Website</label>
                                         <input type="url" name="select-date" id="select-date" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="https://www.worldwideweb.com" required="" value={local_website} onChange={(e) => setLocalWebsite(e.target.value)} />
-                                    </div>
+                                    </div>*/}
                                     {/* <div className="col-span-6 sm:col-span-3">
                                         <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 ">Description</label>
                                         <textarea name="description" id="description" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 " placeholder="Write a description here" required="" />
-                                    </div> */}
+                                    </div> 
 
                                     <div className="col-span-6 sm:col-span-4">
                                         <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900 ">Address</label>
@@ -334,8 +334,8 @@ const AddPatientsModal = () => {
 
                                 </div>
                             </div>
-                        </div>
-                        {/* // Modal Footer */}
+                        </div>*/}
+                        {/* // Modal Footer 
                         <div className="flex items-center p-6 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b ">
                             <button type="submit" onClick={handleSubmit} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Add Beneficiaries</button>
                         </div>
@@ -345,4 +345,4 @@ const AddPatientsModal = () => {
         </>
     )
 }
-export default AddPatientsModal
+export default AddPatientsModal*/}
