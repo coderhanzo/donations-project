@@ -69,7 +69,9 @@ class User(AbstractUser):
     username = None
     is_superuser = None
     is_staff = None
-    user_email = models.EmailField(verbose_name=_("Email Address"), unique=True)
+    user_email = models.EmailField(
+        verbose_name=_("Email Address"), unique=True, blank=True, null=True
+    )
     phone_number = PhoneNumberField(
         verbose_name=_("Phone Number"), max_length=30, blank=True, null=True
     )
@@ -82,9 +84,9 @@ class User(AbstractUser):
         verbose_name=_("user_institution"),
     )
     user_role = models.CharField(max_length=255, blank=True, null=True)
-    last_login = models.DateTimeField(auto_now_add=True)
-    date_joined = models.DateTimeField(auto_now_add=True)
-    timezone = models.CharField(max_length=50, default="UTC")
+    last_login = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    date_joined = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    timezone = models.CharField(max_length=50, default="UTC", blank=True, null=True)
 
     USERNAME_FIELD = "user_email"
     REQUIRED_FIELDS = [

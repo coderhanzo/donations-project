@@ -6,7 +6,7 @@ from .models import (
     HealthcareInstitution,
     CommunityDevelopment,
     DisabilitySupport,
-    Animal,
+    AnimalCare,
     EducationalInstitution,
     SocialWelfareProgram,
     EmergencyRelief,
@@ -31,7 +31,7 @@ admin.site.register(Cause)
 admin.site.register(HealthcareInstitution, HealthcareInstitutionAdmin)
 admin.site.register(CommunityDevelopment)
 admin.site.register(DisabilitySupport)
-admin.site.register(Animal)
+admin.site.register(AnimalCare)
 admin.site.register(EducationalInstitution)
 admin.site.register(SocialWelfareProgram)
 admin.site.register(EmergencyRelief)

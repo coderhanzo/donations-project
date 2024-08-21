@@ -125,6 +125,7 @@ class EducationalInstitution(models.Model):
     campaigns = models.ManyToManyField(
         MonetaryCampaign, blank=True, related_name="EDUCATIONAL_INSTITUTION"
     )
+    other_info = models.TextField(blank=True, null=True)
 
 
 class HealthcareInstitution(models.Model):
@@ -144,9 +145,14 @@ class HealthcareInstitution(models.Model):
     )
 
 
-class Animal(models.Model):
+class AnimalCare(models.Model):
     profile = models.OneToOneField(AccountProfile, on_delete=models.CASCADE)
-    species = models.CharField(max_length=255)
+    SPECIES_CHOICES = [
+        ("CAT", "Cat"),
+        ("DOG", "Dog"),
+        ("WILDLIFE", "Wildlife"),
+        ("OTHER", "Other"),
+    ]
     # Maybe use a choices
     health_status = models.TextField(blank=True, null=True)
     location = models.TextField(blank=True, null=True)
@@ -154,6 +160,7 @@ class Animal(models.Model):
     campaigns = models.ManyToManyField(
         MonetaryCampaign, blank=True, related_name="ANIMAL"
     )
+    others = models.TextField(blank=True, null=True)
 
 
 class SocialWelfareProgram(models.Model):
