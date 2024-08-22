@@ -8,11 +8,20 @@ const AuthSettingsModal = ({isOpen, onClose}) =>{
         <div className="grid grid-cols-2 gap-4">
             <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Edit Name
+                    First Name
                 </label>
                 <input
                 type="text"
-                placeholder="Enter New Password"
+                placeholder="Enter New Name"
+                className="w-full px-3 py-2 border-gray-300 rounded-lg"/>
+            </div>
+            <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                    Last Name
+                </label>
+                <input
+                type="text"
+                placeholder="Enter New Name"
                 className="w-full px-3 py-2 border-gray-300 rounded-lg"/>
             </div>
         </div>

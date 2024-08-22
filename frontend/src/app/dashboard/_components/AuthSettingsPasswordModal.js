@@ -1,7 +1,7 @@
 'use client'
 import Modal from "./Modal";
 
-const AuthPassword = ({isOpen, onClose})=> {
+const AuthPasswordModal = ({isOpen, onClose})=> {
     return(
       <Modal isOpen={isOpen} onClose={onClose}>
         <h4 className="text-lg font-semibold mb-4">Edit User Password</h4>
@@ -28,4 +28,4 @@ const AuthPassword = ({isOpen, onClose})=> {
     </Modal>            
     )
 }
-export default AuthPassword;
+export default AuthPasswordModal;
