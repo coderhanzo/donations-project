@@ -21,6 +21,7 @@ class CreateUserSerializer(UserCreateSerializer):
             "phone_number",
             "password",
             "institution",
+            "user_role",
         ]
 
     # def validate_password(self, password):
@@ -49,6 +50,7 @@ class UserSerializer(serializers.ModelSerializer):
             "email",
             "phone_number",
             "institution",
+            "user_role",
         ]
 
     # def get_full_name(self, obj):
@@ -105,9 +107,8 @@ class InstitutionAdminSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             "id",
-            "first_name",
-            "last_name",
             "email",
             "phone_number",
             "institution",
+            "user_role",
         ]
