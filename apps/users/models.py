@@ -16,14 +16,14 @@ class Institution(models.Model):
     institution_name = models.CharField(
         max_length=255, verbose_name="Institution Name", blank=True, null=True
     )
-    email = models.EmailField(
+    institution_email = models.EmailField(
         max_length=255,
         verbose_name="Institution Email",
         blank=True,
         null=True,
         unique=True,
     )
-    phone = models.CharField(
+    institution_phone = models.CharField(
         max_length=255, verbose_name="Institution Phone", blank=True, null=True
     )
     contact_person = models.CharField(
@@ -69,8 +69,16 @@ class User(AbstractUser):
     username = None
     is_superuser = None
     is_staff = None
-    user_email = models.EmailField(
+    # first_name = None
+    # last_name = None
+    email = models.EmailField(
         verbose_name=_("Email Address"), unique=True, blank=True, null=True
+    )
+    first_name = models.CharField(
+        verbose_name=_("First Name"), max_length=255, blank=True
+    )
+    last_name = models.CharField(
+        verbose_name=_("Last Name"), max_length=255, blank=True
     )
     phone_number = PhoneNumberField(
         verbose_name=_("Phone Number"), max_length=30, blank=True, null=True
@@ -88,7 +96,7 @@ class User(AbstractUser):
     date_joined = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     timezone = models.CharField(max_length=50, default="UTC", blank=True, null=True)
 
-    USERNAME_FIELD = "user_email"
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [
         "phone_number",
         "institution",

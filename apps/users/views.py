@@ -72,38 +72,6 @@ def refresh_token_view(request):
     return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 
-@api_view(["POST"])
-@permission_classes([AllowAny])
-def login_view(request):
-    """Login view for local authentication"""
-    email = request.data.get("email")
-    password = request.data.get("password")
-
-    user = authenticate(
-        request,
-        email=email,
-        password=password,
-    )
-
-    if user and user.is_active:
-        # If valid, issue JWT token
-        token = RefreshToken().for_user(user)
-        drf_response = Response(
-            {
-                "access": str(token.access_token),
-            }
-        )
-        drf_response.set_cookie(
-            key=settings.SIMPLE_JWT["AUTH_COOKIE"],
-            value=str(token),
-            httponly=True,
-        )
-        return drf_response
-    return Response(
-        {"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
-    )
-
-
 class GetUsers(generics.ListAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
@@ -424,8 +392,8 @@ def custom_password_reset_confirm_view(request):
 def create_institution_with_admin(request):
     institution_data = {
         "institution_name": request.data.get("institution_name"),
-        "email": request.data.get("email"),
-        "phone": request.data.get("phone"),
+        "institution_email": request.data.get("institution_email"),
+        "institution_phone": request.data.get("institution_phone"),
         "contact_person": request.data.get("contact_person"),
         "contact_person_phone": request.data.get("contact_person_phone"),
         "contact_person_email": request.data.get("contact_person_email"),
@@ -433,12 +401,10 @@ def create_institution_with_admin(request):
     }
 
     admin_user_data = {
-        "first_name": request.data.get("first_name"),
-        "last_name": request.data.get("last_name"),
         "email": request.data.get("email"),
         "password": request.data.get("password"),
         "phone_number": request.data.get("phone_number"),
-        "user_roles": [request.data.get("user_roles")],
+        "user_role": "Admin",
     }
 
     # Create institution
@@ -448,8 +414,9 @@ def create_institution_with_admin(request):
 
         # Create admin user and link to institution
         admin_user_data["institution"] = institution.id
-        admin_user_serializer = CreateUserSerializer(data=admin_user_data)
+        admin_user_serializer = InstitutionAdminSerializer(data=admin_user_data)
         if admin_user_serializer.is_valid(raise_exception=True):
+            # set the user_role to admin and save
             admin_user = admin_user_serializer.save()
 
             # Generate JWT token for admin
@@ -464,6 +431,57 @@ def create_institution_with_admin(request):
     return Response(
         {"detail": "Institution creation failed"}, status=status.HTTP_400_BAD_REQUEST
     )
+
+
+# creating a user where the one creating it will have its id linked to it and have role to be populated by frontend
+@api_view(["POST"])
+@transaction.atomic
+@permission_classes([AllowAny])
+def create_user(request):
+    institution = request.user.institution
+    user_data = {
+        "first_name": request.data.get("first_name"),
+        "last_name": request.data.get("last_name"),
+        "email": request.data.get("email"),
+        "password": request.data.get("password"),
+        "phone_number": request.data.get("phone_number"),
+        "user_role": request.data.get("user_role"),
+        "is_active": request.data.get("is_active"),
+        # "institution": institution.id,
+    }
+
+    user_serializer = CreateUserSerializer(data=user_data)
+    if user_serializer.is_valid(raise_exception=True):
+        user = user_serializer.save()
+
+        # Generate JWT token for user
+        token = RefreshToken.for_user(user)
+        response_data = {
+            "access": str(token.access_token),
+            "user": UserSerializer(user).data,
+            "institution": InstitutionSerializer(user.institution).data,
+        }
+        return Response(response_data, status=status.HTTP_201_CREATED)
+
+    return Response(
+        {"detail": "User creation failed"}, status=status.HTTP_400_BAD_REQUEST
+    )
+
+@api_view(["GET"])
+def get_user(requests):
+    institutions = Institution.objects.all(id=requests.data.get("institution"))
+    response_data = []
+
+    for institution in institutions:
+        institution_serializer = InstitutionSerializer(institution)
+        user_data = User.objects.filter(institution=institution).first()
+        user_data_serializer = UserSerializer(user_data)
+
+        institution_data = institution_serializer.data
+        institution_data["admin"] = user_data_serializer.data
+        response_data.append(institution_data)
+
+    return Response(response_data, status=status.HTTP_200_OK)
 
 
 # get all institutions and institution admins
@@ -486,5 +504,38 @@ def get_institutions_and_admins(request):
 
 
 # disable institution and there admins and edit,update institution and their admins
-class disable_and_update_institution:
+@api_view(["GET"])
+def disable_and_update_institution():
     pass
+
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def login_view(request):
+    """Login view for local authentication"""
+    email = request.data.get("email")
+    password = request.data.get("password")
+
+    user = authenticate(
+        request,
+        email=email,
+        password=password,
+    )
+
+    if user and user.is_active:
+        # If valid, issue JWT token
+        token = RefreshToken().for_user(user)
+        drf_response = Response(
+            {
+                "access": str(token.access_token),
+            }
+        )
+        drf_response.set_cookie(
+            key=settings.SIMPLE_JWT["AUTH_COOKIE"],
+            value=str(token),
+            httponly=True,
+        )
+        return drf_response
+    return Response(
+        {"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
+    )
