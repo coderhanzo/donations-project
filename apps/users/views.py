@@ -158,6 +158,7 @@ def create_personal_calendar(user):
 @authentication_classes([JWTAuthentication])
 def get_logged_in_user(request):
     serializer = InstitutionSerializer(instance=request.user)
+    
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -396,13 +397,14 @@ def create_institution_with_admin(request):
         "institution_phone": request.data.get("institution_phone"),
         "contact_person": request.data.get("contact_person"),
         "contact_person_phone": request.data.get("contact_person_phone"),
-        "contact_person_email": request.data.get("contact_person_email"),
+        # "contact_person_email": request.data.get("contact_person_email"),
         "contact_person_position": request.data.get("contact_person_position"),
     }
 
     admin_user_data = {
-        "email": request.data.get("email"),
+        "contact_person_email": request.data.get("contact_person_email"),
         "password": request.data.get("password"),
+        "password_confirmation": request.data.get("password_confirmation"),
         "phone_number": request.data.get("phone_number"),
         "user_role": "Admin",
     }
@@ -424,7 +426,7 @@ def create_institution_with_admin(request):
             response_data = {
                 "access": str(token.access_token),
                 "institution": institution_serializer.data,
-                "admin": UserSerializer(admin_user).data,
+                "admin": InstitutionAdminSerializer(admin_user).data,
             }
             return Response(response_data, status=status.HTTP_201_CREATED)
 
@@ -438,7 +440,6 @@ def create_institution_with_admin(request):
 @transaction.atomic
 @permission_classes([AllowAny])
 def create_user(request):
-    institution = request.user.institution
     user_data = {
         "first_name": request.data.get("first_name"),
         "last_name": request.data.get("last_name"),
@@ -446,13 +447,14 @@ def create_user(request):
         "password": request.data.get("password"),
         "phone_number": request.data.get("phone_number"),
         "user_role": request.data.get("user_role"),
-        "is_active": request.data.get("is_active"),
-        # "institution": institution.id,
     }
 
+    institution = Institution.objects.get(id=request.data.get("institution"))
     user_serializer = CreateUserSerializer(data=user_data)
     if user_serializer.is_valid(raise_exception=True):
         user = user_serializer.save()
+        user.institution = institution
+        user.save()
 
         # Generate JWT token for user
         token = RefreshToken.for_user(user)
@@ -466,6 +468,7 @@ def create_user(request):
     return Response(
         {"detail": "User creation failed"}, status=status.HTTP_400_BAD_REQUEST
     )
+
 
 @api_view(["GET"])
 def get_user(requests):
@@ -504,21 +507,24 @@ def get_institutions_and_admins(request):
 
 
 # disable institution and there admins and edit,update institution and their admins
-@api_view(["GET"])
-def disable_and_update_institution():
-    pass
+
+
+# edit institutions and admins and update institution and their admins
+# @api_view({"PUT"})
+# def edit_institutions_and_admins(request):
+#     pass
 
 
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def login_view(request):
     """Login view for local authentication"""
-    email = request.data.get("email")
+    contact_person_email = request.data.get("contact_person_email")
     password = request.data.get("password")
 
     user = authenticate(
         request,
-        email=email,
+        contact_person_email=contact_person_email,
         password=password,
     )
 
@@ -528,6 +534,7 @@ def login_view(request):
         drf_response = Response(
             {
                 "access": str(token.access_token),
+                "user": InstitutionAdminSerializer(user).data,
             }
         )
         drf_response.set_cookie(
@@ -539,3 +546,6 @@ def login_view(request):
     return Response(
         {"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
     )
+
+
+# login view for institution admin
