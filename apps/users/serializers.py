@@ -38,9 +38,10 @@ class CreateUserSerializer(UserCreateSerializer):
         model = User
         fields = [
             "id",
-            "contact_person_email",
+            "email",
             "phone_number",
             "password",
+            "password_confirmation",
             "institution",
             "user_role",
         ]
@@ -57,7 +58,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "full_name",
-            "contact_person_email",
+            "email",
             "phone_number",
             "institution",
             "user_role",
@@ -138,10 +139,11 @@ class InstitutionAdminSerializer(UserCreateSerializer):
         model = User
         fields = [
             "id",
-            "contact_person_email",
+            "email",
             "phone_number",
             "institution",
             "user_role",
+            "is_active",
             "password",
             "password_confirmation",
         ]

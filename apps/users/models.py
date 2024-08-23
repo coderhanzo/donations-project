@@ -81,7 +81,7 @@ class User(AbstractUser):
     # email = models.EmailField(
     #     verbose_name=_("Email Address"), unique=True, blank=True, null=True
     # )
-    contact_person_email = models.EmailField(
+    email = models.EmailField(
         max_length=200,
         unique=True,
         verbose_name="Contact Person email",
@@ -104,7 +104,7 @@ class User(AbstractUser):
     date_joined = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     timezone = models.CharField(max_length=50, default="UTC", blank=True, null=True)
 
-    USERNAME_FIELD = "contact_person_email"
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [
         "phone_number",
         "institution",
@@ -113,7 +113,7 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.contact_person_email
+        return self.email
 
     @property
     def get_full_name(self):

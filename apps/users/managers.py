@@ -10,22 +10,22 @@ class CustomUserManager(BaseUserManager):
     for authentication instead of usernames.
     """
 
-    def email_validator(self, contact_person_email):
+    def email_validator(self, email):
         try:
-            validate_email(contact_person_email)
+            validate_email(email)
         except ValidationError:
             raise ValueError(_("You must provide a valid email address"))
 
-    def create_user(self, contact_person_email, password=None, **extra_fields):
+    def create_user(self, email, password=None, **extra_fields):
         """
         Create and save a user with the given email and password.
         """
-        if contact_person_email:
-            contact_person_email = self.normalize_email(contact_person_email)
-            self.email_validator(contact_person_email)
+        if email:
+            email = self.normalize_email(email)
+            self.email_validator(email)
         else:
             raise ValueError(_("Base User Account: An email address is required"))
-        user = self.model(contact_person_email=contact_person_email, **extra_fields)
+        user = self.model(email=email, **extra_fields)
         if password:
             user.set_password(password)
         extra_fields.setdefault("is_staff", False)
