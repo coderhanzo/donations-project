@@ -105,6 +105,7 @@ def signup_view(request):
         "last_name": request.data.get("last_name"),
         "email": request.data.get("email"),
         "password": request.data.get("password"),
+        "password_confirmation": request.data.get("password_confirmation"),
         "phone_number": request.data.get("phone_number"),
         "institution": request.data.get("institution"),
         # Add other fields as needed
@@ -158,6 +159,7 @@ def create_personal_calendar(user):
 @authentication_classes([JWTAuthentication])
 def get_logged_in_user(request):
     serializer = InstitutionSerializer(instance=request.user)
+
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -396,13 +398,14 @@ def create_institution_with_admin(request):
         "institution_phone": request.data.get("institution_phone"),
         "contact_person": request.data.get("contact_person"),
         "contact_person_phone": request.data.get("contact_person_phone"),
-        "contact_person_email": request.data.get("contact_person_email"),
+        # "contact_person_email": request.data.get("contact_person_email"),
         "contact_person_position": request.data.get("contact_person_position"),
     }
 
     admin_user_data = {
         "email": request.data.get("email"),
         "password": request.data.get("password"),
+        "password_confirmation": request.data.get("password_confirmation"),
         "phone_number": request.data.get("phone_number"),
         "user_role": "Admin",
     }
@@ -424,7 +427,7 @@ def create_institution_with_admin(request):
             response_data = {
                 "access": str(token.access_token),
                 "institution": institution_serializer.data,
-                "admin": UserSerializer(admin_user).data,
+                "admin": InstitutionAdminSerializer(admin_user).data,
             }
             return Response(response_data, status=status.HTTP_201_CREATED)
 
@@ -438,7 +441,7 @@ def create_institution_with_admin(request):
 @transaction.atomic
 @permission_classes([AllowAny])
 def create_user(request):
-    institution = request.user.institution
+
     user_data = {
         "first_name": request.data.get("first_name"),
         "last_name": request.data.get("last_name"),
@@ -446,42 +449,31 @@ def create_user(request):
         "password": request.data.get("password"),
         "phone_number": request.data.get("phone_number"),
         "user_role": request.data.get("user_role"),
-        "is_active": request.data.get("is_active"),
-        # "institution": institution.id,
     }
-
+    try:
+        institution = Institution.objects.get(id=request.data.get("institution"))
+    except Institution.DoesNotExist:
+        return Response(
+            {"detail": "Institution not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     user_serializer = CreateUserSerializer(data=user_data)
     if user_serializer.is_valid(raise_exception=True):
-        user = user_serializer.save()
+        user = user_serializer.save(commit=False)
+        user.institution = institution
+        user.save()
 
         # Generate JWT token for user
         token = RefreshToken.for_user(user)
         response_data = {
             "access": str(token.access_token),
             "user": UserSerializer(user).data,
-            "institution": InstitutionSerializer(user.institution).data,
+            "institution": InstitutionSerializer(institution).data,
         }
         return Response(response_data, status=status.HTTP_201_CREATED)
 
     return Response(
         {"detail": "User creation failed"}, status=status.HTTP_400_BAD_REQUEST
     )
-
-@api_view(["GET"])
-def get_user(requests):
-    institutions = Institution.objects.all(id=requests.data.get("institution"))
-    response_data = []
-
-    for institution in institutions:
-        institution_serializer = InstitutionSerializer(institution)
-        user_data = User.objects.filter(institution=institution).first()
-        user_data_serializer = UserSerializer(user_data)
-
-        institution_data = institution_serializer.data
-        institution_data["admin"] = user_data_serializer.data
-        response_data.append(institution_data)
-
-    return Response(response_data, status=status.HTTP_200_OK)
 
 
 # get all institutions and institution admins
@@ -494,7 +486,7 @@ def get_institutions_and_admins(request):
     for institution in institutions:
         institution_serializer = InstitutionSerializer(institution)
         admin_user = User.objects.filter(institution=institution).first()
-        admin_user_serializer = UserSerializer(admin_user)
+        admin_user_serializer = InstitutionAdminSerializer(admin_user)
 
         institution_data = institution_serializer.data
         institution_data["admin"] = admin_user_serializer.data
@@ -504,9 +496,40 @@ def get_institutions_and_admins(request):
 
 
 # disable institution and there admins and edit,update institution and their admins
-@api_view(["GET"])
-def disable_and_update_institution():
-    pass
+
+
+# edit institutions and admins and update institution and their admins
+@api_view(["PUT"])
+def disable_institutions_and_admins(request):
+    institution_data = request.data.get("institution_data")
+    admin_data = request.data.get("admin_data")
+    if institution_data:
+        try:
+            institution = Institution.objects.get(id=institution_data)
+            institution_data.is_active = False
+            institution_data.save()
+
+            admin = institution.users.all()
+            admin.update(is_active=False)
+            return Response({"message": "Insitution and all users have been didsabled"})
+        except Institution.DoesNotExist:
+            return Response(
+                {"detail": "Institution not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+    elif admin_data:
+        try:
+            admin_user = User.objects.get(id=admin_data)
+            admin_user.is_active = False
+            admin_user.save()
+            return Response({"message": "User has been disabled"})
+        except User.DoesNotExist:
+            return Response(
+                {"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+    return Response(
+        {"message": "No data found to disable"}, status=status.HTTP_404_NOT_FOUND
+    )
 
 
 @api_view(["POST"])
@@ -539,3 +562,6 @@ def login_view(request):
     return Response(
         {"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
     )
+
+
+# login view for institution admin

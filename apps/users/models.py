@@ -23,8 +23,8 @@ class Institution(models.Model):
         null=True,
         unique=True,
     )
-    institution_phone = models.CharField(
-        max_length=255, verbose_name="Institution Phone", blank=True, null=True
+    institution_phone = PhoneNumberField(
+        verbose_name=_("Phone Number"), max_length=30, blank=True, null=True
     )
     contact_person = models.CharField(
         max_length=255, verbose_name="Contact Person", blank=True, null=True
@@ -32,12 +32,13 @@ class Institution(models.Model):
     contact_person_phone = models.CharField(
         max_length=200, verbose_name="Contact Person Phone", blank=True, null=True
     )
-    contact_person_email = models.EmailField(
-        max_length=200, verbose_name="Contact Person email", blank=True, null=True
-    )
+    # contact_person_email = models.EmailField(
+    #     max_length=200, verbose_name="Contact Person email", blank=True, null=True
+    # )
     contact_person_position = models.CharField(
         max_length=150, verbose_name="Contact Person Position", blank=True, null=True
     )
+    is_active = models.BooleanField(default=True)
 
     def user_directory_path(instance, filename):
         # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
@@ -71,14 +72,21 @@ class User(AbstractUser):
     is_staff = None
     # first_name = None
     # last_name = None
-    email = models.EmailField(
-        verbose_name=_("Email Address"), unique=True, blank=True, null=True
-    )
     first_name = models.CharField(
         verbose_name=_("First Name"), max_length=255, blank=True
     )
     last_name = models.CharField(
         verbose_name=_("Last Name"), max_length=255, blank=True
+    )
+    # email = models.EmailField(
+    #     verbose_name=_("Email Address"), unique=True, blank=True, null=True
+    # )
+    email = models.EmailField(
+        max_length=200,
+        unique=True,
+        verbose_name="Contact Person email",
+        blank=True,
+        null=True,
     )
     phone_number = PhoneNumberField(
         verbose_name=_("Phone Number"), max_length=30, blank=True, null=True
@@ -104,29 +112,9 @@ class User(AbstractUser):
 
     objects = CustomUserManager()
 
-    class meta:
-        indexes = [
-            models.Index(fields=["roles"]),
-        ]
-
     def __str__(self):
         return self.email
 
-    # @property
-    # def get_full_name(self):
-    #     return f"{self.first_name} {self.last_name}"
-
-    # class Roles(models.TextChoices):
-    #     BSYTEMS_ADMIN = "bsystems_admin", _("Bsystems Admin")
-    #     INSTITUTION_ADMIN = "institution_admin", _("Institution Admin")
-    #     USER = "user", _("User")
-
-    # add type car owner, admin, parking attendant
-
-
-# roles = models.CharField(
-#     verbose_name=_("Roles"),
-#     max_length=50,
-#     choices=Roles.choices,
-#     default=Roles.USER,
-# )
+    @property
+    def get_full_name(self):
+        return f"{self.first_name} {self.last_name}"
