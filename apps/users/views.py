@@ -96,7 +96,7 @@ def generate_unique_slug(model_class, title):
 
 
 @api_view(["POST"])
-@permission_classes([AllowAny])
+#@permission_classes([AllowAny])
 @transaction.atomic
 def signup_view(request):
     """Register view for local authentication"""
