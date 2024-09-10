@@ -41,7 +41,6 @@ class CreateUserSerializer(UserCreateSerializer):
             "email",
             "phone_number",
             "password",
-            "password_confirmation",
             "institution",
             "user_role",
         ]

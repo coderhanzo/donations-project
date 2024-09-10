@@ -1,6 +1,6 @@
 'use client';
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { toggleAuthDropdown } from "../../lib/features/dropdown/dropdownSlice";
 
@@ -8,8 +8,10 @@ const AuthSettingsTable = ({ itemsPerPage, onAuthSettingsClick, onAuthPasswordCl
     const dispatch = useDispatch();
     const { isLoading } = useSelector((state) => state.auth); // Adjust this based on your Redux state structure
 
+    const [dropdownVisible, setDropdownVisible] = useState(false);
+
     const handleAuthDropdownClick = () => {
-        dispatch(toggleAuthDropdown());
+        setDropdownVisible(!dropdownVisible);
     };
 
     return (
@@ -38,32 +40,34 @@ const AuthSettingsTable = ({ itemsPerPage, onAuthSettingsClick, onAuthPasswordCl
                                     <td className="px-4 py-2 relative">
                                         <button
                                             id="dropdownActionButton"
-                                            className="text-gray-600 ml-3 hover:underline text-2xl"
+                                            className="text-gray-600 ml-3 hover:underline text-2xl focus:outline-none"
                                             type="button"
                                             onClick={handleAuthDropdownClick}
                                         >
                                             ...
                                         </button>
-                                        <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg z-20">
-                                            <button
-                                                className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
-                                                onClick={onAuthSettingsClick}
-                                            >
-                                                Edit User Details
-                                            </button>
-                                            <button
-                                                className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
-                                                onClick={onAuthPasswordClick}
-                                            >
-                                                Edit Password
-                                            </button>
-                                            <button
-                                                className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
-                                                onClick={onAuthStatusClick}
-                                            >
-                                                Edit Status
-                                            </button>
-                                        </div>
+                                        {dropdownVisible && (
+                                            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg z-20">
+                                                <button
+                                                    className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
+                                                    onClick={onAuthSettingsClick}
+                                                >
+                                                    Edit User Details
+                                                </button>
+                                                <button
+                                                    className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
+                                                    onClick={onAuthPasswordClick}
+                                                >
+                                                    Edit Password
+                                                </button>
+                                                <button
+                                                    className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
+                                                    onClick={onAuthStatusClick}
+                                                >
+                                                    Edit Status
+                                                </button>
+                                            </div>
+                                        )}
                                     </td>
                                 </tr>
                             </tbody>
