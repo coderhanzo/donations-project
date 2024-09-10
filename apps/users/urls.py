@@ -21,4 +21,7 @@ urlpatterns = [
     ),
     path("get_institution_and_admins/", views.get_institutions_and_admins),
     path("create_user/", views.create_user),
+    path("users/<int:user_id>/update/", views.update_user_details, name="update-user"),
+    path("users/disable/", views.disable_institutions_and_admins),
+
 ]

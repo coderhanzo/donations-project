@@ -31,6 +31,7 @@ CORS_ALLOW_CREDENTIALS = True
 DJANGO_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.admin",
+    "django.contrib.sites",
     "django.contrib.auth",
     "django.contrib.sessions",
     "django.contrib.messages",
@@ -231,3 +232,5 @@ PHONENUMBER_DEFAULT_REGION = "GH"
 # CELERY_TIMEZONE = "Africa/Accra"
 
 # CELERY_WORKER_MAX_TASKS_PER_CHILD = 100
+
+# MOSAICO_BACKENDS = 'mosaico.backends.django.DjangoMosaicoBackend'

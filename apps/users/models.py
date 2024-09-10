@@ -78,9 +78,6 @@ class User(AbstractUser):
     last_name = models.CharField(
         verbose_name=_("Last Name"), max_length=255, blank=True
     )
-    # email = models.EmailField(
-    #     verbose_name=_("Email Address"), unique=True, blank=True, null=True
-    # )
     email = models.EmailField(
         max_length=200,
         unique=True,
@@ -103,7 +100,9 @@ class User(AbstractUser):
     last_login = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     timezone = models.CharField(max_length=50, default="UTC", blank=True, null=True)
-
+    password_confirmation = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Password Confirmation"
+    )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [
         "phone_number",

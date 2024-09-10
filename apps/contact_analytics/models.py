@@ -74,7 +74,6 @@ class AccountProfile(models.Model):
     company = models.ForeignKey(
         Company, on_delete=models.CASCADE, default=None, blank=True, null=True
     )
-    profile_photo = models.FileField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
     website = models.URLField(blank=True, null=True)
     # This holds an institutions Donors and Beneficiaries, all listed as contacts
