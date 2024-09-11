@@ -1,34 +1,44 @@
 'use client'
-import AuthPasswordModal from "../_components/AuthSettingsPasswordModal";
-import AuthSettingsModal from "../_components/AuthSettingsModal";
-import AuthSettingsTable from "../_components/AuthSettingsTable";
-import AuthStatusModal from "../_components/AuthStatusModal";
-import { useState } from "react";
 
-const AuthSettings = () => {
-    const [isAuthSettingsModalOpen, setisAuthSettingsModalOpen] = useState(false);
-    const [isAuthStatusModalOpen, setisAuthStatusModalOpen] = useState(false);
-    const [isAuthPasswordModalOpen, setisAuthPasswordModalOpen] = useState(false);
+
+import { useDispatch, useSelector } from "react-redux"
+import { toggleSettingsButton, toggleSelectedTab } from "../../lib/features/profile/profileSlice";
+import { useEffect } from "react";
+import AuthTabs from "./_components/AuthTabs";
+import PasswordSettings from "./_components/PasswordSettings";
+import LoginTries from "./_components/LoginTries";
+import PasswordExpirationSettings from "./_components/PasswordExpirationSettings";
+
+
+const InstitutionSettings = () => {
+    const { selectedTab} = useSelector((state) => state.profile)
+    const dispatch = useDispatch()
+    useEffect(() => {
+        const selectedTab = localStorage.getItem('selectedTab');
+        if (selectedTab !== null) {
+            dispatch(toggleSelectedTab(parseInt(selectedTab)));
+        }
+    });
 
     return (
-        <div className="flex flex-row w-full justify-around lg:gap-4 lg:px-8">
-            <AuthSettingsTable itemsPerPage ={10}
-             onAuthSettingsClick = {() => setisAuthSettingsModalOpen(true)}
-             onAuthPasswordClick = {() => setisAuthPasswordModalOpen(true)}
-             onAuthStatusClick = {() => setisAuthStatusModalOpen(true)}/>
-            
-            <AuthSettingsModal
-            isOpen={isAuthSettingsModalOpen}
-            onClose={()=>setisAuthSettingsModalOpen(false)}/>
-            
-            <AuthPasswordModal
-            isOpen={isAuthPasswordModalOpen}
-            onClose={()=> setisAuthPasswordModalOpen(false)}/>
-            
-            <AuthStatusModal
-            isOpen={isAuthStatusModalOpen}
-            onClose={() => setisAuthStatusModalOpen(false)}/>
-        </div>
+        <>
+           
+
+            <div className="">
+
+                <AuthTabs />
+                <section className={`${selectedTab == 0 ? '' : 'hidden'} flex w-full`}>
+                    <PasswordSettings />
+                </section>
+                <section className={`${selectedTab == 1 ? '' : 'hidden'} flex w-full`}>
+                    <LoginTries />
+                </section>
+                <section className={`${selectedTab == 2 ? '' : 'hidden'} flex w-full`}>
+                    <PasswordExpirationSettings/>
+                </section>
+            </div>
+        </>
     )
 }
-export  default AuthSettings;
+
+export default InstitutionSettings;

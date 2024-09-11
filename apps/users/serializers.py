@@ -24,7 +24,6 @@ class CreateUserSerializer(UserCreateSerializer):
             "phone_number",
             "reference",
             "password",
-            "institution_admin",
             "institution",
         ]
         # extra_kwargs = {"password": {"write_only": True}}

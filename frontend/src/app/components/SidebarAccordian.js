@@ -19,11 +19,21 @@ const SidebarAccordian = ({ title, subtitles, icons,toggleAction, isOpen }) => {
     const getHref = (item) => {
         if (title === "Tasks") {
             return item.toLowerCase() === 'kanban' ? '/dashboard/kanban' : '/dashboard/profile';
-        } else if (title === "Institutions") {
+        } else if (title === "Auth Menu") {
+            return item.toLowerCase() === 'add new user' ? '/dashboard/AuthMenu_AddUser' : '/dashboard/AuthMenu_ManageUser';
+        }
+        else if (title === "Institutions") {
             return item.toLowerCase() === 'add institution' ? '/dashboard/AddInstitution' : '/dashboard/institutions/manage';
         }
         else if (title === "Settings") {
-            return item.toLowerCase() === 'auth' ? '/dashboard/SettingsAuth': '/dashboard/InstitutionSettings'; //'/dashboard/GeneralSettings' ;
+            // Check for each settings case separately
+            if (item.toLowerCase() === 'auth') {
+                return '/dashboard/SettingsAuth';
+            } else if (item.toLowerCase() === 'institutions') {
+                return '/dashboard/InstitutionSettings';
+            } else if (item.toLowerCase() === 'general settings') {
+                return '/dashboard/GeneralSettings';
+            }
         }
         return '#'; 
     }

@@ -8,13 +8,13 @@ import { CiCalendarDate } from 'react-icons/ci'
 import { LuUsers2, LuX, LuScatterChart, LuKanbanSquareDashed, LuUser2, LuHeart, LuHeartHandshake, LuClipboardEdit,LuTornado, LuSettings, LuSettings2, LuUserCircle, LuUserPlus} from "react-icons/lu"
 import { useDispatch, useSelector } from "react-redux"
 import SidebarAccordian from "./SidebarAccordian"
-import { toggleSidebar, toggleTasksDropdown, toggleInstitutionDropdown, toggleSettingsDropdown } from "../lib/features/dropdown/dropdownSlice"
+import { toggleSidebar, toggleTasksDropdown, toggleInstitutionDropdown, toggleSettingsDropdown,toggleAuthMenuDropdown } from "../lib/features/dropdown/dropdownSlice"
 import { toggleSelectedTab } from "../lib/features/profile/profileSlice"
 
 const CustomSidebar = () => {
     const dispatch = useDispatch()
 
-    const { sidebarOpen, tasksOpen, institutionOpen, settingsOpen } = useSelector((state) => state.dropdowns)
+    const { sidebarOpen, tasksOpen, institutionOpen, settingsOpen,authMenuOpen } = useSelector((state) => state.dropdowns)
    
     const handleProfileClick = () => {
         dispatch(toggleSelectedTab(3))
@@ -47,6 +47,13 @@ const CustomSidebar = () => {
                             icons={[<LuKanbanSquareDashed className="scale-[1.5]" />, <LuTornado className="scale-[1.5]" />]}
                             toggleAction={toggleTasksDropdown}
                             isOpen={tasksOpen}
+                        />
+                        <SidebarAccordian
+                            title="Auth Menu"
+                            subtitles={["Add New User", "Manage Users"]}
+                            icons={[<LuUserPlus className="scale-[1.5]" />, <LuClipboardEdit className="scale-[1.5]" />]}
+                            toggleAction={toggleAuthMenuDropdown}
+                            isOpen={authMenuOpen}
                         />
                         <SidebarAccordian
                             title="Institutions"

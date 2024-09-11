@@ -4,7 +4,7 @@ import { toggleSelectedTab, toggleTabDropdown } from "../../../lib/features/prof
 import { LuSettings } from "react-icons/lu"
 
 
-const ProfileTabs = () => {
+const InstitutionTabs = () => {
     const dispatch = useDispatch()
     const { selectedTab, tabDropdownOpen } = useSelector((state) => state.profile)
 
@@ -23,10 +23,16 @@ const ProfileTabs = () => {
             <div className="mx-auto w-[85%]">
                 <ul className="max-md:hidden grid grid-flow-col text-center text-slate-600 bg-slate-200 rounded-full p-1 space-x-5">
                     <li >
-                        <button className={`${selectedTab === 0 ? 'bg-white shadow text-indigo-900 hover:bg-opacity-100' : 'hover:bg-opacity-50'} w-full flex justify-center py-4  hover:bg-slate-50 rounded-full `} onClick={() => handleTabSelection(0)}>Appointments</button>
+                        <button className={`${selectedTab === 0 ? 'bg-white shadow text-indigo-900 hover:bg-opacity-100' : 'hover:bg-opacity-50'} w-full flex justify-center py-4  hover:bg-slate-50 rounded-full `} onClick={() => handleTabSelection(0)}>Registration/License Number</button>
                     </li>
                     <li >
-                        <button className={`${selectedTab === 3 ? 'bg-white shadow text-indigo-900 hover:bg-opacity-100' : ''} flex justify-center py-4 hover:bg-opacity-50 hover:bg-slate-50 rounded-full w-full `} onClick={() => handleTabSelection(3)}>Profile</button>
+                        <button className={`${selectedTab === 1 ? 'bg-white shadow text-indigo-900 hover:bg-opacity-100' : ''} flex justify-center py-4 hover:bg-opacity-50 hover:bg-slate-50 rounded-full w-full `} onClick={() => handleTabSelection(1)}>Auto Approval</button>
+                    </li>
+                    <li >
+                        <button className={`${selectedTab === 2 ? 'bg-white shadow text-indigo-900 hover:bg-opacity-100' : ''} flex justify-center py-4 hover:bg-opacity-50 hover:bg-slate-50 rounded-full w-full `} onClick={() => handleTabSelection(2)}>Institution Verif. Process</button>
+                    </li>
+                    <li >
+                        <button className={`${selectedTab === 3 ? 'bg-white shadow text-indigo-900 hover:bg-opacity-100' : ''} flex justify-center py-4 hover:bg-opacity-50 hover:bg-slate-50 rounded-full w-full `} onClick={() => handleTabSelection(3)}>Institution Funding</button>
                     </li>
 
                 </ul>
@@ -43,10 +49,17 @@ const ProfileTabs = () => {
                         {/* dropdown itself */}
                         <ul className="py-2 w-[70vw]" aria-labelledby="user-menu-button">
                             <li>
-                                <button className="w-full block px-4 py-3  text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={() => handleTabSelectionMobile(0)}>Appointments</button>
+                                <button className="w-full block px-4 py-3  text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={() => handleTabSelectionMobile(0)}>Registration/License Number</button>
                             </li>
                             <li>
-                                <button className="w-full block px-4 py-3 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={() => handleTabSelectionMobile(3)}>Profile</button>
+                                <button className="w-full block px-4 py-3  text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={() => handleTabSelectionMobile(1)}>Auto Approval</button>
+                            </li>
+
+                            <li>
+                                <button className="w-full block px-4 py-3  text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={() => handleTabSelectionMobile(2)}>Institution Verif. Process</button>
+                            </li>
+                            <li>
+                                <button className="w-full block px-4 py-3 text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={() => handleTabSelectionMobile(3)}>Institution Funding</button>
                             </li>
                         </ul>
                     </div>
@@ -57,4 +70,4 @@ const ProfileTabs = () => {
     )
 }
 
-export default ProfileTabs
+export default InstitutionTabs;
