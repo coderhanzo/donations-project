@@ -109,6 +109,7 @@ def signup_view(request):
         "password_confirmation": request.data.get("password_confirmation"),
         "phone_number": request.data.get("phone_number"),
         "institution": request.data.get("institution"),
+        "user_role": request.data.get("user_role"),
         # Add other fields as needed
     }
     # Post to app db
@@ -442,6 +443,7 @@ def create_institution_with_admin(request):
 @transaction.atomic
 @permission_classes([AllowAny])
 def create_user(request):
+    logged_in_user = request.institution_user
     user_data = {
         "first_name": request.data.get("first_name"),
         "last_name": request.data.get("last_name"),
@@ -451,9 +453,13 @@ def create_user(request):
         "phone_number": request.data.get("phone_number"),
         "user_role": request.data.get("user_role"),
     }
-
+    full_name = f"{user_data['first_name']} {user_data['last_name']}"
+    user_data["full_name"] = full_name
     try:
         institution = Institution.objects.get(id=request.data.get("institution"))
+        institution.admin_user = logged_in_user
+        institution.save()
+        user_data["institution"] = institution.id
     except Institution.DoesNotExist:
         return Response(
             {"detail": "Institution not found"}, status=status.HTTP_404_NOT_FOUND
@@ -468,15 +474,20 @@ def create_user(request):
 
         # Generate JWT token for user
         token = RefreshToken.for_user(user)
-        response_data = {
-            "access": str(token.access_token),
-            "user": UserSerializer(user).data,
-            "institution": InstitutionSerializer(institution).data,
-        }
-        return Response(response_data, status=status.HTTP_201_CREATED)
+        drf_response = Response(
+            {
+                "access": str(token.access_token),
+            }
+        )
+        drf_response.set_cookie(
+            key=settings.SIMPLE_JWT["AUTH_COOKIE"],
+            value=str(token),
+            httponly=True,
+        )
+        return drf_response
 
     return Response(
-        {"detail": "User creation failed"}, status=status.HTTP_400_BAD_REQUEST
+        {"detail": "Account creation failed"}, status=status.HTTP_400_BAD_REQUEST
     )
 
 
@@ -565,7 +576,9 @@ def login_view(request):
         )
         return drf_response
 
-    return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+    return Response(
+        {"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
+    )
 
 
 # login view for institution admin
@@ -575,11 +588,21 @@ def update_user_details(request, user_id):
     user = get_object_or_404(User, id=user_id)
     institution = user.institution
 
-    user_serializer = UserSerializer(user, data=request.data.get("user", {}), partial=True)
+    user_serializer = UserSerializer(
+        user, data=request.data.get("user", {}), partial=True
+    )
     institution_serializer = InstitutionSerializer(
         institution, data=request.data.get("institution", {}), partial=True
     )
     if user_serializer.is_valid(raise_exception=True):
         user = user_serializer.save(institution=institution)
-        return Response({"message": "User details updated successfully", "user": user_serializer.data}, status=status.HTTP_200_OK)
-    return Response({"message": "Failed to update user details"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {
+                "message": "User details updated successfully",
+                "user": user_serializer.data,
+            },
+            status=status.HTTP_200_OK,
+        )
+    return Response(
+        {"message": "Failed to update user details"}, status=status.HTTP_400_BAD_REQUEST
+    )

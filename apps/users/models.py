@@ -41,8 +41,7 @@ class Institution(models.Model):
     is_active = models.BooleanField(default=True)
 
     def user_directory_path(instance, filename):
-        # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-        return "{0}/{1}".format("institution files", filename)
+        return "institution-files/{filename}".format(filename=filename)
 
     institution_certificate = models.FileField(
         upload_to=user_directory_path,
@@ -101,7 +100,7 @@ class User(AbstractUser):
     date_joined = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     timezone = models.CharField(max_length=50, default="UTC", blank=True, null=True)
     password_confirmation = models.CharField(
-        max_length=255, blank=True, null=True, verbose_name="Password Confirmation"
+        max_length=26, blank=True, null=True, verbose_name="Password Confirmation"
     )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [

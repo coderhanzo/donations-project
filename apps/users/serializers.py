@@ -50,7 +50,7 @@ class CreateUserSerializer(UserCreateSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField(source="get_full_name")
+    full_name = serializers.SerializerMethodField(source="get_full_name", read_only=True)
     # phone_number = PhoneNumberField()
 
     class Meta:
