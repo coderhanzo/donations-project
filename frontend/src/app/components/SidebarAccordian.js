@@ -18,7 +18,7 @@ const SidebarAccordian = ({ title, subtitles, icons,toggleAction, isOpen }) => {
 
     const getHref = (item) => {
         if (title === "Tasks") {
-            return item.toLowerCase() === 'kanban' ? '/dashboard/kanban' : '/dashboard/profile';
+            return item.toLowerCase() === 'donor pipeline' ? '/dashboard/kanban' : '/dashboard/profile';
         } else if (title === "Auth Menu") {
             return item.toLowerCase() === 'add new user' ? '/dashboard/AuthMenu_AddUser' : '/dashboard/AuthMenu_ManageUser';
         }
