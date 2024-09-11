@@ -140,11 +140,11 @@ const ContactModal = () => {
                         <div className="p-6 space-y-6 max-h-[calc(100vh-15rem)] overflow-auto">
                             <div className="grid grid-cols-6 gap-6">
                                 <div className="col-span-6 sm:col-span-3">
-                                    <label htmlFor="first-name" className="block mb-2 text-sm font-medium text-gray-900 ">Given Names</label>
+                                    <label htmlFor="first-name" className="block mb-2 text-sm font-medium text-gray-900 ">First Name</label>
                                     <input type="text" name="first-name" id="first-name" value={firstName} className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 " placeholder={selectedContact ? selectedContact.first_name : "Bonnie"} onChange={(e) => setFirstName(e.target.value)} required="" />
                                 </div>
                                 <div className="col-span-6 sm:col-span-3">
-                                    <label htmlFor="last-name" className="block mb-2 text-sm font-medium text-gray-900 ">Last Names</label>
+                                    <label htmlFor="last-name" className="block mb-2 text-sm font-medium text-gray-900 ">Last Name</label>
                                     <input type="text" name="last-name" id="last-name" value={lastName} className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="Green" onChange={(e) => setLastName(e.target.value)} required="" />
                                 </div>
                                 <div className="col-span-6 sm:col-span-3">
@@ -179,7 +179,7 @@ const ContactModal = () => {
                                     </div>
                                     <div className="flex space-x-2">
                                         <input type="radio" id="patient" name="donor_patient" value="Patient" checked={selectedContact?.type === 'patient' || contactType === 'patient'} onChange={() => setContactType('patient')} />
-                                        <label htmlFor="patient">{selectedContact?.type || 'Patient'}</label>
+                                        <label htmlFor="patient">{selectedContact?.type || 'Others'}</label>
                                     </div>
                                 </div>
                                 <div className="col-span-6 sm:col-span-3">
@@ -190,18 +190,19 @@ const ContactModal = () => {
                                     <label htmlFor="donor_type" className="block mb-2 text-sm font-medium text-gray-900 ">Donor Type</label>
                                     <select name="donor_type" id="donor_type" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 " placeholder="" required="" value={donorType} onChange={handleDonorTypeChange}>
                                         <option value="">Select a donor type</option>
-                                        <option value="broad_base_donor">Broad Base Donor</option>
-                                        <option value="mid_range_donor">Mid Range Donor</option>
-                                        <option value="major_donor">Major Donor</option>
+                                        <option value="broad_base_donor">Crowd Funding</option>
+                                        <option value="mid_range_donor">Recurring</option>
+                                        <option value="major_donor">One Time</option>
                                     </select>
                                 </div> : null}
                                 {contactType === 'patient' ? <div className="col-span-6 sm:col-span-3">
-                                    <label htmlFor="cause" className="block mb-2 text-sm font-medium text-gray-900 ">Cause</label>
+                                    <label htmlFor="cause" className="block mb-2 text-sm font-medium text-gray-900 ">Others</label>
                                     <select name="cause" id="cause" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 " placeholder="" required="" value={cause} onChange={handleCauseChange}>
-                                        <option value="">Select a Cause</option>
-                                        {causes.map((cause) => (
-                                            <option key={cause?.id} value={cause?.title}>{cause?.title}</option>
-                                        ))}
+                                        <option value="">---Select other donor type---</option>
+                                        <option value="">Opinion Leader</option>
+                                        <option value="">CEO</option>
+                                        <option value="">Politician</option>
+                                        
                                     </select>
                                 </div> : null}
                                 <div className="col-span-6">
@@ -212,7 +213,7 @@ const ContactModal = () => {
                         </div>
                         {/* // Modal Footer */}
                         <div className="flex items-center p-6 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b ">
-                            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center " onClick={handleSubmit}>Save all</button>
+                            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center " onClick={handleSubmit}>Save Contact</button>
                         </div>
                     </form>
                 </div>

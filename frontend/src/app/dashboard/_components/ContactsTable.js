@@ -176,7 +176,7 @@ const ContactsTable = ({ itemsPerPage }) => {
                                 <button type='button' onClick={() => handleContactChange('donor')} className="block w-full text-left px-4 py-2 hover:bg-gray-100  ">Show only Donors</button>
                             </li>
                             <li>
-                                <a href="/dashboard/patients/transactions" className="block w-full text-left px-4 py-2 hover:bg-gray-100  ">Go to Patients</a>
+                                <a href="javascript:void(0)" className="block w-full text-left px-4 py-2 hover:bg-gray-100  ">Go to Beneficiaries</a>
                             </li>
                             <li>
                                 <button type='button' onClick={() => handleShowAll()} className="block w-full text-left px-4 py-2 hover:bg-gray-100  ">Show All</button>
@@ -187,7 +187,7 @@ const ContactsTable = ({ itemsPerPage }) => {
 
                         </ul>
                         <div className="py-1">
-                            <a href="http://localhost:8000/mosaico" onClick={handlePreviewClick} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  ">Preview Email to Send</a>
+                            <a href="javascript:void(0)" /*onClick={handlePreviewClick}*/ className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  ">Preview Email to Send</a>
                         </div>
                     </div>
                 </div>

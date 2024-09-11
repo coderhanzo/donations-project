@@ -49,7 +49,7 @@ class CreateUserSerializer(UserCreateSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField(source="get_full_name")
+    full_name = serializers.SerializerMethodField(source="get_full_name", read_only=True)
     # phone_number = PhoneNumberField()
 
     class Meta:
@@ -66,6 +66,8 @@ class UserSerializer(serializers.ModelSerializer):
     def get_full_name(self, obj):
         return obj.get_full_name
 
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
 
 # def to_representation(self, instance):
 #     representation = super(UserSerializer, self).to_representation(instance)
@@ -74,8 +76,6 @@ class UserSerializer(serializers.ModelSerializer):
 #     return representation
 
 
-def create(self, validated_data):
-    return User.objects.create_user(**validated_data)
 
 
 class TokenRefreshSerializer(serializers.Serializer):

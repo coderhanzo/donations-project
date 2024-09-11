@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -108,6 +109,7 @@ def signup_view(request):
         "password_confirmation": request.data.get("password_confirmation"),
         "phone_number": request.data.get("phone_number"),
         "institution": request.data.get("institution"),
+        "user_role": request.data.get("user_role"),
         # Add other fields as needed
     }
     # Post to app db
@@ -441,38 +443,51 @@ def create_institution_with_admin(request):
 @transaction.atomic
 @permission_classes([AllowAny])
 def create_user(request):
-
+    logged_in_user = request.institution_user
     user_data = {
         "first_name": request.data.get("first_name"),
         "last_name": request.data.get("last_name"),
         "email": request.data.get("email"),
         "password": request.data.get("password"),
+        "password_confirmation": request.data.get("password_confirmation"),
         "phone_number": request.data.get("phone_number"),
         "user_role": request.data.get("user_role"),
     }
+    full_name = f"{user_data['first_name']} {user_data['last_name']}"
+    user_data["full_name"] = full_name
     try:
         institution = Institution.objects.get(id=request.data.get("institution"))
+        institution.admin_user = logged_in_user
+        institution.save()
+        user_data["institution"] = institution.id
     except Institution.DoesNotExist:
         return Response(
             {"detail": "Institution not found"}, status=status.HTTP_404_NOT_FOUND
         )
+
+    # Add institution data to user_data
+    user_data["institution"] = institution.name
+
     user_serializer = CreateUserSerializer(data=user_data)
     if user_serializer.is_valid(raise_exception=True):
-        user = user_serializer.save(commit=False)
-        user.institution = institution
-        user.save()
+        user = user_serializer.save()
 
         # Generate JWT token for user
         token = RefreshToken.for_user(user)
-        response_data = {
-            "access": str(token.access_token),
-            "user": UserSerializer(user).data,
-            "institution": InstitutionSerializer(institution).data,
-        }
-        return Response(response_data, status=status.HTTP_201_CREATED)
+        drf_response = Response(
+            {
+                "access": str(token.access_token),
+            }
+        )
+        drf_response.set_cookie(
+            key=settings.SIMPLE_JWT["AUTH_COOKIE"],
+            value=str(token),
+            httponly=True,
+        )
+        return drf_response
 
     return Response(
-        {"detail": "User creation failed"}, status=status.HTTP_400_BAD_REQUEST
+        {"detail": "Account creation failed"}, status=status.HTTP_400_BAD_REQUEST
     )
 
 
@@ -503,15 +518,16 @@ def get_institutions_and_admins(request):
 def disable_institutions_and_admins(request):
     institution_data = request.data.get("institution_data")
     admin_data = request.data.get("admin_data")
+
     if institution_data:
         try:
             institution = Institution.objects.get(id=institution_data)
-            institution_data.is_active = False
-            institution_data.save()
+            institution.is_active = False
+            institution.save()
 
-            admin = institution.users.all()
-            admin.update(is_active=False)
-            return Response({"message": "Insitution and all users have been didsabled"})
+            admins = institution.users.all()
+            admins.update(is_active=False)
+            return Response({"message": "Institution and all users have been disabled"})
         except Institution.DoesNotExist:
             return Response(
                 {"detail": "Institution not found"}, status=status.HTTP_404_NOT_FOUND
@@ -528,7 +544,7 @@ def disable_institutions_and_admins(request):
             )
 
     return Response(
-        {"message": "No data found to disable"}, status=status.HTTP_404_NOT_FOUND
+        {"message": "No data found to disable"}, status=status.HTTP_400_BAD_REQUEST
     )
 
 
@@ -559,9 +575,34 @@ def login_view(request):
             httponly=True,
         )
         return drf_response
+
     return Response(
         {"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
     )
 
 
 # login view for institution admin
+@api_view(["PUT"])
+@transaction.atomic
+def update_user_details(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    institution = user.institution
+
+    user_serializer = UserSerializer(
+        user, data=request.data.get("user", {}), partial=True
+    )
+    institution_serializer = InstitutionSerializer(
+        institution, data=request.data.get("institution", {}), partial=True
+    )
+    if user_serializer.is_valid(raise_exception=True):
+        user = user_serializer.save(institution=institution)
+        return Response(
+            {
+                "message": "User details updated successfully",
+                "user": user_serializer.data,
+            },
+            status=status.HTTP_200_OK,
+        )
+    return Response(
+        {"message": "Failed to update user details"}, status=status.HTTP_400_BAD_REQUEST
+    )

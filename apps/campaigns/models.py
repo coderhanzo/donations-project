@@ -93,15 +93,27 @@ class Photo(models.Model):
 
 
 class HealthcarePatient(models.Model):
+
+    
+    SUPPORT_TYPE_CHOICES = [
+        ("MEDICAL TREATMENT", "Medical Treatment"),
+        ("THERAPY MEDICATION", "Therapy Medication"),
+    ]
     profile = models.OneToOneField(
         AccountProfile,
         on_delete=models.CASCADE,
         default=None,
         related_name="patient_profile",
     )
+    # health_conditions = models.CharField(
+    #     max_length=50, choices=SPECIFIC_HEALTH_CONDITION_TYPE_CHOICES
+    # )
     hospital = models.CharField(max_length=255, blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     illness = models.CharField(max_length=255, blank=True, null=True)
+    number_of_patients_benefiting = models.IntegerField(
+        default=0, blank=True, null=True
+    )
     campaigns = models.ManyToManyField(
         MonetaryCampaign, blank=True, related_name="HEALTHCARE_PATIENT"
     )
@@ -117,27 +129,52 @@ class EducationalInstitution(models.Model):
         ("UNIVERSITY", "University"),
         ("ORPHANAGE", "Orphanage"),
     ]
+    EDUCATIONAL_NEEDS_CHOICES = [
+        ("BOOKS", "Books"),
+        ("SCHOLARSHIP", "Scholarship"),
+        ("INFRASTRUCTURE", "Infrastructure"),
+    ]
     profile = models.OneToOneField(AccountProfile, on_delete=models.CASCADE)
     institution_type = models.CharField(max_length=50, choices=INSTITUTION_TYPE_CHOICES)
     number_of_students = models.IntegerField(default=0)
     programs_offered = models.TextField(blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    state = models.TextField(blank=True, null=True)
+    city = models.TextField(blank=True, null=True)
     accreditation_details = models.TextField(blank=True, null=True)
+    educational_needs = models.CharField(
+        max_length=50, choices=EDUCATIONAL_NEEDS_CHOICES, blank=True, null=True
+    )
     campaigns = models.ManyToManyField(
         MonetaryCampaign, blank=True, related_name="EDUCATIONAL_INSTITUTION"
     )
     other_info = models.TextField(blank=True, null=True)
+    @property
+    def get_full_location(self):
+        return f"{self.address}, {self.city}, {self.state}"
 
 
 class HealthcareInstitution(models.Model):
     INSTITUTION_TYPE_CHOICES = [
-        ("HOSPITAL", "Hospital"),
-        ("CLINIC", "Clinic"),
+        ("HOSPITAL EQUIPMNET", "Hospital Equipment"),
+        ("PATIENT CARE", "Patient Care"),
         ("HEALTH CENTER", "Health Center"),
         ("SENIOR HOMES", "Senior Homes"),
+        ("MEDICAL SUPPLIES", "Medical Supplies"),
+    ]
+    SPECIFIC_HEALTH_CONDITION_TYPE_CHOICES = [
+        ("CANCER", "Cancer"),
+        ("DIABETES", "Diabetes"),
+        ("GENERAL_HEALTH_SUPPORT", "General Health Support"),
     ]
     profile = models.OneToOneField(AccountProfile, on_delete=models.CASCADE)
     institution_type = models.CharField(max_length=50, choices=INSTITUTION_TYPE_CHOICES)
+    health_condition = models.CharField(
+        max_length=50, choices=SPECIFIC_HEALTH_CONDITION_TYPE_CHOICES, blank=True, null=True
+    )
+
     number_of_beds = models.IntegerField(default=0)
+    number_of_patients_benefiting = models.IntegerField(default=0)
     specializations = models.TextField(blank=True, null=True)
     operating_hours = models.TextField(blank=True, null=True)
     campaigns = models.ManyToManyField(
@@ -193,6 +230,8 @@ class EmergencyRelief(models.Model):
     contact_organization = models.TextField(blank=True, null=True)  # possible remove
     number_of_beneficiaries = models.IntegerField(default=0)
     key_services_provided = models.TextField(blank=True, null=True)
+    relief_timeline = models.TextField(blank=True, null=True)
+    other_info = models.TextField(blank=True, null=True)
     campaigns = models.ManyToManyField(
         MonetaryCampaign, blank=True, related_name="EMERGENCY_RELIEF"
     )
@@ -202,6 +241,16 @@ class EnvironmentalProtection(models.Model):
     CONSERVATION_TYPE_CHOICES = [
         ("REFORESTATION", "Reforestation"),
         ("WEILDLIFE PROTECTION", "Wildlife Protection"),
+        ("CLEAN WATERS", "Clean Waters"),
+    ]
+    ENVIRONMENTAL_GOALS_CHOICES = [
+        ("PLANTING TREES", "Planting Trees"),
+        ("REDUCING POLLUTION", "Reducing Pollution"),
+    ]
+    RESOURCES_REQUIRED = [
+        ("VOLUNTEER", "Volunteer"),
+        ("FUNDING", "Funding"),
+        ("EQUIPMENT", "Equipment"),
     ]
     profile = models.OneToOneField(AccountProfile, on_delete=models.CASCADE)
     organization_name = models.CharField(max_length=255)  # possible remove
@@ -209,6 +258,9 @@ class EnvironmentalProtection(models.Model):
     location = models.TextField(blank=True, null=True)
     conservation_type = models.CharField(
         max_length=50, choices=CONSERVATION_TYPE_CHOICES
+    )
+    environmental_goals = models.CharField(
+        max_length=50, choices=ENVIRONMENTAL_GOALS_CHOICES, blank=True, null=True
     )
     impact_metrics = models.TextField(blank=True, null=True)
     funding_sources = models.TextField(blank=True, null=True)
@@ -218,8 +270,25 @@ class EnvironmentalProtection(models.Model):
 
 
 class CommunityDevelopment(models.Model):
+    TARGET_COMMUNITY_CHOICES = [
+        ("RURAL", "Rural"),
+        ("URBAN", "Urban"),
+        ("INDIGENOUS", "Indigenous"),
+    ]
+    DEVELOPMENT_TYPE = [
+        ("INFRASTRUCTURE", "Infrastructure"),
+        ("EDUCATION", "Education"),
+        ("HEALTHCARE", "Healthcare"),
+    ]
+    SPECIFIC_DEVELOPMENT_CHOICES = [
+        ("CONSTRUCTION", "Construction"),
+        ("TRAINING PROGRAMS", "Training Programs"),
+        ("FUNDING", "Funding"),
+    ]
     profile = models.OneToOneField(AccountProfile, on_delete=models.CASCADE)
-    project_name = models.CharField(max_length=255)  # possible remove
+    community = models.CharField(
+        max_length=255, choices=TARGET_COMMUNITY_CHOICES, blank=True, null=True
+    )  # possible remove
     community_name = models.CharField(max_length=255)
     location = models.TextField(blank=True, null=True)
     key_objectives = models.TextField(blank=True, null=True)

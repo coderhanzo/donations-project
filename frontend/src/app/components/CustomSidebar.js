@@ -43,7 +43,7 @@ const CustomSidebar = () => {
                         <CustomSidebarLink title="Campaigns" icon={<LuHeartHandshake className="scale-[1.55] stroke-1" />} href={`/dashboard/campaigns`} />
                         <SidebarAccordian
                             title="Tasks"
-                            subtitles={["Kanban", "Appointments"]}
+                            subtitles={["Donor Pipeline", "Appointments"]}
                             icons={[<LuKanbanSquareDashed className="scale-[1.5]" />, <LuTornado className="scale-[1.5]" />]}
                             toggleAction={toggleTasksDropdown}
                             isOpen={tasksOpen}

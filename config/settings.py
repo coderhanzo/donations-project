@@ -1,5 +1,6 @@
 from pathlib import Path
 import environ
+import os
 
 # import pymysql
 
@@ -31,6 +32,7 @@ CORS_ALLOW_CREDENTIALS = True
 DJANGO_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.admin",
+    "django.contrib.sites",
     "django.contrib.auth",
     "django.contrib.sessions",
     "django.contrib.messages",
@@ -146,11 +148,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "/static/"
-STATICFILE_DIRS = []
-STATIC_ROOT = BASE_DIR / "static"
+STATIC_URL = "/staticfiles/"
+
+STATICFILE_DIR = []
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -231,3 +235,5 @@ PHONENUMBER_DEFAULT_REGION = "GH"
 # CELERY_TIMEZONE = "Africa/Accra"
 
 # CELERY_WORKER_MAX_TASKS_PER_CHILD = 100
+
+# MOSAICO_BACKENDS = 'mosaico.backends.django.DjangoMosaicoBackend'
