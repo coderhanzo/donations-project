@@ -124,7 +124,7 @@ def image(request):
 @csrf_exempt
 # @user_passes_test(lambda u: u.is_staff)
 def template(request):
-    action = request.POST["action"]
+    action = request.POST.get["action"]
     if action == "save":
         key = request.POST["key"]
         name = request.POST["name"]
