@@ -238,13 +238,12 @@ const ContactsTable = ({ itemsPerPage }) => {
 
                                     <div className="">
                                         <div className="text-base break-words font-semibold flex flex-col">
-                                            <span>{contact.name} </span>
+                                            <span>{contact?.name} </span>
                                         </div>
-                                        <div className="font-normal text-gray-500">neil.sims@flowbite.com</div>
                                     </div>
                                 </th>
                                 <td className="max-sm:hidden px-6 py-4">
-                                    React Developer
+                                    <span>{contact?.name}</span>
                                 </td>
                                 <td className="max-sm:hidden px-6 py-4">
                                     <div className="flex items-center">
