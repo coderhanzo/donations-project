@@ -24,7 +24,10 @@ class CreateUserSerializer(UserCreateSerializer):
             "phone_number",
             "reference",
             "password",
-            "password_confirmation",
+<<<<<<<<< Temporary merge branch 1
+=========
+            "institution_admin",
+>>>>>>>>> Temporary merge branch 2
             "institution",
         ]
         # extra_kwargs = {"password": {"write_only": True}}

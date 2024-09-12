@@ -35,7 +35,7 @@ class User(AbstractUser):
         verbose_name=_("Phone Number"), max_length=30, blank=True, null=True
     )
     institution_admin = models.BooleanField(
-        verbose_name=_("Is Institution Admin"),blank=True, null=True
+        verbose_name=_("Is Institution Admin"), db_default=False, blank=True, null=True
     )
     reference = models.CharField(
         verbose_name=_("Account Reference"), max_length=250, blank=True, null=True
