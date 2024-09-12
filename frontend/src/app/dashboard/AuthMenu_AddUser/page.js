@@ -72,6 +72,7 @@ const InstitutionSettings = () => {
                                     <label htmlFor="role" className="block mb-2 text-sm font-medium text-gray-900">Select Role</label>
                                     <select id="roles" value={roles} className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" onChange={(e) => setRole(e.target.value)}>
                                         <option value="" disabled>--Select User Role--</option>
+                                        <option value="institution_admin">User</option>
                                         <option value="institution_admin">Admin</option>
                                         <option value="bsystems_admin">Super Admin</option>
                                     </select>
