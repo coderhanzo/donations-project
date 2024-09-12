@@ -41,7 +41,7 @@ const Charts = () => {
                 <div className=" md:w-1/3 bg-white drop-shadow-xl rounded-2xl">
                     <ActivePieChart />
                 </div>
-                <Link href={`/dashboard/campaigns/1`} className=" md:w-1/3 bg-white drop-shadow-xl rounded-2xl flex flex-col place-items-center py-3">
+                <Link href={`/dashboard/campaigns`} className=" md:w-1/3 bg-white drop-shadow-xl rounded-2xl flex flex-col place-items-center py-3">
                     <div className="w-1/2 mx-auto my-2">
                         <div className="flex flex-row space-x-2 justify-around mb-2">
                             <p className="">Campaign 1</p>
@@ -76,7 +76,7 @@ const Charts = () => {
 
 
                 </Link>
-                <Link href={`/dashboard/campaigns/2`} className=" md:w-1/3  bg-white drop-shadow-xl rounded-2xl flex flex-col place-items-center py-3">
+                <Link href={`/dashboard/campaigns`} className=" md:w-1/3  bg-white drop-shadow-xl rounded-2xl flex flex-col place-items-center py-3">
                     <div className="w-1/2 mx-auto my-2">
                         <div className="flex flex-row space-x-2 justify-around mb-2">
                             <p className="text-md">Campaign 2</p>
