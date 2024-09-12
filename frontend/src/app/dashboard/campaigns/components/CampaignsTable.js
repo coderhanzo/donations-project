@@ -171,13 +171,11 @@ const CampaignsTable = ({ itemsPerPage }) => {
                                     <div className="">
                                         <div className="text-base font-semibold flex flex-col">
                                             <span>{campaign?.name}</span>
-
                                         </div>
-                                        <div className="font-normal text-gray-500">67% to goal</div>
                                     </div>
                                 </th>
                                 <td className="max-sm:hidden px-6 py-4">
-                                    Monetary Campaign
+                                    <span>{campaign?.description}</span>
                                 </td>
                                 <td className="max-sm:hidden px-6 py-4">
                                     <div className="flex items-center">
