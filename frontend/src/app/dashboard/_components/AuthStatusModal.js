@@ -17,7 +17,7 @@ const AuthStatusModal = ({isOpen, onClose}) =>{
                     Current Status
                 </label>
                 <select className="w-full px-3 py-2 border border-gray-300 rounded-lg">
-                <option value="disabled">Active</option>
+                <option value="" readonly>Active</option>
                 </select>
             </div>
             <div className="mb-4">
@@ -25,7 +25,7 @@ const AuthStatusModal = ({isOpen, onClose}) =>{
                    Change User Status
                 </label>
                 <select className="w-full px-3 py-2 border border-gray-300 rounded-lg">
-                <option value="disabled">Select User Status</option>
+                <option value="">--Select User Status--</option>
                 <option value="" className="success">Active</option>
                 <option value="" className="danger">Disable</option>
                 </select>

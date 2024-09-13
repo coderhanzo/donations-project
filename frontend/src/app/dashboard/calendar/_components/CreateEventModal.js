@@ -14,13 +14,9 @@ import moment from "moment-timezone";
 
 const CreateEventModal = () => {
   const dispatch = useDispatch();
-  const { createEventModalOpen, selectedEvent, startTimeRange, endTimeRange } =
-    useSelector((state) => state.events);
-  const { timezone } = useSelector((state) => state.profile);
+  const { createEventModalOpen, selectedEvent, startTimeRange, endTimeRange } = useSelector((state) => state.events);
   const [localTitle, setLocalTitle] = useState("");
-  const [localStartDate, setLocalStartDate] = useState(
-    selectedEvent?.start || ""
-  );
+  const [localStartDate, setLocalStartDate] = useState( selectedEvent?.start || "");
   const [localEndDate, setLocalEndDate] = useState(selectedEvent?.end || "");
   const [localDescription, setLocalDescription] = useState("");
   const [localFrequency, setLocalFrequency] = useState("");
@@ -38,20 +34,12 @@ const CreateEventModal = () => {
   };
 
   const handleStartDateChange = (date) => {
-    if (!date || !timezone) {
-      console.error("Invalid date or timezone", { date, timezone });
-      return;
-    }
-    const local_time = moment(date).tz(timezone).format("YYYY-MM-DDTHH:mm:ssZ");
+    const local_time = moment(date).format("YYYY-MM-DDTHH:mm:ssZ");
     setLocalStartDate(local_time);
   };
-
+  
   const handleEndDateChange = (date) => {
-    if (!date || !timezone) {
-      console.error("Invalid date or timezone", { date, timezone });
-      return;
-    }
-    const local_time = moment(date).tz(timezone).format("YYYY-MM-DDTHH:mm:ssZ");
+    const local_time = moment(date).format("YYYY-MM-DDTHH:mm:ssZ");
     setLocalEndDate(local_time);
   };
 
