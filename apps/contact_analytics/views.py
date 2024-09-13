@@ -15,6 +15,7 @@ from rest_framework.decorators import (
     permission_classes,
     authentication_classes,
 )
+from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.db import transaction
 from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
@@ -320,6 +321,19 @@ class addContact(APIView):
         )
 
 
+class GetContacts(generics.ListAPIView):
+    serializer_class = AccountProfileReturnSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        if not self.request.user.is_superuser:
+            return AccountProfile.objects.filter(
+                associated_institution=self.request.user.institution
+            )
+        return AccountProfile.objects.all()
+
+
 class editContact(APIView):
     """use the same format as add contact"""
 
@@ -394,14 +408,3 @@ def delete_contact(request):
     return Response(
         {"message": "Contact deleted successfully."}, status=status.HTTP_200_OK
     )
-
-
-class GetContacts(generics.ListAPIView):
-    serializer_class = AccountProfileReturnSerializer
-
-    def get_queryset(self):
-        if not self.request.user.is_superuser:
-            return AccountProfile.objects.filter(
-                associated_institution=self.request.user.institution
-            )
-        return AccountProfile.objects.all()
