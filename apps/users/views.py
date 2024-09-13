@@ -132,7 +132,6 @@ def signup_view(request):
         "email": request.data.get("email"),
         "password": request.data.get("password"),
         "phone_number": request.data.get("phone_number"),
-        # "bsystems_admin": request.data.get("bsystems_admin"),
         "institution_admin": request.data.get("institution_admin"),
         "institution_name": request.data.get("institution_name"),
         # Add other fields as needed

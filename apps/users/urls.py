@@ -10,10 +10,8 @@ urlpatterns = [
     path("jwt/login/", views.login_view, name="login"),
     path("users/create/", views.signup_view, name="create-account"),
     path("users/user/", views.signup_view, name="register_user"),
-=========
     path("jwt/create/", views.login_view, name="login"),
     path("users/", views.signup_view, name="register"),
->>>>>>>>> Temporary merge branch 2
     path("users/me/", views.get_logged_in_user, name="get_logged_in"),
     path("users/logout/", views.logout, name="logout"),
     path("users/set_password/", views.set_password),
