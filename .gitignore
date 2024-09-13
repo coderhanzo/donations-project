@@ -1,5 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+migrations
+
 # dependencies
 node_modules
 /.pnp
@@ -47,6 +49,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+*.pyc
 build/
 develop-eggs/
 dist/
@@ -64,6 +67,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
