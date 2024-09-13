@@ -1,13 +1,16 @@
 'use client'
 import Modal from "./Modal"
+import { LuX } from "react-icons/lu"
 
 const AuthSettingsModal = ({isOpen, onClose}) =>{
  return (
     <Modal isOpen={isOpen} onClose={onClose}>
-        <h4 className="text-lg font-semibold mb-4"> Edit User Details</h4>
-        <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " data-modal-hide="editUserModal">
-                                <LuX className="scale-[1.5] stroke-2" onClick={() => dispatch(toggleEditUser())} />
-                            </button>
+        <div className="flex items-start justify-between p-4 border-b rounded-t ">
+             <h4 className="text-lg font-semibold mb-2">Edit User Details</h4>
+             <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " >
+            <LuX className="scale-[1.5] stroke-2" onClick={onClose} />
+             </button>
+      </div>  
         <div className="grid grid-cols-2 gap-4">
             <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
