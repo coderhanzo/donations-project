@@ -238,7 +238,7 @@ const ContactsTable = ({ itemsPerPage }) => {
 
                                     <div className="">
                                         <div className="text-base break-words font-semibold flex flex-col">
-                                            <span>{contact?.name} </span>
+                                            <span>{contact?.phone_number} </span>
                                         </div>
                                     </div>
                                 </th>

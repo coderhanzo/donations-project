@@ -70,7 +70,7 @@ const ContactModal = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     const contactData = {
       id: selectedContact?.id || "",
       given_name: firstName,
@@ -83,20 +83,22 @@ const ContactModal = () => {
       notes: notes,
       donor_type: donorType,
       cause: cause,
-      //profilePhoto: "",
     };
-    
-    //This is to handle profile photo differently since formData is not allowed in JSON
+  
+    // Create a FormData object
+    const formData = new FormData();
+  
+    // Append the JSON data as a string
+    formData.append("contactData", JSON.stringify(contactData));
+  
+    // Append the file if it exists
     if (profilePhoto) {
-      const formData = new FormData();
-      formData.append('profile_photo', profilePhoto)
-    };
-    
-
-    const jsonData = JSON.stringify(contactData);
-
+      formData.append("profile_photo", profilePhoto);
+    }
+  
     if (selectedContact) {
-      dispatch(editContact(jsonData));
+      // Edit contact
+      dispatch(editContact(formData));
     } else {
       if (!contactType) {
         toast.error("Please select a contact type (Donor or Patient)");
@@ -106,9 +108,11 @@ const ContactModal = () => {
         toast.error("Please give either a given name or last name");
         return;
       }
-      dispatch(addContact(jsonData));
+      // Add contact
+      dispatch(addContact(formData));
     }
   };
+  
 
   useEffect(() => {
     if (isSuccess) {
