@@ -8,8 +8,8 @@ urlpatterns = [
     path("jwt/refresh/", views.refresh_token_view, name="jwt-refresh"),
     path("jwt/verify/", TokenVerifyView.as_view(), name="jwt-verify"),
     path("jwt/login/", views.login_view, name="login"),
-    path("users/create/", views.signup_view, name="create-account"),
-    path("users/user/", views.signup_view, name="register_user"),
+    # path("users/create/", views.signup_view, name="create-account"),
+    # path("users/user/", views.signup_view, name="register_user"),
 
     path("jwt/create/", views.login_view, name="login"),
     path("users/", views.signup_view, name="register"),

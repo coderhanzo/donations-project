@@ -31,7 +31,7 @@ class MonetaryCampaign(models.Model):
     subscribers = models.ManyToManyField(
         AccountProfile, blank=True, related_name="subscribed_campaigns"
     )
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     causes = models.ManyToManyField(Cause, blank=True, related_name="campaigns")
     # i have this as many to many cause you might have a fund that supports multiple patients or something
     created_by = models.ForeignKey(
@@ -94,7 +94,6 @@ class Photo(models.Model):
 
 class HealthcarePatient(models.Model):
 
-    
     SUPPORT_TYPE_CHOICES = [
         ("MEDICAL TREATMENT", "Medical Treatment"),
         ("THERAPY MEDICATION", "Therapy Medication"),
@@ -149,6 +148,7 @@ class EducationalInstitution(models.Model):
         MonetaryCampaign, blank=True, related_name="EDUCATIONAL_INSTITUTION"
     )
     other_info = models.TextField(blank=True, null=True)
+
     @property
     def get_full_location(self):
         return f"{self.address}, {self.city}, {self.state}"
@@ -170,7 +170,10 @@ class HealthcareInstitution(models.Model):
     profile = models.OneToOneField(AccountProfile, on_delete=models.CASCADE)
     institution_type = models.CharField(max_length=50, choices=INSTITUTION_TYPE_CHOICES)
     health_condition = models.CharField(
-        max_length=50, choices=SPECIFIC_HEALTH_CONDITION_TYPE_CHOICES, blank=True, null=True
+        max_length=50,
+        choices=SPECIFIC_HEALTH_CONDITION_TYPE_CHOICES,
+        blank=True,
+        null=True,
     )
 
     number_of_beds = models.IntegerField(default=0)

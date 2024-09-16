@@ -39,6 +39,11 @@ from rest_framework_simplejwt.authentication import (
 )
 from django.utils.text import slugify
 
+def validate_event_time(start, end):
+    if start < timedelta():
+        raise ValueError("Start time cannot be in the past")
+    if end < start:
+        raise ValueError("End time cannot be before the start time")
 
 class EventCreateView(APIView):
     @transaction.atomic
@@ -62,10 +67,32 @@ class EventCreateView(APIView):
         """
         HERE WE ARE TESTING, THIS SHOULD BE REPLACED WITH EITHER THE INSTITUTIONS CALENDAR OR PERSONAL CALENDAR
         """
-        data["calendar"] = Calendar.objects.get(id=data.get("cal_id")).id
+        calendar_id = data.get("calendar")
+        if not calendar_id:
+            try:
+                calendar = Calendar.objects.get(id=calendar_id)
+            except calendar.DoesNotExist:
+                return Response(
+                    {"error": "The selected calendar does not exist."},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+        else:
+            try:
+                calendar = Calendar.objects.get(id=calendar_id)
+            except calendar.DoesNotExist:
+                return Response(
+                    {"error": "The selected calendar does not exist."},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+        data["calendar"] = calendar.id
         """
         TEST
         """
+        # validate the event times
+        start_time = data.get("start")
+        end_time = data.get("end")
+        if start_time and end_time:
+            validate_event_time(start=start_time, end=end_time)
         # Create Event
         event_serializer = EventSerializer(data=data)
         event_serializer.is_valid(raise_exception=True)

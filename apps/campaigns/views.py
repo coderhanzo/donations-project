@@ -152,8 +152,8 @@ def handle_photo_upload(photo, campaign, institution_id):
 @transaction.atomic
 def create_campaign(request):
     """
-    I apologize for the nested json in form_data. In hind sight file upload should be 
-    separated, so that we can do simple json. 
+    I apologize for the nested json in form_data. In hind sight file upload should be
+    separated, so that we can do simple json.
     But the application is already in too deep with form data
     """
     data = request.data.dict()
@@ -166,9 +166,13 @@ def create_campaign(request):
         if account_instance:
             subscribers.append(account_instance.id)
     data["subscribers"] = subscribers
-    data["is_active"] = (
-        True if request.user.roles == "INSTITUTION_ADMIN" or request.user.roles == "USER" else False
-    )
+    """
+    this will set the campaign to be activated once it checks if the user object has institution 
+    admin or user role
+    """
+    # data["is_active"] = (
+    #     True if request.user.roles == "INSTITUTION_ADMIN" or request.user.roles == "USER" else False
+    # )
     serializer = MonetaryCampaignSerializer(data=data, context={"request": request})
     serializer.is_valid(raise_exception=True)
     campaign_instance = serializer.save()

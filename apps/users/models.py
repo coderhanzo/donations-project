@@ -26,6 +26,12 @@ class User(AbstractUser):
     Use <user>.my_created_tasks.all() to get all task assigned by this user
     """
 
+    USER_ROLES = [
+        ("ADMIN", "Admin"),
+        ("INSTITUTION_ADMIN", "Institution Admin"),
+        ("USER", "User"),
+    ]
+
     # add type car owner, admin, parking attendant
     username = None
     first_name = models.CharField(verbose_name=_("First Name"), max_length=50)
@@ -39,6 +45,9 @@ class User(AbstractUser):
     )
     reference = models.CharField(
         verbose_name=_("Account Reference"), max_length=250, blank=True, null=True
+    )
+    roles = models.CharField(
+        verbose_name=_("Roles"), max_length=250, blank=True, null=True
     )
     institution = models.ForeignKey(
         Institution,

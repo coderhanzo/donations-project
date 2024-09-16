@@ -107,13 +107,13 @@ class MonetaryCampaignSerializer(serializers.ModelSerializer):
             "is_active": {"read_only": True},
         }
 
-    def __init__(self, *args, **kwargs):
-        super(MonetaryCampaignSerializer, self).__init__(*args, **kwargs)
-        if (
-            self.context["request"].user.roles == "INSTITUTION_ADMIN"
-            or self.context["request"].user.roels == "BSYSTEMS_ADMIN"
-        ):
-            self.fields["is_active"].read_only = False
+    # def __init__(self, *args, **kwargs):
+    #     super(MonetaryCampaignSerializer, self).__init__(*args, **kwargs)
+    #     if (
+    #         self.context["request"].user.roles == "Institution Admin"
+    #         or self.context["request"].user.roels == "Admin"
+    #     ):
+    #         self.fields["is_active"].read_only = False
 
     def get_beneficiaries(self, obj):
         ben_list = []
