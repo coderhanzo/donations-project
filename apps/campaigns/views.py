@@ -190,7 +190,7 @@ def create_campaign(request):
 @transaction.atomic
 def edit_campaign(request):
     data = request.data.dict()
-    photos = request.FILES.getlist("photos")
+    # photos = request.FILES.getlist("photos")
     if not data.get("id"):
         return Response(
             {"message": "Campaign ID is required"}, status=status.HTTP_400_BAD_REQUEST
@@ -217,11 +217,11 @@ def edit_campaign(request):
     serializer.is_valid(raise_exception=True)
     serializer.save()
 
-    for photo in photos:
-        handle_photo_upload(photo, campaign_instance, request.user.institution.id)
-    for photo_id in data.get("remove_photo", []):
-        photo_instance = Photo.objects.filter(id=int(photo_id)).first()
-        campaign_instance.photos.remove(photo_instance)
+    # for photo in photos:
+    #     handle_photo_upload(photo, campaign_instance, request.user.institution.id)
+    # for photo_id in data.get("remove_photo", []):
+    #     photo_instance = Photo.objects.filter(id=int(photo_id)).first()
+    #     campaign_instance.photos.remove(photo_instance)
 
     for x in request.data.getlist("remove_subscribers"):
         account_instance = AccountProfile.objects.filter(id=int(x)).first()
