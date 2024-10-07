@@ -34,9 +34,23 @@ class User(AbstractUser):
 
     # add type car owner, admin, parking attendant
     username = None
-    first_name = models.CharField(verbose_name=_("First Name"), max_length=50)
-    last_name = models.CharField(verbose_name=_("Last Name"), max_length=50)
-    email = models.EmailField(verbose_name=_("Email Address"), unique=True)
+    # is_superuser = None
+    # is_staff = None
+    # first_name = None
+    # last_name = None
+    first_name = models.CharField(
+        verbose_name=_("First Name"), max_length=255, blank=True
+    )
+    last_name = models.CharField(
+        verbose_name=_("Last Name"), max_length=255, blank=True
+    )
+    email = models.EmailField(
+        max_length=200,
+        unique=True,
+        verbose_name="Contact Person email",
+        blank=True,
+        null=True,
+    )
     phone_number = PhoneNumberField(
         verbose_name=_("Phone Number"), max_length=30, blank=True, null=True
     )
@@ -60,8 +74,8 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [
-        "first_name",
-        "last_name",
+        "phone_number",
+        # "institution",
     ]
 
     objects = CustomUserManager()
