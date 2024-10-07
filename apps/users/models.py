@@ -67,8 +67,8 @@ class User(AbstractUser):
     """
 
     username = None
-    is_superuser = None
-    is_staff = None
+    # is_superuser = None
+    # is_staff = None
     # first_name = None
     # last_name = None
     first_name = models.CharField(
@@ -105,7 +105,7 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [
         "phone_number",
-        "institution",
+        # "institution",
     ]
 
     objects = CustomUserManager()
