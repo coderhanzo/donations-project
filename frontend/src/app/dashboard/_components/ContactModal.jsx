@@ -27,9 +27,6 @@ const ContactModal = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [company, setCompany] = useState(selectedContact?.company || "");
   const [hospital, setHospital] = useState(selectedContact?.hospital || "");
-  const [profilePhoto, setProfilePhoto] = useState(
-    selectedContact?.profile_photo || ""
-  );
   const [donorType, setDonorType] = useState(selectedContact?.donor_type || "");
   const [notes, setNotes] = useState(selectedContact?.notes || "");
   const [cause, setCause] = useState("");
@@ -42,7 +39,6 @@ const ContactModal = () => {
     setPhoneNumber(selectedContact?.phone_number || "");
     setCompany(selectedContact?.company || "");
     setHospital(selectedContact?.hospital || "");
-    setProfilePhoto(selectedContact?.profile_photo || "");
     setDonorType(selectedContact?.donor_type || "");
     setNotes(selectedContact?.notes || "");
     setCause(
@@ -85,33 +81,24 @@ const ContactModal = () => {
       cause: cause,
     };
   
-    // Create a FormData object
-    const formData = new FormData();
-  
-    // Append the JSON data as a string
-    formData.append("contactData", JSON.stringify(contactData));
-  
-    // Append the file if it exists
-    if (profilePhoto) {
-      formData.append("profile_photo", profilePhoto);
-    }
-  
+    // No need to append data, directly dispatch the contactData object
     if (selectedContact) {
       // Edit contact
-      dispatch(editContact(formData));
+      dispatch(editContact(contactData));
     } else {
       if (!contactType) {
         toast.error("Please select a contact type (Donor or Patient)");
         return;
       }
       if (!firstName && !lastName) {
-        toast.error("Please give either a given name or last name");
+        toast.error("Please provide either a given name or last name");
         return;
       }
       // Add contact
-      dispatch(addContact(formData));
+      dispatch(addContact(contactData));
     }
   };
+  
   
 
   useEffect(() => {
@@ -127,7 +114,6 @@ const ContactModal = () => {
       setPhoneNumber("");
       setCompany("");
       setHospital("");
-      setProfilePhoto("");
       setDonorType("");
       setNotes("");
       setCause("");
@@ -328,23 +314,6 @@ const ContactModal = () => {
                       {selectedContact?.type || "Others"}
                     </label>
                   </div>
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="current-password"
-                    className="block mb-2 text-sm font-medium text-gray-900 "
-                  >
-                    Upload Profile Photo
-                  </label>
-                  <input
-                    key={selectedContact ? selectedContact.id : "no-contact"}
-                    type="file"
-                    name="current-password"
-                    id="current-password"
-                    accept="image/png, image/jpeg"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 "
-                    onChange={handleFileChange}
-                  />
                 </div>
                 {contactType === "donor" ? (
                   <div className="col-span-6 sm:col-span-3">

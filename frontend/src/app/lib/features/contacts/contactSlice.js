@@ -9,7 +9,7 @@ export const fetchContacts = createAsyncThunk(
     'contact/fetchContacts',
     async (_,{ rejectWithValue }) => {
         try {
-            const response = await apiClient.get(`${API_BASE_URL}/api/contact-analytics/get-contacts/`, { withCredentials: true })
+            const response = await apiClient.get(`${API_BASE_URL}/api/contact-analytics/contacts/`, { withCredentials: true })
             return response.data
         }
         catch (error) {
@@ -19,15 +19,20 @@ export const fetchContacts = createAsyncThunk(
 )
 export const addContact = createAsyncThunk(
     'contact/addContact',
-    async (eventData, { rejectWithValue }) => {
+    async (formData, { rejectWithValue }) => {
         try {
-            const response = await apiClient.post(`${API_BASE_URL}/api/contact-analytics/add-contact/`, eventData, { withCredentials: true })
-            return response.data
+            const response = await apiClient.post(`${API_BASE_URL}/api/contact-analytics/add-contact/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                withCredentials: true
+            });
+            return response.data;
         } catch (error) {
-            return rejectWithValue(error.message)
+            return rejectWithValue(error.message);
         }
     }
-)
+);
 export const uploadContact = createAsyncThunk(
     'contact/uploadContact',
     async (uploadData, {rejectWithValue}) => {
@@ -40,18 +45,22 @@ export const uploadContact = createAsyncThunk(
     }
 )
 
-//may need changes this is copy of add
 export const editContact = createAsyncThunk(
     'contact/editContact',
-    async (updatedData, { rejectWithValue }) => {
+    async (formData, { rejectWithValue }) => {
         try {
-            const response = await apiClient.patch(`${API_BASE_URL}/api/contact-analytics/edit-contact/`, updatedData, { withCredentials: true })
-            return response.data
+            const response = await apiClient.patch(`${API_BASE_URL}/api/contact-analytics/edit-contact/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                withCredentials: true
+            });
+            return response.data;
         } catch (error) {
-            return rejectWithValue(error.message)
+            return rejectWithValue(error.message);
         }
     }
-)
+);
 export const fetchCauses = createAsyncThunk(
     'contact/fetchCauses',
     async (_, { rejectWithValue }) => {

@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { LuX, LuMinimize2, LuMoreHorizontal } from 'react-icons/lu'
 
 import { LuUser2 } from "react-icons/lu"
+import Image from 'next/image'
 
 
 const ContactCard = () => {
@@ -80,7 +81,7 @@ const ContactCard = () => {
                     <div className="flex flex-col items-center pb-10 w-full">
                         <div className='w-16 h-16 mx-auto flex items-center justify-around rounded-full'>
                             {!imageError && selectedContact?.profile_photo
-                                ? <img
+                                ? <Image
                                     src={selectedContact.profile_photo}
                                     alt="Profile"
                                     onError={() => setImageError(true)}

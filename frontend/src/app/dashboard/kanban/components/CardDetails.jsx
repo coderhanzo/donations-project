@@ -100,7 +100,7 @@ export default function CardDetails(props) {
     });
     useEffect(() => {
         if (props.updateCard) props.updateCard(props.bid, values.id, values);
-    }, [values]);
+    }, [values,props]);
 
     return (
         <Modal onClose={props.onClose}>
@@ -136,7 +136,7 @@ export default function CardDetails(props) {
                             >
                                 {values.tags.length !== 0 ? (
                                     values.tags.map((item) => (
-                                        <span
+                                        <span key={item.id}
                                             className="flex place-items-center h-[32px] box-border w-auto min-w-[40px] p-3 rounded-md text-black float-left gap-2"
                                             style={{ backgroundColor: item.color }}
                                         >
@@ -188,7 +188,7 @@ export default function CardDetails(props) {
                                 <div className="my-2">
                                     {values.task.length !== 0 ? (
                                         values.task.map((item, index) => (
-                                            <div className="flex  gap-2 min-h-[20px] h-auto p-2 hover:bg-slate-300 rounded-xl justify-between place-items-center">
+                                            <div key={item.id} className="flex  gap-2 min-h-[20px] h-auto p-2 hover:bg-slate-300 rounded-xl justify-between place-items-center">
                                                 <input
                                                     className="h-[18px] w-[18px] cursor-pointer"
                                                     type="checkbox"

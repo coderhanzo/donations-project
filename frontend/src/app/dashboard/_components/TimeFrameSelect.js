@@ -25,7 +25,7 @@ const TimeFrameSelect = () => {
             <option value="90days">Last 90 Days</option>
             <option value="Q1">Q1</option>
             <option value="Q2">Q2</option>
-      // ... other options ...
+      
         </select>
     );
 };

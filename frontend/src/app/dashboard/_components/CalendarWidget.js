@@ -36,7 +36,7 @@ export default function CalendarWidget({ localizer }) {
             start: isValidDate(it.start) ? new Date(it.start) : null,
             end: isValidDate(it.end) ? new Date(it.end) : null,
             isDraggable: true,
-        })), [events, calendar, currentCalendarId])
+        })), [events,  currentCalendarId])
     const [date, setDate] = useState(new Date());
     const [view, setView] = useState('month');
     const [draggedEvent, setDraggedEvent] = useState()
@@ -68,7 +68,7 @@ export default function CalendarWidget({ localizer }) {
             dispatch(toggleCreateEventModal());
 
         },
-        [dispatch, selectedDates]
+        [dispatch]
     )
 
     const resizeEvent = useCallback(
@@ -260,7 +260,7 @@ export default function CalendarWidget({ localizer }) {
 
         dispatch(getEvents(timeRange))
         // Fetch events based on this range
-    }, [date, view]);
+    }, [date, view,dispatch]);
 
 
     return (

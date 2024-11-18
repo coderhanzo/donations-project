@@ -47,7 +47,7 @@ const TransactionsDataTable = ({ itemsPerPage }) => {
             dispatch(fetchTransactions())
             dispatch(setSelectionType('all'))
         }
-    }, [dispatch])
+    }, [dispatch,all,contact,selected])
 
 
     useEffect(() => {
