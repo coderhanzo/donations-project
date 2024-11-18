@@ -1,4 +1,14 @@
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/src
+    depends_on:
+      - donations-backend
   mysql-db:
     container_name: Donations-db
     image: mysql:8.0
@@ -23,7 +33,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/Dockerfile
-    command: ./wait-for-it.sh mysql-db:3306 -- gunicorn config.wsgi:application --bind 0.0.0.0:2002
+    command: ./wait-for-it.sh mysql-db:3306 -- gunicorn config.wsgi:application --bind 0.0.0.0:8000
     # command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
     # command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -37,14 +47,13 @@ services:
     depends_on:
       - mysql-db
     networks:
-      - doantions-network
+      - donations-network
 
 networks:
-  doantions-network:
+  donations-network:
     driver: bridge
 
 volumes:
   mysql_data:
   static_volume:
   media_volume:
-

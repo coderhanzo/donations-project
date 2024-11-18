@@ -33,4 +33,4 @@ RUN poetry config virtualenvs.create false && poetry install && rm -rf $POETRY_C
 
 COPY . .
 
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:2002"]
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]

@@ -25,3 +25,7 @@
 **/secrets.dev.yaml
 **/values.dev.yaml
 README.md
+next.config.mjs
+.git
+.gitignore
+Dockerfile
