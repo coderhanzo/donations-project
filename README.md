@@ -21,7 +21,3 @@ Extending signup_view to check whether a user is a bsystems admin or institution
 - What i tried
   - Boolean fields for either bsystems admin or instituion admin
   - created a permissions decorator 
-
-# what i have to do
-1. Fields for beneficiaries
-2. Integrating widget

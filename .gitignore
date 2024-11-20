@@ -11,9 +11,9 @@ node_modules
 /coverage
 
 # next.js
-/.next/
+# /.next/
 /out/
-
+package-lock.json
 # production
 /build
 
