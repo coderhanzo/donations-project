@@ -23,10 +23,10 @@ const LoginPage = () => {
       if (institution_admin === 1) {
         //console.log("Redirecting to /dashboard because user is an institution admin")
         setTimeout(() => (window.location.href = "/dashboard"), 1000);
-      } else {
+      } /*else {
         //console.log("Redirecting to /user/dashboard because user is a regular user")
         setTimeout(() => (window.location.href = "/dashboard"), 1000);
-      }
+      }*/
     }
     /*Here so that welcome shows, since welcome is based on isSuccess
          Other option is to have a showWelcome state be set in the isSuccess if statement
