@@ -78,7 +78,7 @@ def login_view(request):
         email=email,
         password=password,
     )
-
+    print(user, f":User Details")
     if user and user.is_active:
         # If valid, issue JWT token
         token = RefreshToken().for_user(user)
@@ -92,6 +92,7 @@ def login_view(request):
             value=str(token),
             httponly=True,
         )
+        print(drf_response, f"drf response")
         return drf_response
     return Response(
         {"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
