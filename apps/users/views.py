@@ -92,7 +92,7 @@ def login_view(request):
             value=str(token),
             httponly=True,
         )
-        print(drf_response, f"drf response")
+        print(drf_response, f":drf response")
         return drf_response
     return Response(
         {"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
