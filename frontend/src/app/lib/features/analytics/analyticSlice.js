@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import apiClient from './../../../../apiClient';
 import moment from 'moment';
-const API_BASE_URL = 'http://localhost:8000'
+const API_BASE_URL = 'http://13.244.68.8:8000'
 
 // Helper function to calculate start and end dates based on the selected time range
 const calculateDateRange = (selectedRange, customStart, customEnd) => {

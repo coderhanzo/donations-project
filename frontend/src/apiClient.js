@@ -57,7 +57,7 @@ apiClient.interceptors.response.use(async response => {
 
         try {
             // Attempt to refresh the token by calling your refresh token endpoint
-            const response = await apiClient.get('http://localhost:8000/api/auth/jwt/refresh/');
+            const response = await apiClient.get('http://13.244.68.8:8000/api/auth/jwt/refresh/');
             localStorage.setItem('access_token', response.data.access)
             // If the token was successfully refreshed, retry the original request
             return apiClient(originalRequest);

@@ -7,7 +7,7 @@ export const get_logged_in_user = createAsyncThunk(
     'auth/user',
     async (data, thunkAPI) => {
         try {
-            const response = await apiClient.get('http://localhost:8000/api/auth/users/me/', { withCredentials: true })
+            const response = await apiClient.get('http://13.244.68.8:8000/api/auth/users/me/', { withCredentials: true })
 
 
             return response.data
@@ -22,7 +22,7 @@ export const login = createAsyncThunk(
     'auth/login',
     async (data, thunkAPI) => {
         try {
-            const response = await apiClient.post('http://localhost:8000/api/auth/jwt/create/', data, { withCredentials: true })
+            const response = await apiClient.post('http://13.244.68.8:8000/api/auth/jwt/create/', data, { withCredentials: true })
 
             if (typeof window !== 'undefined') {
                 localStorage.setItem('access_token', response.data.access)
@@ -41,7 +41,7 @@ export const register = createAsyncThunk(
         //change
         try {
 
-            const response = await apiClient.post('http://localhost:8000/api/auth/users/', data, { withCredentials: true })
+            const response = await apiClient.post('http://13.244.68.8:8000/api/auth/users/', data, { withCredentials: true })
 
             if (typeof window !== 'undefined') {
                 localStorage.setItem('access_token', response.data.access)
@@ -74,7 +74,7 @@ export const logout = createAsyncThunk(
     async (data, thunkAPI) => {
         //change
         try {
-            const response = await apiClient.get('http://localhost:8000/api/auth/users/logout/', { withCredentials: true })
+            const response = await apiClient.get('http://13.244.68.8:8000/api/auth/users/logout/', { withCredentials: true })
 
             localStorage.removeItem('access_token')
 
@@ -90,7 +90,7 @@ export const reset_password = createAsyncThunk(
     'auth/reset-password',
     async (data, thunkAPI) => {
         try {
-            const response = await apiClient.post('http://localhost:8000/api/auth/users/reset_password/', data, { withCredentials: true })
+            const response = await apiClient.post('http://13.244.68.8:8000/api/auth/users/reset_password/', data, { withCredentials: true })
             return response.data
         } catch (error) {
             const message = "No user with that email found"
@@ -102,7 +102,7 @@ export const confirm_password = createAsyncThunk(
     'auth/confirm-password',
     async (data, thunkAPI) => {
         try {
-            const response = await apiClient.post(`http://localhost:8000/api/auth/users/reset_password_confirm/`, data, { withCredentials: true })
+            const response = await apiClient.post(`http://13.244.68.8:8000/api/auth/users/reset_password_confirm/`, data, { withCredentials: true })
             return response.data
         } catch (error) {
             if (error.response.data.new_password) {
@@ -117,7 +117,7 @@ export const set_password = createAsyncThunk(
     'auth/set-password',
     async (data, thunkAPI) => {
         try {
-            const response = await apiClient.post('http://localhost:8000/api/auth/users/set_password/', data, { withCredentials: true })
+            const response = await apiClient.post('http://13.244.68.8:8000/api/auth/users/set_password/', data, { withCredentials: true })
             return response.data
         } catch (error) {
             if (error.response.data.new_password) {

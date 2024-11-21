@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import apiClient from "../../../../apiClient";
 import { isEqual } from "../../../../utils/equalCheck";
-const API_BASE_URL = 'http://localhost:8000'
+const API_BASE_URL = 'http://13.244.68.8:8000'
 
 export const fetchUsers = createAsyncThunk(
     'events/fetchUsers',

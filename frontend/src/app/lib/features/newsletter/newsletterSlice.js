@@ -13,7 +13,7 @@ export const getHTML = createAsyncThunk(
     'newsletter/getHTML',
     async (template_id, { rejectWithValue }) => {
         try {
-            const response = await apiClient.get(`http://localhost:8000/mosaico/get-html/?template_id=${template_id}`)
+            const response = await apiClient.get(`http://13.244.68.8:8000/mosaico/get-html/?template_id=${template_id}`)
             return response.data
         } catch (error) {
             return rejectWithValue(error.message)

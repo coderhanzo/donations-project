@@ -17,7 +17,7 @@ export const registerInstitution = createAsyncThunk(
     'institution/register',
     async (formData, thunkAPI) => {
         try {
-            const response = await axios.post('http://localhost:8000/api/auth/institution/', formData, { headers:{'Content-Type': 'multipart/form-data'} });
+            const response = await axios.post('http://13.244.68.8:8000/api/auth/institution/', formData, { headers:{'Content-Type': 'multipart/form-data'} });
             return response.data;
         } catch (error) {
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
