@@ -44,7 +44,7 @@ const AccountDropdown = () => {
 
     useEffect(() => {
         dispatch(get_logged_in_user())
-    }, [])
+    }, [dispatch])
     return (
 
 

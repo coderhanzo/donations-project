@@ -100,7 +100,7 @@ const SubscriberTable = ({ itemsPerPage }) => {
         setCurrentItems(active.slice(itemOffset, endOffset));
         setPageCount(Math.ceil(active.length / itemsPerPage));
 
-    }, [itemOffset, itemsPerPage, contacts, searchResults]);
+    }, [itemOffset, itemsPerPage, contacts, searchResults,filter]);
 
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {

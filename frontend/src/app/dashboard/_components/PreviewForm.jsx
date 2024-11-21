@@ -23,7 +23,7 @@ const PreviewForm = () => {
         dispatch(getHTML(template_id))
         setSafeHTML(DOMPurify.sanitize(rawHTML));
         console.log(safeHTML)
-    }, [rawHTML, template_id, safeHTML]);
+    }, [rawHTML, template_id,dispatch, safeHTML]);
 
     const [subject, setSubject] = useState('');
     const [emailSent, setEmailSent] = useState(false); // State to track if email is sent

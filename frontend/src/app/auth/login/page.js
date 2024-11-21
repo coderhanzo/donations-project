@@ -23,9 +23,6 @@ const LoginPage = () => {
       if (institution_admin === 1) {
         //console.log("Redirecting to /dashboard because user is an institution admin")
         setTimeout(() => (window.location.href = "/dashboard"), 1000);
-      } else {
-        //console.log("Redirecting to /user/dashboard because user is a regular user")
-        setTimeout(() => (window.location.href = "/dashboard"), 1000);
       }
     }
     /*Here so that welcome shows, since welcome is based on isSuccess
@@ -151,7 +148,7 @@ const LoginPage = () => {
               href="/auth/register/"
               className="text-xs text-center text-gray-500 uppercase dark:text-gray-400 hover:underline"
             >
-              Don't have a Bsystems Account? Register Here
+              Don&apos;t have a Bsystems Account? Register Here
             </a>
 
             <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>

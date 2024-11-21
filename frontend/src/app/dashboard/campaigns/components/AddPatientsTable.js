@@ -46,7 +46,7 @@ const AddPatientsTable = ({ itemsPerPage }) => {
         setCurrentItems(active.slice(itemOffset, endOffset));
         setPageCount(Math.ceil(active.length / itemsPerPage));
 
-    }, [itemOffset, itemsPerPage, contacts, searchResults]);
+    }, [itemOffset, itemsPerPage, contacts,filter, searchResults]);
 
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {

@@ -1,14 +1,16 @@
+'use client';
 
-'use client'
-
-import PreviewForm from "../_components/PreviewForm"
+import React, { Suspense } from 'react';
+import PreviewForm from '../_components/PreviewForm';
 
 const PreviewPage = () => {
     return (
-        <div className="flex w-full">
-            <PreviewForm />
-        </div>
-    )
-}
+        <Suspense fallback={<div>Loading preview...</div>}>
+            <div className="flex w-full">
+                <PreviewForm />
+            </div>
+        </Suspense>
+    );
+};
 
-export default PreviewPage
+export default PreviewPage;

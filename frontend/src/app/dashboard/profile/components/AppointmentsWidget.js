@@ -58,7 +58,7 @@ const AppointmentsWidget = ({ localizer }) => {
 
         dispatch(getEvents(timeRange))
         // Fetch events based on this range
-    }, [date]);
+    }, [date,dispatch]);
 
 
 
