@@ -11,7 +11,7 @@ services:
       - MYSQL_DATABASE=${MYSQL_NAME}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_HOST=${MYSQL_HOST}
     ports:
       - "3308:3306"
@@ -28,7 +28,7 @@ services:
     # command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
-      - static_volume:/app/staticfiles
+      - static_volume:/app/static
       - media_volume:/app/mediafiles
     env_file:
       - .env
@@ -48,6 +48,7 @@ services:
       - "3001:3000"
     depends_on:
       - web
+      - mysql-db
 
 networks:
   donations-network:
