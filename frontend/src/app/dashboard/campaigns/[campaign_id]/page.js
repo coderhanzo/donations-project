@@ -1,14 +1,14 @@
 'use client'
-import ProfitChart from "../../../components/ProfitChart"
-import CircularProgressBar from "../../../components/CircularProgressBar"
+import {ProfitChart} from "../../../components/ProfitChart"
+import {CircularProgressBar} from "../../../components/CircularProgressBar"
 import Link from "next/link"
-import NavButton from "../../../components/navButton"
+import {NavButton} from "../../../components/navButton"
 import { LuBarChart3, LuMailCheck, LuCode2 } from "react-icons/lu"
 import { useDispatch, useSelector } from "react-redux"
 import { toggleEmbedModal } from "../../../lib/features/dropdown/dropdownSlice"
-import EmbedModal from "../components/EmbedModal"
+import {EmbedModal} from "../components/EmbedModal"
 import { TbHeartPlus } from 'react-icons/tb'
-import AddPatientsModal from "../components/AddPatientsModal"
+import {AddPatientsModal} from "../components/AddPatientsModal"
 import { toggleAddPatientModal } from "../../../lib/features/campaigns/campaignSlice"
 
 const CampaignDetails = ({ params }) => {
