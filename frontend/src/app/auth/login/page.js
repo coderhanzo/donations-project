@@ -20,10 +20,9 @@ const LoginPage = () => {
       toast.error("Either email or password is incorrect");
     }
     if (isSuccess || user) {
-      if (institution_admin === 1) {
         //console.log("Redirecting to /dashboard because user is an institution admin")
         setTimeout(() => (window.location.href = "/dashboard"), 1000);
-      } /*else {
+       /*else {
         //console.log("Redirecting to /user/dashboard because user is a regular user")
         setTimeout(() => (window.location.href = "/dashboard"), 1000);
       }*/

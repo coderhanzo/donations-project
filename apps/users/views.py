@@ -137,7 +137,7 @@ def signup_view(request):
         "institution_name": request.data.get("institution_name"),
         # Add other fields as needed
     }
-
+    print(user_data, f":user data")
     if user_data.get("institution_admin"):
         institution_serializer = InstitutionSerializer(
             data={"institution_name": user_data.get("institution_name")}
