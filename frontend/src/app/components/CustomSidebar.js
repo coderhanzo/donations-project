@@ -1,5 +1,8 @@
 'use client';
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
 import { FaHome } from 'react-icons/fa';
 import { CiCalendarDate } from 'react-icons/ci';
 import {
@@ -7,7 +10,6 @@ import {
     LuUser2, LuHeart, LuHeartHandshake, LuClipboardEdit, LuTornado,
     LuSettings, LuSettings2, LuUserCircle, LuUserPlus
 } from "react-icons/lu";
-import { useDispatch, useSelector } from "react-redux";
 import SidebarAccordian from "./SidebarAccordian";
 import CustomSidebarLink from "./CustomSidebarLink";
 import {
@@ -15,21 +17,70 @@ import {
     toggleSettingsDropdown, toggleAuthMenuDropdown
 } from "../lib/features/dropdown/dropdownSlice";
 import { toggleSelectedTab } from "../lib/features/profile/profileSlice";
+import apiClient from "../../apiClient";
 
 const CustomSidebar = () => {
     const dispatch = useDispatch();
-    
-    // Extract necessary state from the Redux store
+    const router = useRouter();
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [loading, setLoading] = useState(true); 
+
+    // Redux state
     const { sidebarOpen, tasksOpen, institutionOpen, settingsOpen, authMenuOpen } = useSelector((state) => state.dropdowns);
 
-    // Handle profile tab selection with localStorage
+    useEffect(() => {
+        const verifyToken = async () => {
+            const token = localStorage.getItem('access_token');
+
+            if (!token) {
+                router.push('/auth/login'); // Redirect if no token is found
+                return;
+            }
+
+            try {
+                // Verify token with backend
+                const response = await apiClient.get('/api/auth/users/me/', {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                if (response.status === 200) {
+                    setIsAuthenticated(true); // Token is valid
+                } else {
+                    router.push('/auth/login'); // Invalid token
+                }
+            } catch (error) {
+                console.error("Authentication failed:", error);
+                router.push('/auth/login'); // Redirect on error
+            } finally {
+                setLoading(false); // Stop loading after verification
+            }
+        };
+
+        verifyToken();
+    }, [router]);
+
     const handleProfileClick = () => {
         dispatch(toggleSelectedTab(3));
         localStorage.setItem('selectedTab', 3);
     };
 
+    if (loading) {
+        // Show a spinner while verifying
+        return (
+            null
+        );
+    }
+
+    if (!isAuthenticated) {
+        return null; // Render nothing if not authenticated
+    }
+
     return (
-        <aside className={`fixed top-0 z-30 flex h-screen flex-col overflow-y-hidden bg-slate-800 duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 w-[290px] min-w-[225px] ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} overflow-y-scroll`}>
+        <aside
+            className={`fixed top-0 z-30 flex h-screen flex-col overflow-y-hidden bg-slate-800 duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 w-[290px] min-w-[225px] ${
+                sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            } overflow-y-scroll`}
+        >
             <div className="p-3 flex flex-row place-items-center justify-between">
                 <h1 className="text-white p-3 text-xl">NGO Admin</h1>
                 <LuX className="lg:hidden scale-[1.5] text-white cursor-pointer" onClick={() => dispatch(toggleSidebar())} />
@@ -40,7 +91,6 @@ const CustomSidebar = () => {
             </div>
 
             <div className="py-6">
-                {/* Top-Level Links */}
                 <CustomSidebarLink title="Dashboard" icon={<FaHome className="scale-[1.5]" />} href="/dashboard" />
                 <CustomSidebarLink title="Calendar" icon={<CiCalendarDate className="scale-[1.75]" />} href="/dashboard/calendar" />
                 <CustomSidebarLink title="Donors" icon={<LuUsers2 className="scale-[1.75] stroke-1" />} href="/dashboard/contacts" />
@@ -48,7 +98,6 @@ const CustomSidebar = () => {
                 <CustomSidebarLink title="Analytics" icon={<LuScatterChart className="scale-[1.5] stroke-1" />} href="/dashboard/analytics" />
                 <CustomSidebarLink title="Campaigns" icon={<LuHeartHandshake className="scale-[1.55] stroke-1" />} href="/dashboard/campaigns" />
 
-                {/* Accordions for Dropdown Menus */}
                 <SidebarAccordian
                     title="Tasks"
                     subtitles={["Donor Pipeline", "Appointments"]}
@@ -91,7 +140,6 @@ const CustomSidebar = () => {
                     isOpen={settingsOpen}
                 />
 
-                {/* Profile Link */}
                 <CustomSidebarLink title="Profile" icon={<LuUser2 className="scale-[1.5] stroke-1" />} href="/dashboard/profile" click={handleProfileClick} />
             </div>
         </aside>

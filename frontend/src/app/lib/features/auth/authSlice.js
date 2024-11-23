@@ -9,7 +9,6 @@ export const get_logged_in_user = createAsyncThunk(
         try {
             const response = await apiClient.get('http://13.244.68.8:8000/api/auth/users/me/', { withCredentials: true })
 
-
             return response.data
         } catch (error) {
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();

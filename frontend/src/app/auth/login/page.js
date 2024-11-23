@@ -11,30 +11,23 @@ const LoginPage = () => {
   const [password, setLocalPassword] = useState("");
 
   const dispatch = useDispatch();
-  const { user, institution_admin, isLoading, isError, isSuccess, message } =
-    useSelector((state) => state.auth);
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
 
-  // redirect if logged in already, or after login
+  // Redirect to dashboard after login
   useEffect(() => {
     if (isError) {
       toast.error("Either email or password is incorrect");
     }
     if (isSuccess || user) {
-      if (institution_admin === 1) {
-        //console.log("Redirecting to /dashboard because user is an institution admin")
-        setTimeout(() => (window.location.href = "/dashboard"), 1000);
-      } else {
-        //console.log("Redirecting to /user/dashboard because user is a regular user")
-        setTimeout(() => (window.location.href = "/dashboard"), 1000);
-      }
+      // Redirect all users to the dashboard
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 1000);
     }
-    /*Here so that welcome shows, since welcome is based on isSuccess
-         Other option is to have a showWelcome state be set in the isSuccess if statement
-         theoretically other option is better, but next.js moves fast and the intentional overhead 
-         gives django and http time to catch i.e. better overvall UX
-        */
     setTimeout(() => dispatch(reset()), 1500);
-  }, [isError, isSuccess, message, user, institution_admin, dispatch]);
+  }, [isError, isSuccess, user, dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -54,6 +47,7 @@ const LoginPage = () => {
 
     dispatch(login(userData));
   };
+
   return (
     <div className="h-screen flex place-items-center bg-slate-100">
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-2xl shadow-2xl lg:max-w-4xl">
@@ -64,14 +58,14 @@ const LoginPage = () => {
           <p>Login in and start making a change</p>
         </div>
 
-        <form className="w-full px-6 py-8 md:px-8 lg:w-1/2">
+        <form className="w-full px-6 py-8 md:px-8 lg:w-1/2" onSubmit={handleSubmit}>
           <div className="flex justify-center mx-auto">
             <Image
               width={50}
               height={50}
               className="w-auto h-7 sm:h-8"
               src="/assets/bsystems_logo.png"
-              alt=""
+              alt="Bsystems Logo"
             />
           </div>
 
@@ -81,14 +75,9 @@ const LoginPage = () => {
 
           <div className="flex items-center justify-between mt-4">
             <span className="w-1/5 border-b dark:border-gray-600 lg:w-1/4"></span>
-
-            <a
-              href="#"
-              className="text-xs text-center text-gray-500 uppercase dark:text-gray-400 hover:underline"
-            >
-              login with email
-            </a>
-
+            <span className="text-xs text-center text-gray-500 uppercase dark:text-gray-400 hover:underline">
+              Login with Email
+            </span>
             <span className="w-1/5 border-b dark:border-gray-400 lg:w-1/4"></span>
           </div>
 
@@ -134,10 +123,8 @@ const LoginPage = () => {
           </div>
 
           <div className="mt-6">
-            {/* Remove link, this needs toast and checks and then redirect*/}
             <button
               type="submit"
-              onClick={handleSubmit}
               className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-slate-700 rounded-lg hover:bg-[#fe0304] focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
             >
               {isSuccess ? "Welcome" : "Sign In"}
@@ -146,14 +133,12 @@ const LoginPage = () => {
 
           <div className="flex items-center justify-between mt-4">
             <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
-
             <a
               href="/auth/register/"
               className="text-xs text-center text-gray-500 uppercase dark:text-gray-400 hover:underline"
             >
               Don&apos;t have a Bsystems Account? Register Here
             </a>
-
             <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
           </div>
         </form>
