@@ -10,8 +10,8 @@ import "react-toastify/dist/ReactToastify.css"
 const inter = Montserrat({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'NGO Platform - Bsystems ',
-  description: 'Social and Analytics Platform for Non-Profit Organisations',
+  title: 'Bsystems Donor Management ',
+  description: 'Enhance Your NGO’s Impact with Data-Driven Insights',
 }
 
 export default function RootLayout({ children }) {

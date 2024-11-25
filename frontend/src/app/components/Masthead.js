@@ -39,7 +39,7 @@ const Masthead = () => {
                 <div className='md:w-1/2 p-12  z-10 text-[#3f4f64] flex items-start justify-center flex-col'>
                     <h1 className='mb-6 text-4xl xl:text-5xl font-bold' >Bsystems Donor Management Platform</h1>
                     <h2 className='mb-2 text-2xl xl:text-3xl tracking-tight'>
-                        <span>Empower Your NGO with Advanced Analytics and Donor Connectivity</span> <span></span>
+                        <span>Enhance Your NGO’s Impact with Data-Driven Insights and Seamless Donor Engagement</span> <span></span>
                     </h2>
                 </div>
                 <div className='overflow-visible'>
