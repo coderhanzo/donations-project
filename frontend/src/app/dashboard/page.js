@@ -21,20 +21,20 @@ const Dashboard = () => {
 
       try {
         // Call the backend to validate the token or get the user's details
-        const response = await apiClient.get('/api/auth/users/me/', {
+        const response = await apiClient.get('http://13.244.68.8:8000/api/auth/users/me/', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
         if (response.status === 200) {
-          setIsAuthenticated(true); // Valid token
+          setIsAuthenticated(true); 
         } else {
-          router.push('/auth/login'); // Invalid token
+          router.push('/auth/login'); 
         }
       } catch (error) {
         console.error('Token verification failed:', error);
-        router.push('/auth/login'); // Redirect on error
+        router.push('/auth/login'); 
       } finally {
-        setLoading(false); // Stop loading after verification
+        setLoading(false); 
       }
     };
 
@@ -42,11 +42,9 @@ const Dashboard = () => {
   }, [router]);
 
   if (loading) {
-    // Show a loading spinner while verifying
     return (
       <div className="flex justify-center items-center min-h-screen bg-white">
         <div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>
-        <div className='text-center font-bold text-lg font-black ml-5'>PLEASE LOGIN TO GAIN ACCESS</div>
       </div>
     );
   }
@@ -55,6 +53,7 @@ const Dashboard = () => {
     return null;
   }
 
+ 
   return (
     <div className="flex flex-col">
       <Charts />

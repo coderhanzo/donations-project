@@ -25,7 +25,6 @@ const CustomSidebar = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true); 
 
-    // Redux state
     const { sidebarOpen, tasksOpen, institutionOpen, settingsOpen, authMenuOpen } = useSelector((state) => state.dropdowns);
 
     useEffect(() => {
@@ -33,13 +32,12 @@ const CustomSidebar = () => {
             const token = localStorage.getItem('access_token');
 
             if (!token) {
-                router.push('/auth/login'); // Redirect if no token is found
+                router.push('/auth/login');
                 return;
             }
 
             try {
-                // Verify token with backend
-                const response = await apiClient.get('/api/auth/users/me/', {
+                const response = await apiClient.get('http://13.244.68.8:8000/api/auth/users/me/', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
@@ -65,16 +63,14 @@ const CustomSidebar = () => {
     };
 
     if (loading) {
-        // Show a spinner while verifying
         return (
             null
         );
     }
 
     if (!isAuthenticated) {
-        return null; // Render nothing if not authenticated
+        return null;
     }
-
     return (
         <aside
             className={`fixed top-0 z-30 flex h-screen flex-col overflow-y-hidden bg-slate-800 duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 w-[290px] min-w-[225px] ${

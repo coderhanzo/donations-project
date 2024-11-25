@@ -43,7 +43,7 @@ apiClient.interceptors.response.use(async response => {
     const originalRequest = error.config;
 
     // Avoid retrying for the refresh token endpoint itself prevents infinite loop
-    if (originalRequest.url.includes('/api/auth/jwt/refresh/')) {
+    if (originalRequest.url.includes('http://13.244.68.8:8000/auth/jwt/refresh/')) {
         // If the refresh token request fails, redirect to login and don't retry
         if (typeof window !== 'undefined') {
             window.location.href = '/auth/login';
