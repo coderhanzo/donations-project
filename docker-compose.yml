@@ -50,6 +50,17 @@ services:
       - web
       - mysql-db
 
+#nginx:
+#     container_name:  nginx
+#     restart: unless -stopped
+#     image:   nginx
+#     ports:
+#          -  80:80
+#          -  443:443
+    volumes:
+           - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+
+
 networks:
   donations-network:
     driver: bridge
