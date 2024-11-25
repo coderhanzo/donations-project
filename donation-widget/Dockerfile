@@ -24,12 +24,6 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR $APP_HOME
 
-RUN pip3 install --upgrade pip && pip3 install wheel && pip3 install poetry
-COPY pyproject.toml poetry.lock ./
-
-# Install Poetry environment
-RUN poetry config virtualenvs.create false && poetry install && rm -rf $POETRY_CACHE_DIR
-
 COPY . .
 
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["flask", "--app", "run"]
