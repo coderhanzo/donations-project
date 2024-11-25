@@ -15,7 +15,7 @@ const Navbar = () => {
                     <Image src='/assets/bsystems_logo.png' width={100} height={100} alt="Bsystems' Logo" className=" h-auto w-auto" />
                 </div>
                 <div className=" max-lg:hidden flex flex-row justify-between space-x-10 place-items-center">
-                    <div>
+                    {/*<div>
                         Product
                     </div>
                     <div>
@@ -26,7 +26,7 @@ const Navbar = () => {
                     </div>
                     <div>
                         Contact
-                    </div>
+                    </div>*/}
                     <Link href="/auth/login">
                         <button className=" bg-[#fe0304] p-3 rounded-2xl text-white drop-shadow-xl ">
                             Start Here
