@@ -13,6 +13,7 @@ export default function Home() {
       <Navbar />
       <Masthead />
       <div className='h-screen bg-black'>
+        
       </div>
       <ContactFooter />
       <Footer />
