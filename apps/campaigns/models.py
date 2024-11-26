@@ -156,7 +156,7 @@ class EducationalInstitution(models.Model):
 
 class HealthcareInstitution(models.Model):
     INSTITUTION_TYPE_CHOICES = [
-        ("HOSPITAL EQUIPMNET", "Hospital Equipment"),
+        ("HOSPITAL EQUIPMENT", "Hospital Equipment"),
         ("PATIENT CARE", "Patient Care"),
         ("HEALTH CENTER", "Health Center"),
         ("SENIOR HOMES", "Senior Homes"),
