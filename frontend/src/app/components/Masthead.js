@@ -43,7 +43,7 @@ const Masthead = () => {
                     </h2>
                 </div>
                 <div className='overflow-visible'>
-                   <Image  className='rounded-xl animate-bounce delay-1000' src='/assets/donations.jpg' width={500} height={500}></Image>
+                   <Image  className='rounded-xl animate-bounce delay-1000' src='/assets/donations.jpg' width={300} height={300}></Image>
                 </div>
             </div>
 
