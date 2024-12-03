@@ -26,9 +26,9 @@ const CampaignDetails = ({ params }) => {
     return (
         <>
             <EmbedModal />
-            <div className="w-full flex justify-around">
+            {/*<div className="w-full flex justify-around">
                 <AddPatientsModal />
-            </div>
+            </div>*/}
 
             <div>
                 <h1 className="text-2xl p-4">{params.campaign_id} Campaign Fundraising Progress</h1>
