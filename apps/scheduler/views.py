@@ -71,7 +71,7 @@ class EventCreateView(APIView):
         if not calendar_id:
             try:
                 calendar = Calendar.objects.get(id=request.data["calendar_id"])
-            except calendar.DoesNotExist:
+            except Calendar.DoesNotExist:
                 return Response(
                     {"error": "The selected calendar does not exist."},
                     status=status.HTTP_404_NOT_FOUND,
