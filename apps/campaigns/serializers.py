@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (
     Cause,
-    MonetaryCampaign,
+    Monetary,
     HealthcarePatient,
     EducationalInstitution,
     HealthcareInstitution,
@@ -97,18 +97,18 @@ model_mapping = {
 }
 
 
-class MonetaryCampaignSerializer(serializers.ModelSerializer):
+class MonetarySerializer(serializers.ModelSerializer):
     beneficiaries = serializers.SerializerMethodField(required=False)
 
     class Meta:
-        model = MonetaryCampaign
+        model = Monetary
         fields = "__all__"
         extra_kwargs = {
             "is_active": {"read_only": True},
         }
 
     # def __init__(self, *args, **kwargs):
-    #     super(MonetaryCampaignSerializer, self).__init__(*args, **kwargs)
+    #     super(MonetarySerializer, self).__init__(*args, **kwargs)
     #     if (
     #         self.context["request"].user.roles == "Institution Admin"
     #         or self.context["request"].user.roels == "Admin"
