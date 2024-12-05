@@ -11,9 +11,9 @@ from rest_framework.decorators import (
     parser_classes,
 )
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .models import MonetaryCampaign, Cause, HealthcarePatient, Photo
+from .models import Campaign, Cause, HealthcarePatient, Photo
 from .serializers import (
-    MonetaryCampaignSerializer,
+    CampaignSerializer,
     PatientSerializer,
     CauseSerializer,
     PhotoSerializer,
@@ -35,8 +35,8 @@ import json
 
 
 class CampaignViewSet(viewsets.ModelViewSet):
-    queryset = MonetaryCampaign.objects.all()
-    serializer_class = MonetaryCampaignSerializer
+    queryset = Campaign.objects.all()
+    serializer_class = CampaignSerializer
 
 
 class PatientViewSet(viewsets.ModelViewSet):
@@ -104,15 +104,15 @@ def edit_cause(request):
 class GetCampaigns(generics.ListAPIView):
     """Get all of an institutions campaigns, unless user is bsystems_admin, then get all campaigns"""
 
-    serializer_class = MonetaryCampaignSerializer
+    serializer_class = CampaignSerializer
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [JWTAuthentication]
 
     def get_queryset(self):
         if self.request.user.is_superuser:
-            return MonetaryCampaign.objects.all()
+            return Campaign.objects.all()
         else:
-            return MonetaryCampaign.objects.filter(
+            return Campaign.objects.filter(
                 institution=self.request.user.institution
             )
 
@@ -173,7 +173,7 @@ def create_campaign(request):
     # data["is_active"] = (
     #     True if request.user.roles == "INSTITUTION_ADMIN" or request.user.roles == "USER" else False
     # )
-    serializer = MonetaryCampaignSerializer(data=data, context={"request": request})
+    serializer = CampaignSerializer(data=data, context={"request": request})
     serializer.is_valid(raise_exception=True)
     campaign_instance = serializer.save()
     if photos:
@@ -195,7 +195,7 @@ def edit_campaign(request):
         return Response(
             {"message": "Campaign ID is required"}, status=status.HTTP_400_BAD_REQUEST
         )
-    campaign_instance = MonetaryCampaign.objects.get(id=int(data.get("id")))
+    campaign_instance = Campaign.objects.get(id=int(data.get("id")))
     try:
         check_matching_institution_for_campaigns(request.user, campaign_instance)
     except PermissionDenied:
@@ -208,7 +208,7 @@ def edit_campaign(request):
     data["subscribers"] = subscribers
     data["last_edited_by"] = request.user.id
 
-    serializer = MonetaryCampaignSerializer(
+    serializer = CampaignSerializer(
         instance=campaign_instance,
         data=data,
         partial=True,
@@ -243,9 +243,9 @@ def delete_campaign(request):
     campaign_id = request.query_params.get("id")
 
     try:
-        campaign_instance = MonetaryCampaign.objects.get(id=campaign_id)
+        campaign_instance = Campaign.objects.get(id=campaign_id)
         check_matching_institution_for_campaigns(request.user, campaign_instance)
-        serializer = MonetaryCampaignSerializer(
+        serializer = CampaignSerializer(
             instance=campaign_instance,
             data={"is_active": False},
             partial=True,
@@ -253,7 +253,7 @@ def delete_campaign(request):
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
-    except MonetaryCampaign.DoesNotExist:
+    except Campaign.DoesNotExist:
         raise
     except PermissionDenied:
         raise
@@ -274,11 +274,11 @@ def add_beneficiaries_to_campaign(request):
     data = request.data.dict()
     try:
         # ids start from 1 so the 0 is just incase campaign_id is not passed
-        campaign_instance = MonetaryCampaign.objects.get(
+        campaign_instance = Campaign.objects.get(
             id=int(data.get("campaign_id"))
         )  # form data so no ints
         check_matching_institution_for_campaigns(request.user, campaign_instance)
-    except MonetaryCampaign.DoesNotExist:
+    except Campaign.DoesNotExist:
         raise
     except PermissionDenied as err:
         raise

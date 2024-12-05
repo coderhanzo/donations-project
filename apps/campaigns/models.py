@@ -6,11 +6,9 @@ from django.contrib.auth import get_user_model
 from utils.hash_photo import calculate_file_hash
 from apps.users.models import Institution
 
-
 User = get_user_model()
 
 
-# from .cause import Cause
 class Cause(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True, unique=True)
     description = models.TextField(blank=True, null=True)
@@ -19,7 +17,7 @@ class Cause(models.Model):
         return self.title if self.title else "Cause"
 
 
-class MonetaryCampaign(models.Model):
+class Campaign(models.Model):
     name = models.CharField(max_length=100)
     progress = models.DecimalField(
         max_digits=10, decimal_places=2, blank=True, null=True
@@ -84,7 +82,7 @@ class Photo(models.Model):
     file = models.FileField(upload_to=user_directory_path)
     hash_key = models.CharField(max_length=64, blank=True, null=True)
     campaigns = models.ManyToManyField(
-        MonetaryCampaign, blank=True, related_name="photos"
+        Campaign, blank=True, related_name="photos"
     )
     institution = models.UUIDField(blank=True, null=True)
 
@@ -114,7 +112,7 @@ class HealthcarePatient(models.Model):
         default=0, blank=True, null=True
     )
     campaigns = models.ManyToManyField(
-        MonetaryCampaign, blank=True, related_name="HEALTHCARE_PATIENT"
+        Campaign, blank=True, related_name="HEALTHCARE_PATIENT"
     )
 
     def __str__(self):
@@ -145,7 +143,7 @@ class EducationalInstitution(models.Model):
         max_length=50, choices=EDUCATIONAL_NEEDS_CHOICES, blank=True, null=True
     )
     campaigns = models.ManyToManyField(
-        MonetaryCampaign, blank=True, related_name="EDUCATIONAL_INSTITUTION"
+        Campaign, blank=True, related_name="EDUCATIONAL_INSTITUTION"
     )
     other_info = models.TextField(blank=True, null=True)
 
@@ -181,7 +179,7 @@ class HealthcareInstitution(models.Model):
     specializations = models.TextField(blank=True, null=True)
     operating_hours = models.TextField(blank=True, null=True)
     campaigns = models.ManyToManyField(
-        MonetaryCampaign, blank=True, related_name="HEALTHCARE_INSTITUTION"
+        Campaign, blank=True, related_name="HEALTHCARE_INSTITUTION"
     )
 
 
@@ -198,8 +196,9 @@ class AnimalCare(models.Model):
     location = models.TextField(blank=True, null=True)
     special_needs = models.TextField(blank=True, null=True)
     campaigns = models.ManyToManyField(
-        MonetaryCampaign, blank=True, related_name="ANIMAL"
+        Campaign, blank=True, related_name="ANIMAL"
     )
+    animals = models.CharField(max_length=50, choices=SPECIES_CHOICES)
     others = models.TextField(blank=True, null=True)
 
 
@@ -210,14 +209,14 @@ class SocialWelfareProgram(models.Model):
         ("EDUCATION", "Education"),
     ]
     profile = models.OneToOneField(AccountProfile, on_delete=models.CASCADE)
-    program_name = models.CharField(max_length=255)  # possible remove
+    description = models.CharField(max_length=255)  # possible remove
     program_type = models.CharField(max_length=50, choices=PROGRAM_TYPE_CHOICES)
     target_population = models.TextField(blank=True, null=True)
     funding_sources = models.TextField(blank=True, null=True)
     key_activities = models.TextField(blank=True, null=True)
     impact_metrics = models.TextField(blank=True, null=True)
     campaigns = models.ManyToManyField(
-        MonetaryCampaign, blank=True, related_name="SOCIAL_WELFARE_PROGRAM"
+        Campaign, blank=True, related_name="SOCIAL_WELFARE_PROGRAM"
     )
 
 
@@ -236,7 +235,7 @@ class EmergencyRelief(models.Model):
     relief_timeline = models.TextField(blank=True, null=True)
     other_info = models.TextField(blank=True, null=True)
     campaigns = models.ManyToManyField(
-        MonetaryCampaign, blank=True, related_name="EMERGENCY_RELIEF"
+        Campaign, blank=True, related_name="EMERGENCY_RELIEF"
     )
 
 
@@ -268,7 +267,7 @@ class EnvironmentalProtection(models.Model):
     impact_metrics = models.TextField(blank=True, null=True)
     funding_sources = models.TextField(blank=True, null=True)
     campaigns = models.ManyToManyField(
-        MonetaryCampaign, blank=True, related_name="ENVIRONMENTAL_PROTECTION"
+        Campaign, blank=True, related_name="ENVIRONMENTAL_PROTECTION"
     )
 
 
@@ -298,7 +297,7 @@ class CommunityDevelopment(models.Model):
     impact_metrics = models.TextField(blank=True, null=True)
     funding_sources = models.TextField(blank=True, null=True)
     campaigns = models.ManyToManyField(
-        MonetaryCampaign, blank=True, related_name="COMMUNITY_DEVELOPMENT"
+        Campaign, blank=True, related_name="COMMUNITY_DEVELOPMENT"
     )
 
 
@@ -315,5 +314,5 @@ class DisabilitySupport(models.Model):
     key_services_provided = models.TextField(blank=True, null=True)
     funding_sources = models.TextField(blank=True, null=True)
     campaigns = models.ManyToManyField(
-        MonetaryCampaign, blank=True, related_name="DISABILITY_SUPPORT"
+        Campaign, blank=True, related_name="DISABILITY_SUPPORT"
     )
