@@ -3,7 +3,7 @@ from django.db.models import fields, Count
 from datetime import date, datetime, timedelta
 from schedule.models import Event
 from apps.contact_analytics.models import AccountProfile
-from apps.campaigns.models import MonetaryCampaign
+from apps.campaigns.models import Campaign
 from django.utils.translation import gettext_lazy as _
 
 
@@ -82,7 +82,7 @@ class Donation(models.Model):
     transaction = models.OneToOneField(
         Transaction, on_delete=models.CASCADE, related_name="donation"
     )
-    campaign = models.ManyToManyField(MonetaryCampaign, blank=True)
+    campaign = models.ManyToManyField(Campaign, blank=True)
 
     def __str__(self):
         return f"Donation by {self.donor.name} - {self.transaction.amount}"
@@ -100,7 +100,7 @@ class Expense(models.Model):
     transaction = models.OneToOneField(
         Transaction, on_delete=models.CASCADE, related_name="expense"
     )
-    campaign = models.ManyToManyField(MonetaryCampaign, blank=True)
+    campaign = models.ManyToManyField(Campaign, blank=True)
 
     def __str__(self):
         return f"Donation by {self.donor.name} - {self.transaction.amount}"

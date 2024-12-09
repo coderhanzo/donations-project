@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (
     Cause,
-    Monetary,
+    Campaign,
     HealthcarePatient,
     EducationalInstitution,
     HealthcareInstitution,
@@ -97,11 +97,11 @@ model_mapping = {
 }
 
 
-class MonetarySerializer(serializers.ModelSerializer):
+class CampaignSerializer(serializers.ModelSerializer):
     beneficiaries = serializers.SerializerMethodField(required=False)
 
     class Meta:
-        model = Monetary
+        model = Campaign
         fields = "__all__"
         extra_kwargs = {
             "is_active": {"read_only": True},

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     HealthcarePatient,
-    MonetaryCampaign,
+    Campaign,
     Cause,
     HealthcareInstitution,
     CommunityDevelopment,
@@ -25,7 +25,7 @@ class HealthcareInstitutionAdmin(admin.ModelAdmin):
 
 
 # Register your models here.
-admin.site.register(MonetaryCampaign)
+admin.site.register(Campaign)
 admin.site.register(HealthcarePatient)
 admin.site.register(Cause)
 admin.site.register(HealthcareInstitution, HealthcareInstitutionAdmin)

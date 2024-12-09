@@ -198,7 +198,7 @@ class AnimalCare(models.Model):
     campaigns = models.ManyToManyField(
         Campaign, blank=True, related_name="ANIMAL"
     )
-    animals = models.CharField(max_length=50, choices=SPECIES_CHOICES)
+    animals = models.CharField(max_length=50, choices=SPECIES_CHOICES, default="---")
     others = models.TextField(blank=True, null=True)
 
 

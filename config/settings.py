@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 import environ
 import os
@@ -25,7 +26,7 @@ ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(" ")
 CENTRAL_AUTH_URL = env("CENTRAL_AUTH_URL")
 DOMAIN = env("DOMAIN")
 CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS").split(" ")
-CORS_ORIGIN_ALLOW_ALL = env("CORS_ALLOWED_ORIGINS").split(" ")
+CORS_ORIGIN_ALLOW = env("CORS_ALLOWED_ORIGINS").split(" ")
 CORS_ALLOW_CREDENTIALS = True
 # Application definition
 
@@ -162,8 +163,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "users.User"
-
-from datetime import timedelta
 
 # REST_FRAMEWORK = {
 #     # "DEFAULT_AUTHENTICATION_CLASSES": (

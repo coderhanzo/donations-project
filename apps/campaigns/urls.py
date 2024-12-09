@@ -1,17 +1,17 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import (
-    CampaignViewSet,
-    PatientViewSet,
-    CampaignCauseViewSet,
-)
 from . import views
+from django.urls import path, include
+# from rest_framework.routers import DefaultRouter
+# from .views import (
+#     CampaignViewSet,
+#     PatientViewSet,
+#     CampaignCauseViewSet,
+# )
 
 
-router = DefaultRouter()
-router.register("campaigns", CampaignViewSet, basename="campaigns")
-router.register("patients", PatientViewSet, basename="patients")
-router.register("causes", CampaignCauseViewSet, basename="causes")
+# router = DefaultRouter()
+# router.register("campaigns", CampaignViewSet, basename="campaigns")
+# router.register("patients", PatientViewSet, basename="patients")
+# router.register("causes", CampaignCauseViewSet, basename="causes")
 
 
 urlpatterns = [
