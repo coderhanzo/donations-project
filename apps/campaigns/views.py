@@ -83,6 +83,7 @@ def create_cause(request):
     serializer = CauseSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     cause_instance = serializer.save()
+    print(cause_instance, ":cause")
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
