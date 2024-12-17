@@ -44,8 +44,8 @@ services:
     build:
       context: .
       dockerfile: ./frontend/Dockerfile
-    expose:
-      - "3000"
+    ports:
+      - "3000:3000"
     depends_on:
       - donations-backend
       - mysql-db
