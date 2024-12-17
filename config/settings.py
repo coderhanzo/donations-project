@@ -21,6 +21,7 @@ SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
+SERURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(" ")
 CENTRAL_AUTH_URL = env("CENTRAL_AUTH_URL")
@@ -33,7 +34,6 @@ CORS_ALLOW_CREDENTIALS = True
 DJANGO_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.admin",
-    # "django.contrib.sites",
     "django.contrib.auth",
     "django.contrib.sessions",
     "django.contrib.messages",
