@@ -1,0 +1,71 @@
+services:
+  mysql-db:
+    container_name: Donations-db
+    image: mysql:8.0
+    restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql
+    env_file:
+      - .env
+    environment:
+      - MYSQL_DATABASE=${MYSQL_NAME}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_HOST=${MYSQL_HOST}
+    ports:
+      - "3308:3306"
+    networks:
+      - donations-network
+
+  donations-backend:
+    container_name: donations-backend
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    command: ./wait-for-it.sh mysql-db:3306 -- gunicorn config.wsgi:application --workers 4 --timeout 120 --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+      - media_volume:/app/mediafiles
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    depends_on:
+      - mysql-db
+    networks:
+      - donations-network
+
+  donations-frontend:
+    container_name: donations-frontend
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - donations-backend
+      - mysql-db
+
+#nginx:
+#     container_name:  nginx
+#     restart: unless -stopped
+#     image:   nginx
+#     ports:
+#          -  80:80
+#          -  443:443
+    volumes:
+           - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+
+
+networks:
+  donations-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  static_volume:
+  media_volume:
